@@ -24,5 +24,30 @@ namespace GraphEditor
         {
             InitializeComponent();
         }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+
+                var pointToScreen = Mouse.GetPosition(this);
+
+                var data = new DataObject();
+                data.SetData("Object", this);
+                data.SetData("Point", pointToScreen);
+
+                // Inititate the drag-and-drop operation.
+                DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
+            }
+        }
+
+        protected override void OnGiveFeedback(GiveFeedbackEventArgs e)
+        {
+            base.OnGiveFeedback(e);
+        
+            Mouse.SetCursor(Cursors.SizeAll);
+            e.Handled = true;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using GraphEditor.ViewModel;
 
@@ -13,18 +14,40 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = new EditorAreaViewModel();
+            DataContext = new EditorAreaViewModel(_canvas);
         }
 
         private void Canvas_OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var canvas = sender as Canvas;
-            var contextMenu = canvas.ContextMenu;
+            var contextMenu = _canvas.ContextMenu;
 
             if (contextMenu == null) return;
 
-            contextMenu.PlacementTarget = canvas;
+            contextMenu.PlacementTarget = _canvas;
             contextMenu.IsOpen = true;
+        }
+
+        private void SetDragObjectPosition(DragEventArgs e)
+        {
+            var gn = (GraphNode) e.Data.GetData("Object");
+            var pos = (Point) e.Data.GetData("Point");
+
+            var p = e.GetPosition(_canvas) - pos;
+
+            Canvas.SetLeft(gn, p.X);
+            Canvas.SetTop(gn, p.Y);
+        }
+
+        protected override void OnDragOver(DragEventArgs e)
+        {
+            base.OnDragOver(e);
+            SetDragObjectPosition(e);
+        }
+
+        protected override void OnDrop(DragEventArgs e)
+        {
+            base.OnDrop(e);
+            SetDragObjectPosition(e);
         }
     }
 }

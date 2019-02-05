@@ -3,15 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GraphEditor"
+             xmlns:vm="clr-namespace:GraphEditor.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Canvas MouseRightButtonDown="Canvas_OnMouseRightButtonDown" Background="AntiqueWhite">
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance vm:EditorAreaViewModel}"
+             AllowDrop="True">
+    <Canvas x:Name="_canvas" MouseRightButtonDown="Canvas_OnMouseRightButtonDown" Background="AntiqueWhite" >
         <Canvas.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Add element"/>
+                <MenuItem Header="Add element" Command="{Binding AddNodeCommand}"/>
             </ContextMenu>
         </Canvas.ContextMenu>
-
     </Canvas>
 </UserControl>
