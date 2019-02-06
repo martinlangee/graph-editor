@@ -10,10 +10,15 @@ namespace GraphEditor.ViewModel
     public class GraphNodeViewModel: BaseNotification
     {
         private readonly EditorAreaViewModel _area;
+        private string _selectedOutConnCount = "1";
+        private string _selectedInConnCount = "1";
 
         public GraphNodeViewModel(EditorAreaViewModel area, Point pos)
         {
+            InConnectorCount = new ObservableCollection<string>();
             InConnectors = new ObservableCollection<int>();
+
+            OutConnectorCount = new ObservableCollection<string>();
             OutConnectors = new ObservableCollection<int>();
 
             _area = area;
@@ -25,25 +30,55 @@ namespace GraphEditor.ViewModel
 
             RemoveCommand = new RelayCommand(o => Remove());
 
-            InConnectors.Add(1);
-            InConnectors.Add(2);
-            InConnectors.Add(3);
-            InConnectors.Add(4);
+            for (var c = 1; c <= 9; c++)
+            {
+                InConnectorCount.Add(c.ToString());
+                OutConnectorCount.Add(c.ToString());
+            }
 
+            InConnectors.Add(1);
             OutConnectors.Add(1);
-            OutConnectors.Add(2);
-            OutConnectors.Add(3);
         }
 
         public RelayCommand RemoveCommand { get; }
 
-        public string Type { get; set; }
-        public string Name { get; set; }
+        public string Type { get; set; } = "Filter";
+        public string Name { get; set; } = "Neu";
 
-        public int Height { get; set; } = 100;
-        public int Width { get; set; } = 70;
+        public ObservableCollection<string> InConnectorCount { get; }
+
+        public string SelectedInConnCount
+        {
+            get => _selectedInConnCount;
+            set
+            {
+                if (_selectedInConnCount == value) return;
+
+                _selectedInConnCount = value;
+                InConnectors.Clear();
+                for (var c = 1; c <= int.Parse(value); c++)
+                    InConnectors.Add(c);
+            }
+        }
 
         public ObservableCollection<int> InConnectors { get; }
+
+        public ObservableCollection<string> OutConnectorCount { get; }
+
+        public string SelectedOutConnCount
+        {
+            get => _selectedOutConnCount;
+            set
+            {
+                if (_selectedOutConnCount == value) return;
+
+                _selectedOutConnCount = value;
+                OutConnectors.Clear();
+                for (var c = 1; c <= int.Parse(value); c++)
+                    OutConnectors.Add(c);
+            }
+        }
+
         public ObservableCollection<int> OutConnectors { get; }
 
         public void Remove()

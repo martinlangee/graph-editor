@@ -25,9 +25,16 @@ namespace GraphEditor
             InitializeComponent();
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
+        protected override void OnGiveFeedback(GiveFeedbackEventArgs e)
         {
-            base.OnMouseMove(e);
+            base.OnGiveFeedback(e);
+        
+            Mouse.SetCursor(Cursors.SizeAll);
+            e.Handled = true;
+        }
+
+        private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
 
@@ -40,14 +47,6 @@ namespace GraphEditor
                 // Inititate the drag-and-drop operation.
                 DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
             }
-        }
-
-        protected override void OnGiveFeedback(GiveFeedbackEventArgs e)
-        {
-            base.OnGiveFeedback(e);
-        
-            Mouse.SetCursor(Cursors.SizeAll);
-            e.Handled = true;
         }
     }
 }
