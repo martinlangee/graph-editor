@@ -17,16 +17,6 @@ namespace GraphEditor.Ui
             DataContext = new EditorAreaViewModel(_canvas);
         }
 
-        private void Canvas_OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var contextMenu = _canvas.ContextMenu;
-
-            if (contextMenu == null) return;
-
-            contextMenu.PlacementTarget = _canvas;
-            contextMenu.IsOpen = true;
-        }
-
         private void SetDragObjectPosition(DragEventArgs e)
         {
             var gn = (GraphNode) e.Data.GetData("Object");

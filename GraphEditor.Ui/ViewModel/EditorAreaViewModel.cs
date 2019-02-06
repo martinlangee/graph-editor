@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace GraphEditor.ViewModel
@@ -12,7 +8,7 @@ namespace GraphEditor.ViewModel
     // todo: Shift GraphNode
     // todo: ConnectorLines einführen
 
-    public class EditorAreaViewModel
+    public class EditorAreaViewModel: BaseNotification
     {
         public EditorAreaViewModel(Canvas canvas)
         {
@@ -30,13 +26,16 @@ namespace GraphEditor.ViewModel
 
         public GraphNodeViewModel Add(Action<GraphNodeViewModel> initNode = null)
         {
-            var newNode = new GraphNodeViewModel(this);
-            initNode?.Invoke(newNode);
-            GraphNodes.Add(newNode);
+            var newNodeVm = new GraphNodeViewModel(this);
+            initNode?.Invoke(newNodeVm);
+            GraphNodes.Add(newNodeVm);
 
-            Canvas.Children.Add(new GraphNode());
+            return newNodeVm;
+        }
 
-            return newNode;
+        public void RemoveNode(GraphNodeViewModel graphNodeVm)
+        {
+            GraphNodes.Remove(graphNodeVm);
         }
     }
 }
