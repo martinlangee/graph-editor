@@ -17,6 +17,8 @@ namespace GraphEditor.Ui
             DataContext = new EditorAreaViewModel(_canvas);
         }
 
+        private EditorAreaViewModel ViewModel => (EditorAreaViewModel) DataContext;
+
         private void SetDragObjectPosition(DragEventArgs e)
         {
             var gn = (GraphNode) e.Data.GetData("Object");
@@ -38,6 +40,11 @@ namespace GraphEditor.Ui
         {
             base.OnDrop(e);
             SetDragObjectPosition(e);
+        }
+
+        private void EditorArea_OnContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            ViewModel.SetCurrentMouse(new Point(e.CursorLeft, e.CursorTop));
         }
     }
 }

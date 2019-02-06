@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace GraphEditor.ViewModel
 {
-    // todo: Add GraphNode
-    // todo: Shift GraphNode
     // todo: ConnectorLines einführen
 
     public class EditorAreaViewModel: BaseNotification
     {
+        private Point _currentMouse;
+
         public EditorAreaViewModel(Canvas canvas)
         {
             Canvas = canvas;
@@ -26,7 +27,7 @@ namespace GraphEditor.ViewModel
 
         public GraphNodeViewModel Add(Action<GraphNodeViewModel> initNode = null)
         {
-            var newNodeVm = new GraphNodeViewModel(this);
+            var newNodeVm = new GraphNodeViewModel(this, _currentMouse);
             initNode?.Invoke(newNodeVm);
             GraphNodes.Add(newNodeVm);
 
@@ -36,6 +37,11 @@ namespace GraphEditor.ViewModel
         public void RemoveNode(GraphNodeViewModel graphNodeVm)
         {
             GraphNodes.Remove(graphNodeVm);
+        }
+
+        public void SetCurrentMouse(Point point)
+        {
+            _currentMouse = point;
         }
     }
 }
