@@ -5,8 +5,6 @@ using System.Windows.Controls;
 
 namespace GraphEditor.ViewModel
 {
-    // todo: paint connector pins
-
     public class GraphNodeViewModel: BaseNotification
     {
         private readonly EditorAreaViewModel _area;
@@ -49,7 +47,7 @@ namespace GraphEditor.ViewModel
 
         public string SelectedInConnCount
         {
-            get => _selectedInConnCount;
+            get { return _selectedInConnCount; }
             set
             {
                 if (_selectedInConnCount == value) return;
@@ -67,7 +65,7 @@ namespace GraphEditor.ViewModel
 
         public string SelectedOutConnCount
         {
-            get => _selectedOutConnCount;
+            get { return _selectedOutConnCount; }
             set
             {
                 if (_selectedOutConnCount == value) return;

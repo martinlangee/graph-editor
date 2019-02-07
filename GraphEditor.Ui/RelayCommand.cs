@@ -24,7 +24,8 @@ namespace GraphEditor
         public RelayCommand(Action<object> execute)
             : this(execute, null)
         {
-            _execute = execute ?? throw new NotImplementedException("Not implemented");
+            if (execute == null) throw new NotImplementedException("Not implemented");
+            _execute = execute;
         }
 
         /// <summary>
@@ -55,8 +56,8 @@ namespace GraphEditor
         /// </summary>
         public event EventHandler CanExecuteChanged
         {
-            add => CommandManager.RequerySuggested += value;
-            remove => CommandManager.RequerySuggested -= value;
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value;}
         }
 
         /// <summary>
