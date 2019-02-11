@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -42,6 +44,24 @@ namespace GraphEditor.ViewModel
         public void SetCurrentMouse(Point point)
         {
             _currentMouse = point;
+        }
+
+        public List<GraphNodeViewModel> Selected
+        {
+            get { return GraphNodes.Where(graphNodeViewModel => graphNodeViewModel.IsSelected).ToList(); }
+        }
+
+        public int SelectedCount
+        {
+            get { return GraphNodes.Sum(gn => gn.IsSelected ? 1 : 0); }
+        }
+
+        public void DeselectAll()
+        {
+            foreach (var graphNodeViewModel in GraphNodes)
+            {
+                graphNodeViewModel.IsSelected = false;
+            }
         }
     }
 }

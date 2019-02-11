@@ -7,9 +7,9 @@ namespace GraphEditor.ViewModel
 {
     public class GraphNodeViewModel: BaseNotification
     {
-        private readonly EditorAreaViewModel _area;
         private string _selectedOutConnCount = "1";
         private string _selectedInConnCount = "1";
+        private bool _isSelected = false;
 
         public GraphNodeViewModel(EditorAreaViewModel area, Point pos)
         {
@@ -19,10 +19,10 @@ namespace GraphEditor.ViewModel
             OutConnectorCount = new ObservableCollection<string>();
             OutConnectors = new ObservableCollection<int>();
 
-            _area = area;
+            Area = area;
 
             var graphNode = new GraphNode { DataContext = this };
-            _area.Canvas.Children.Add(graphNode);
+            Area.Canvas.Children.Add(graphNode);
             Canvas.SetLeft(graphNode, pos.X);
             Canvas.SetTop(graphNode, pos.Y);
 
@@ -37,6 +37,8 @@ namespace GraphEditor.ViewModel
             InConnectors.Add(1);
             OutConnectors.Add(1);
         }
+
+        public EditorAreaViewModel Area { get; }
 
         public RelayCommand RemoveCommand { get; }
 
@@ -79,12 +81,18 @@ namespace GraphEditor.ViewModel
 
         public ObservableCollection<int> OutConnectors { get; }
 
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set { SetProperty(ref _isSelected, value, nameof(IsSelected)); }
+        }
+
         public void Remove()
         {
-            var toDelete = _area.Canvas.Children.OfType<GraphNode>().FirstOrDefault(gn => gn.DataContext.Equals(this));
-            _area.Canvas.Children.Remove(toDelete);
+            var toDelete = Area.Canvas.Children.OfType<GraphNode>().FirstOrDefault(gn => gn.DataContext.Equals(this));
+            Area.Canvas.Children.Remove(toDelete);
 
-            _area.RemoveNode(this);
+            Area.RemoveNode(this);
         }
     }
 }

@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using GraphEditor.ViewModel;
+
 namespace GraphEditor
 {
     /// <summary>
@@ -20,6 +22,8 @@ namespace GraphEditor
     /// </summary>
     public partial class GraphNode : UserControl
     {
+        private GraphNodeViewModel ViewModel => (GraphNodeViewModel) DataContext;
+
         public GraphNode()
         {
             InitializeComponent();
@@ -33,20 +37,32 @@ namespace GraphEditor
             e.Handled = true;
         }
 
-        private void UIElement_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
-
                 var pointToScreen = Mouse.GetPosition(this);
 
                 var data = new DataObject();
+
+                if (!ViewModel.IsSelected)
+                    ViewModel.Area.DeselectAll();
+
                 data.SetData("Object", this);
                 data.SetData("Point", pointToScreen);
 
                 // Inititate the drag-and-drop operation.
                 DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
             }
+        }
+
+        private void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (Keyboard.Modifiers != ModifierKeys.Control)
+                ViewModel.Area.DeselectAll();
+            ViewModel.IsSelected = !ViewModel.IsSelected;
+
+            e.Handled = true;
         }
     }
 }
