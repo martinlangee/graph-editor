@@ -3,6 +3,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using GraphEditor.ViewModel;
 
 namespace GraphEditor.Ui
@@ -12,6 +14,8 @@ namespace GraphEditor.Ui
     /// </summary>
     public partial class EditorArea : UserControl
     {
+        Path _drawLine;
+
         public EditorArea()
         {
             InitializeComponent();
@@ -39,7 +43,6 @@ namespace GraphEditor.Ui
                 var node = NodeOfModel(nodeVMs[idx]);
                 Canvas.SetLeft(node, point.X);
                 Canvas.SetTop(node, point.Y);
-
             }
         }
 
@@ -62,7 +65,41 @@ namespace GraphEditor.Ui
 
         private void _canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            _drawLine = null;
+
             ViewModel.DeselectAll();
+        }
+
+        private void _canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (_drawLine != null) return;
+
+            _drawLine = new Path
+            {
+                Data = new PathGeometry
+                (
+                    new List<PathFigure>
+                    {
+                        new PathFigure
+                        (
+                            e.GetPosition(_canvas),
+                            new List<LineSegment>{new LineSegment(e.GetPosition(_canvas), true)},
+                            false
+                        )
+                    }
+                )
+            };
+            _drawLine.Stroke = Brushes.Blue;
+            _drawLine.StrokeThickness = 1;
+            _canvas.Children.Add(_drawLine);
+        }
+
+        private void _canvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_drawLine == null) return;
+            
+            ((LineSegment)((PathGeometry)_drawLine.Data).Figures[0].Segments[0]).Point = e.GetPosition(_canvas);
+            
         }
     }
 }

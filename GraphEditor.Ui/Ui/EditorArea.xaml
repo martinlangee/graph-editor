@@ -7,7 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance vm:EditorAreaViewModel}"
              AllowDrop="True" ContextMenuOpening="EditorArea_OnContextMenuOpening">
-    <Canvas x:Name="_canvas" Background="LightYellow" MouseLeftButtonUp="_canvas_OnMouseLeftButtonUp">
+    <Canvas x:Name="_canvas" Background="LightYellow" 
+            MouseLeftButtonUp="_canvas_OnMouseLeftButtonUp" 
+            MouseLeftButtonDown="_canvas_MouseLeftButtonDown"
+            MouseMove="_canvas_MouseMove">
         <Canvas.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Add element" Command="{Binding AddNodeCommand}"/>
