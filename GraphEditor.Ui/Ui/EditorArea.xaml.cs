@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +16,8 @@ namespace GraphEditor.Ui
     public partial class EditorArea : UserControl
     {
         Path _drawLine;
+        const double LineThickness = 1.3;
+        const double LineThicknessHovered = 3;
 
         public EditorArea()
         {
@@ -73,6 +76,8 @@ namespace GraphEditor.Ui
         private void _canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (_drawLine != null) return;
+            if (sender is Border) return;
+            if (!Equals(((FrameworkElement) e.OriginalSource).Tag, "OutConnectorBorder")) return;
 
             _drawLine = new Path
             {
@@ -89,9 +94,27 @@ namespace GraphEditor.Ui
                     }
                 )
             };
-            _drawLine.Stroke = Brushes.Blue;
-            _drawLine.StrokeThickness = 1;
+            _drawLine.Stroke = Brushes.DimGray;
+            _drawLine.StrokeThickness = LineThickness;
+            _drawLine.MouseDown += Line_MouseDown;
+            _drawLine.MouseMove += Line_MouseMove;
+            _drawLine.MouseLeave += Line_MouseLeave;
             _canvas.Children.Add(_drawLine);
+         }
+
+        private void Line_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void Line_MouseMove(object sender, MouseEventArgs e)
+        {
+            ((Path) sender).StrokeThickness = LineThicknessHovered;
+        }
+
+        private void Line_MouseLeave(object sender, MouseEventArgs e)
+        {
+            ((Path) sender).StrokeThickness = LineThickness;
         }
 
         private void _canvas_MouseMove(object sender, MouseEventArgs e)
@@ -99,7 +122,8 @@ namespace GraphEditor.Ui
             if (_drawLine == null) return;
             
             ((LineSegment)((PathGeometry)_drawLine.Data).Figures[0].Segments[0]).Point = e.GetPosition(_canvas);
-            
+
+            e.Handled = true;            
         }
     }
 }

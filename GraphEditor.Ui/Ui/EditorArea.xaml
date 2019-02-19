@@ -10,7 +10,7 @@
     <Canvas x:Name="_canvas" Background="LightYellow" 
             MouseLeftButtonUp="_canvas_OnMouseLeftButtonUp" 
             MouseLeftButtonDown="_canvas_MouseLeftButtonDown"
-            MouseMove="_canvas_MouseMove">
+            PreviewMouseMove="_canvas_MouseMove">
         <Canvas.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Add element" Command="{Binding AddNodeCommand}"/>

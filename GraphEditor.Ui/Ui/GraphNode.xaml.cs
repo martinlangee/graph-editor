@@ -70,5 +70,15 @@ namespace GraphEditor
 
             e.Handled = true;
         }
+
+        private void OutConnector_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MouseButtonEventArgs newarg = new MouseButtonEventArgs(e.MouseDevice, e.Timestamp, e.ChangedButton, e.StylusDevice)
+            {
+                RoutedEvent = MouseLeftButtonDownEvent,
+                Source = sender
+            };
+            Area._canvas.RaiseEvent(newarg);            
+        }
     }
 }
