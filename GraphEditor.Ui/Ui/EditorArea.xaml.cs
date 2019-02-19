@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,23 +21,26 @@ namespace GraphEditor.Ui
 
         private EditorAreaViewModel ViewModel => (EditorAreaViewModel) DataContext;
 
+        internal GraphNode NodeOfModel(GraphNodeViewModel viewModel) => GraphNodes.FirstOrDefault(gn => gn.ViewModel.Equals(viewModel));
+
+        private List<GraphNode> GraphNodes => _canvas.Children.OfType<GraphNode>().ToList();
+
+        internal List<GraphNode> SelectedNodes => GraphNodes.Where(gn => gn.ViewModel.IsSelected).ToList();
+
         private void SetDragObjectPosition(DragEventArgs e)
         {
-            // todo Position von allen Nodes setzen, die beim Draggen selektiert sind
-            /* var graphNodes = new List<GraphNodeViewModel>();}
+            // Position von allen Nodes setzen, die beim Draggen selektiert sind
+            var nodeVMs = (List<GraphNodeViewModel>) e.Data.GetData("Objects");
+            var points = (List<Point>) e.Data.GetData("Points");
 
-            if (ViewModel.SelectedCount > 0)
-                graphNodes = ViewModel.Selected;
-            else
-                graphNodes.Add((GraphNode) e.Data.GetData("Object"));
-            */
-            var gn = (GraphNode) e.Data.GetData("Object");
-            var pos = (Point) e.Data.GetData("Point");
+            for (var idx = 0; idx < nodeVMs.Count; idx++)
+            {
+                var point = e.GetPosition(_canvas) - points[idx];
+                var node = NodeOfModel(nodeVMs[idx]);
+                Canvas.SetLeft(node, point.X);
+                Canvas.SetTop(node, point.Y);
 
-            var p = e.GetPosition(_canvas) - pos;
-
-            Canvas.SetLeft(gn, p.X);
-            Canvas.SetTop(gn, p.Y);
+            }
         }
 
         protected override void OnDragOver(DragEventArgs e)

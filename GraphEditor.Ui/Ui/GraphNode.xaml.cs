@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using GraphEditor.Ui;
 using GraphEditor.ViewModel;
 
 namespace GraphEditor
@@ -22,12 +22,16 @@ namespace GraphEditor
     /// </summary>
     public partial class GraphNode : UserControl
     {
-        private GraphNodeViewModel ViewModel => (GraphNodeViewModel) DataContext;
+        internal GraphNodeViewModel ViewModel => (GraphNodeViewModel) DataContext;
 
         public GraphNode()
         {
             InitializeComponent();
         }
+
+        EditorAreaViewModel AreaVm => ViewModel.Area;
+
+        EditorArea Area => (EditorArea) ((FrameworkElement) Parent).Parent;
 
         protected override void OnGiveFeedback(GiveFeedbackEventArgs e)
         {
@@ -41,15 +45,17 @@ namespace GraphEditor
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
-                var pointToScreen = Mouse.GetPosition(this);
-
                 var data = new DataObject();
 
                 if (!ViewModel.IsSelected)
-                    ViewModel.Area.DeselectAll();
+                    AreaVm.DeselectAll();
 
-                data.SetData("Object", this);
-                data.SetData("Point", pointToScreen);
+                ViewModel.IsSelected = true;
+
+                var pointsToScreen = AreaVm.Selected.Select(nodeVm => Mouse.GetPosition(Area.NodeOfModel(nodeVm))).ToList();
+
+                data.SetData("Objects", AreaVm.Selected);
+                data.SetData("Points", pointsToScreen);
 
                 // Inititate the drag-and-drop operation.
                 DragDrop.DoDragDrop(this, data, DragDropEffects.Move);
@@ -59,7 +65,7 @@ namespace GraphEditor
         private void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (Keyboard.Modifiers != ModifierKeys.Control)
-                ViewModel.Area.DeselectAll();
+               AreaVm.DeselectAll();
             ViewModel.IsSelected = !ViewModel.IsSelected;
 
             e.Handled = true;
