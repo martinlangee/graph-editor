@@ -23,7 +23,7 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = new EditorAreaViewModel(_canvas);
+            DataContext = new EditorAreaViewModel(_canvas, OnAddGraphNode);
         }
 
         private EditorAreaViewModel ViewModel => (EditorAreaViewModel) DataContext;
@@ -33,6 +33,15 @@ namespace GraphEditor.Ui
         private List<GraphNode> GraphNodes => _canvas.Children.OfType<GraphNode>().ToList();
 
         internal List<GraphNode> SelectedNodes => GraphNodes.Where(gn => gn.ViewModel.IsSelected).ToList();
+
+        private void OnAddGraphNode(GraphNodeViewModel graphNodeVm)
+        {
+            var graphNode = new GraphNode { DataContext = graphNodeVm };
+            _canvas.Children.Add(graphNode);
+            var mousePos = Mouse.GetPosition(_canvas);
+            Canvas.SetLeft(graphNode, mousePos.X);
+            Canvas.SetTop(graphNode, mousePos.Y);
+        }
 
         private void SetDragObjectPosition(DragEventArgs e)
         {
@@ -61,11 +70,6 @@ namespace GraphEditor.Ui
             SetDragObjectPosition(e);
         }
 
-        private void EditorArea_OnContextMenuOpening(object sender, ContextMenuEventArgs e)
-        {
-            ViewModel.SetCurrentMouse(new Point(e.CursorLeft, e.CursorTop));
-        }
-
         private void _canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             _drawLine = null;
@@ -77,7 +81,7 @@ namespace GraphEditor.Ui
         {
             if (_drawLine != null) return;
             if (sender is Border) return;
-            if (!Equals(((FrameworkElement) e.OriginalSource).Tag, "OutConnectorBorder")) return;
+            if (!Equals(((FrameworkElement) e.OriginalSource).Tag, "OutConnector")) return;
 
             _drawLine = new Path
             {
@@ -124,6 +128,11 @@ namespace GraphEditor.Ui
             ((LineSegment)((PathGeometry)_drawLine.Data).Figures[0].Segments[0]).Point = e.GetPosition(_canvas);
 
             e.Handled = true;            
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

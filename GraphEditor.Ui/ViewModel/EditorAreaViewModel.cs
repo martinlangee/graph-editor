@@ -11,11 +11,12 @@ namespace GraphEditor.ViewModel
 
     public class EditorAreaViewModel: BaseNotification
     {
-        private Point _currentMouse;
+        private Action<GraphNodeViewModel> _onAddGraphNode;
 
-        public EditorAreaViewModel(Canvas canvas)
+        public EditorAreaViewModel(Canvas canvas, Action<GraphNodeViewModel> onAddGraphNode)
         {
             Canvas = canvas;
+            _onAddGraphNode = onAddGraphNode;
 
             GraphNodeVMs = new ObservableCollection<GraphNodeViewModel>();
             AddNodeCommand = new RelayCommand(o => Add());
@@ -29,9 +30,11 @@ namespace GraphEditor.ViewModel
 
         public GraphNodeViewModel Add(Action<GraphNodeViewModel> initNode = null)
         {
-            var newNodeVm = new GraphNodeViewModel(this, _currentMouse);
+            var newNodeVm = new GraphNodeViewModel(this);
             initNode?.Invoke(newNodeVm);
             GraphNodeVMs.Add(newNodeVm);
+
+            _onAddGraphNode(newNodeVm);
 
             return newNodeVm;
         }
@@ -39,11 +42,6 @@ namespace GraphEditor.ViewModel
         public void RemoveNode(GraphNodeViewModel graphNodeVm)
         {
             GraphNodeVMs.Remove(graphNodeVm);
-        }
-
-        public void SetCurrentMouse(Point point)
-        {
-            _currentMouse = point;
         }
 
         public List<GraphNodeViewModel> Selected

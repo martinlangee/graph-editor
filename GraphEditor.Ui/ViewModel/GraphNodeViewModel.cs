@@ -7,11 +7,11 @@ namespace GraphEditor.ViewModel
 {
     public class GraphNodeViewModel: BaseNotification
     {
-        private string _selectedOutConnCount = "1";
-        private string _selectedInConnCount = "1";
+        private string _selectedOutConnectorCount = "1";
+        private string _selectedInConnectorCount = "1";
         private bool _isSelected = false;
 
-        public GraphNodeViewModel(EditorAreaViewModel area, Point pos)
+        public GraphNodeViewModel(EditorAreaViewModel area)
         {
             InConnectorCount = new ObservableCollection<string>();
             InConnectors = new ObservableCollection<int>();
@@ -19,12 +19,9 @@ namespace GraphEditor.ViewModel
             OutConnectorCount = new ObservableCollection<string>();
             OutConnectors = new ObservableCollection<int>();
 
-            Area = area;
+            OutConnections = new ObservableCollection<ConnectionViewModel>();
 
-            var graphNode = new GraphNode { DataContext = this };
-            Area.Canvas.Children.Add(graphNode);
-            Canvas.SetLeft(graphNode, pos.X);
-            Canvas.SetTop(graphNode, pos.Y);
+            Area = area;
 
             RemoveCommand = new RelayCommand(o => Remove());
 
@@ -47,14 +44,14 @@ namespace GraphEditor.ViewModel
 
         public ObservableCollection<string> InConnectorCount { get; }
 
-        public string SelectedInConnCount
+        public string SelectedInConnectorCount
         {
-            get { return _selectedInConnCount; }
+            get { return _selectedInConnectorCount; }
             set
             {
-                if (_selectedInConnCount == value) return;
+                if (_selectedInConnectorCount == value) return;
 
-                _selectedInConnCount = value;
+                _selectedInConnectorCount = value;
                 InConnectors.Clear();
                 for (var c = 1; c <= int.Parse(value); c++)
                     InConnectors.Add(c);
@@ -65,14 +62,19 @@ namespace GraphEditor.ViewModel
 
         public ObservableCollection<string> OutConnectorCount { get; }
 
-        public string SelectedOutConnCount
+        public ObservableCollection<ConnectionViewModel> OutConnections { get; }
+
+        public void AddOutConnection(int outConnector, GraphNodeViewModel target, int targetInConnector)
+        { }
+
+        public string SelectedOutConnectorCount
         {
-            get { return _selectedOutConnCount; }
+            get { return _selectedOutConnectorCount; }
             set
             {
-                if (_selectedOutConnCount == value) return;
+                if (_selectedOutConnectorCount == value) return;
 
-                _selectedOutConnCount = value;
+                _selectedOutConnectorCount = value;
                 OutConnectors.Clear();
                 for (var c = 1; c <= int.Parse(value); c++)
                     OutConnectors.Add(c);

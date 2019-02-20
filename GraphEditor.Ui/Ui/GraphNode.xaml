@@ -55,6 +55,7 @@
                                     <Setter Property="Width" Value="10" />
                                     <Setter Property="Margin" Value="-5,0,0,5"/>
                                     <Setter Property="Background" Value="CornflowerBlue" />
+                                    <Setter Property="Tag" Value="InConnector"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Height" Value="12" />
@@ -77,7 +78,7 @@
                         <Border>
                             <Border.Style>
                                 <Style TargetType="{x:Type Border}">
-                                    <Setter Property="Tag" Value="OutConnectorBorder"/>
+                                    <Setter Property="Tag" Value="OutConnector"/>
                                     <Setter Property="Height" Value="10" />
                                     <Setter Property="Width" Value="10" />
                                     <Setter Property="Margin" Value="0,0,-5,5"/>
