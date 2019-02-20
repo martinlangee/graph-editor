@@ -5,10 +5,10 @@ namespace GraphEditor.ViewModel
 {
     public class ConnectionViewModel: BaseNotification
     {
-        GraphNodeViewModel _sourceNode;
+        NodeViewModel _sourceNode;
         bool _isSelected;
 
-        public ConnectionViewModel(GraphNodeViewModel sourceNode, int sourceConn)
+        public ConnectionViewModel(NodeViewModel sourceNode, int sourceConn)
         {
             _sourceNode = sourceNode;
             SourceConnector = sourceConn;
@@ -26,5 +26,10 @@ namespace GraphEditor.ViewModel
 
         public int SourceConnector { get; set; }
         public int TargetConnector { get; set; }
+
+        public void Remove()
+        {
+            _sourceNode.RemoveConnection(this);
+        }
     }
 }

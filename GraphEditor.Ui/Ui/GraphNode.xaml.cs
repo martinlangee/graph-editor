@@ -22,7 +22,7 @@ namespace GraphEditor
     /// </summary>
     public partial class GraphNode : UserControl
     {
-        internal GraphNodeViewModel ViewModel => (GraphNodeViewModel) DataContext;
+        internal NodeViewModel ViewModel => (NodeViewModel) DataContext;
 
         public GraphNode()
         {

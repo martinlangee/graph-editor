@@ -11,25 +11,31 @@ namespace GraphEditor.ViewModel
 
     public class EditorAreaViewModel: BaseNotification
     {
-        private Action<GraphNodeViewModel> _onAddGraphNode;
-        private Action<GraphNodeViewModel> _onRemoveGraphNode;
+        private readonly Action<NodeViewModel> _onAddGraphNode;
+        private readonly Action<NodeViewModel> _onRemoveGraphNode;
 
-        public EditorAreaViewModel(Action<GraphNodeViewModel> onAddGraphNode, Action<GraphNodeViewModel> onRemoveGraphNode)
+        private readonly Action<ConnectionViewModel> _onAddConnection;
+        private readonly Action<ConnectionViewModel> _onRemoveConnection;
+
+        public EditorAreaViewModel(Action<NodeViewModel> onAddGraphNode, Action<NodeViewModel> onRemoveGraphNode,
+            Action<ConnectionViewModel> onAddConnection, Action<ConnectionViewModel> onRemoveConnection)
         {
             _onAddGraphNode = onAddGraphNode;
             _onRemoveGraphNode = onRemoveGraphNode;
+            _onAddConnection = onAddConnection;
+            _onRemoveConnection = onRemoveConnection;
 
-            GraphNodeVMs = new ObservableCollection<GraphNodeViewModel>();
-            AddNodeCommand = new RelayCommand(o => Add());
+            GraphNodeVMs = new ObservableCollection<NodeViewModel>();
+            AddNodeCommand = new RelayCommand(o => AddNodeExec());
         }
 
-        public ObservableCollection<GraphNodeViewModel> GraphNodeVMs { get; set; }
+        public ObservableCollection<NodeViewModel> GraphNodeVMs { get; set; }
 
         public RelayCommand AddNodeCommand { get; }
 
-        public GraphNodeViewModel Add(Action<GraphNodeViewModel> initNode = null)
+        public NodeViewModel AddNodeExec(Action<NodeViewModel> initNode = null)
         {
-            var newNodeVm = new GraphNodeViewModel(this);
+            var newNodeVm = new NodeViewModel(this, _onAddConnection, _onRemoveConnection);
             initNode?.Invoke(newNodeVm);
             GraphNodeVMs.Add(newNodeVm);
 
@@ -38,13 +44,13 @@ namespace GraphEditor.ViewModel
             return newNodeVm;
         }
 
-        public void RemoveNode(GraphNodeViewModel graphNodeVm)
+        public void RemoveNode(NodeViewModel graphNodeVm)
         {
             GraphNodeVMs.Remove(graphNodeVm);
             _onRemoveGraphNode(graphNodeVm);
         }
 
-        public List<GraphNodeViewModel> Selected
+        public List<NodeViewModel> Selected
         {
             get { return GraphNodeVMs.Where(graphNodeViewModel => graphNodeViewModel.IsSelected).ToList(); }
         }

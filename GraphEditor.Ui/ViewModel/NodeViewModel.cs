@@ -1,18 +1,25 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace GraphEditor.ViewModel
 {
-    public class GraphNodeViewModel: BaseNotification
+    public class NodeViewModel: BaseNotification
     {
         private string _selectedOutConnectorCount = "1";
         private string _selectedInConnectorCount = "1";
         private bool _isSelected = false;
 
-        public GraphNodeViewModel(EditorAreaViewModel area)
+        private readonly Action<ConnectionViewModel> _onAddConnection;
+        private readonly Action<ConnectionViewModel> _onRemoveConnection;
+
+        public NodeViewModel(EditorAreaViewModel area, Action<ConnectionViewModel> onAddConnection, Action<ConnectionViewModel> onRemoveConnection)
         {
+            _onAddConnection = onAddConnection;
+            _onRemoveConnection = onRemoveConnection;
+
             InConnectorCount = new ObservableCollection<string>();
             InConnectors = new ObservableCollection<int>();
 
@@ -23,7 +30,7 @@ namespace GraphEditor.ViewModel
 
             Area = area;
 
-            RemoveCommand = new RelayCommand(o => Remove());
+            RemoveNodeCommand = new RelayCommand(o => Remove());
 
             for (var c = 1; c <= 9; c++)
             {
@@ -35,9 +42,15 @@ namespace GraphEditor.ViewModel
             OutConnectors.Add(1);
         }
 
+        internal void RemoveConnection(ConnectionViewModel connVm)
+        {
+            OutConnections.Remove(connVm);
+            _onRemoveConnection(connVm);
+        }
+
         public EditorAreaViewModel Area { get; }
 
-        public RelayCommand RemoveCommand { get; }
+        public RelayCommand RemoveNodeCommand { get; }
 
         public string Type { get; set; } = "Filter";
         public string Name { get; set; } = "Neu";
@@ -66,7 +79,9 @@ namespace GraphEditor.ViewModel
 
         public void AddOutConnection(int sourceConn)
         {
-            OutConnections.Add(new ConnectionViewModel(this, sourceConn));
+            var connVm = new ConnectionViewModel(this, sourceConn);
+            OutConnections.Add(connVm);
+            _onAddConnection(connVm);
         }
 
         public string SelectedOutConnectorCount

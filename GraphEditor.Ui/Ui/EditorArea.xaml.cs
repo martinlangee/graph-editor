@@ -23,20 +23,20 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = new EditorAreaViewModel(OnAddGraphNode, OnRemoveGraphNode);
+            DataContext = new EditorAreaViewModel(OnAddNode, OnRemoveNode, OnAddConnection, OnRemoveConnection);
         }
 
         private EditorAreaViewModel ViewModel => (EditorAreaViewModel) DataContext;
 
-        internal GraphNode NodeOfModel(GraphNodeViewModel viewModel) => GraphNodes.FirstOrDefault(gn => gn.ViewModel.Equals(viewModel));
+        internal GraphNode NodeOfModel(NodeViewModel viewModel) => GraphNodes.FirstOrDefault(gn => gn.ViewModel.Equals(viewModel));
 
         private List<GraphNode> GraphNodes => _canvas.Children.OfType<GraphNode>().ToList();
 
         internal List<GraphNode> SelectedNodes => GraphNodes.Where(gn => gn.ViewModel.IsSelected).ToList();
 
-        private void OnAddGraphNode(GraphNodeViewModel graphNodeVm)
+        private void OnAddNode(NodeViewModel nodeVm)
         {
-            var graphNode = new GraphNode { DataContext = graphNodeVm };
+            var graphNode = new GraphNode { DataContext = nodeVm };
 
             _canvas.Children.Add(graphNode);
 
@@ -45,16 +45,22 @@ namespace GraphEditor.Ui
             Canvas.SetTop(graphNode, mousePos.Y);
         }
 
-        private void OnRemoveGraphNode(GraphNodeViewModel graphNodeVm)
+        private void OnRemoveNode(NodeViewModel nodeVm)
         {
-            var toRemove = _canvas.Children.OfType<GraphNode>().FirstOrDefault(gn => gn.DataContext.Equals(graphNodeVm));
+            var toRemove = _canvas.Children.OfType<GraphNode>().FirstOrDefault(gn => gn.DataContext.Equals(nodeVm));
             _canvas.Children.Remove(toRemove);
         }
+
+        private void OnAddConnection(ConnectionViewModel connVm)
+        { }
+
+        private void OnRemoveConnection(ConnectionViewModel connVm)
+        { }
 
         private void SetDragObjectPosition(DragEventArgs e)
         {
             // Position von allen Nodes setzen, die beim Draggen selektiert sind
-            var nodeVMs = (List<GraphNodeViewModel>) e.Data.GetData("Objects");
+            var nodeVMs = (List<NodeViewModel>) e.Data.GetData("Objects");
             var points = (List<Point>) e.Data.GetData("Points");
 
             for (var idx = 0; idx < nodeVMs.Count; idx++)
@@ -111,7 +117,6 @@ namespace GraphEditor.Ui
             _drawLine.MouseDown += Line_MouseDown;
             _drawLine.MouseMove += Line_MouseMove;
             _drawLine.MouseLeave += Line_MouseLeave;
-            //_drawLine.DataContext = 
             _canvas.Children.Add(_drawLine);
          }
 
@@ -137,11 +142,6 @@ namespace GraphEditor.Ui
             ((LineSegment)((PathGeometry)_drawLine.Data).Figures[0].Segments[0]).Point = e.GetPosition(_canvas);
 
             e.Handled = true;            
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

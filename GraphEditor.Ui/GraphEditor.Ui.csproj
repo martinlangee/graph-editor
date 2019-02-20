@@ -60,7 +60,7 @@
     <Compile Include="ViewModel\BaseNotification.cs" />
     <Compile Include="ViewModel\ConnectionViewModel.cs" />
     <Compile Include="ViewModel\EditorAreaViewModel.cs" />
-    <Compile Include="ViewModel\GraphNodeViewModel.cs" />
+    <Compile Include="ViewModel\NodeViewModel.cs" />
     <Page Include="Ui\EditorArea.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

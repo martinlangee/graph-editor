@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:GraphEditor.ViewModel"
              xmlns:tl="clr-namespace:GraphEditor.Tools"
-             mc:Ignorable="d"  d:DataContext="{d:DesignInstance vm:GraphNodeViewModel}">
+             mc:Ignorable="d"  d:DataContext="{d:DesignInstance vm:NodeViewModel}">
     <UserControl.Resources>
         <tl:BooleanToVisibilityConverter x:Key="BooleanConverter" TrueValue="Visible" FalseValue="Collapsed"/>
     </UserControl.Resources>
