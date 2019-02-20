@@ -64,8 +64,10 @@ namespace GraphEditor.ViewModel
 
         public ObservableCollection<ConnectionViewModel> OutConnections { get; }
 
-        public void AddOutConnection(int outConnector, GraphNodeViewModel target, int targetInConnector)
-        { }
+        public void AddOutConnection(int sourceConn)
+        {
+            OutConnections.Add(new ConnectionViewModel(this, sourceConn));
+        }
 
         public string SelectedOutConnectorCount
         {
@@ -91,9 +93,6 @@ namespace GraphEditor.ViewModel
 
         public void Remove()
         {
-            var toDelete = Area.Canvas.Children.OfType<GraphNode>().FirstOrDefault(gn => gn.DataContext.Equals(this));
-            Area.Canvas.Children.Remove(toDelete);
-
             Area.RemoveNode(this);
         }
     }

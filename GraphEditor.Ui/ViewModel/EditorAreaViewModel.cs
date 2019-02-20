@@ -7,16 +7,17 @@ using System.Windows.Controls;
 
 namespace GraphEditor.ViewModel
 {
-    // todo: ConnectorLines einführen
+    /// Todo: ConnectionLines einführen
 
     public class EditorAreaViewModel: BaseNotification
     {
         private Action<GraphNodeViewModel> _onAddGraphNode;
+        private Action<GraphNodeViewModel> _onRemoveGraphNode;
 
-        public EditorAreaViewModel(Canvas canvas, Action<GraphNodeViewModel> onAddGraphNode)
+        public EditorAreaViewModel(Action<GraphNodeViewModel> onAddGraphNode, Action<GraphNodeViewModel> onRemoveGraphNode)
         {
-            Canvas = canvas;
             _onAddGraphNode = onAddGraphNode;
+            _onRemoveGraphNode = onRemoveGraphNode;
 
             GraphNodeVMs = new ObservableCollection<GraphNodeViewModel>();
             AddNodeCommand = new RelayCommand(o => Add());
@@ -25,8 +26,6 @@ namespace GraphEditor.ViewModel
         public ObservableCollection<GraphNodeViewModel> GraphNodeVMs { get; set; }
 
         public RelayCommand AddNodeCommand { get; }
-
-        internal Canvas Canvas { get; }
 
         public GraphNodeViewModel Add(Action<GraphNodeViewModel> initNode = null)
         {
@@ -42,6 +41,7 @@ namespace GraphEditor.ViewModel
         public void RemoveNode(GraphNodeViewModel graphNodeVm)
         {
             GraphNodeVMs.Remove(graphNodeVm);
+            _onRemoveGraphNode(graphNodeVm);
         }
 
         public List<GraphNodeViewModel> Selected

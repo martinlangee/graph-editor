@@ -5,10 +5,14 @@ namespace GraphEditor.ViewModel
 {
     public class ConnectionViewModel: BaseNotification
     {
+        GraphNodeViewModel _sourceNode;
         bool _isSelected;
 
-        public ConnectionViewModel()
+        public ConnectionViewModel(GraphNodeViewModel sourceNode, int sourceConn)
         {
+            _sourceNode = sourceNode;
+            SourceConnector = sourceConn;
+
             Path = new ObservableCollection<Point>();
         }
 
@@ -19,5 +23,8 @@ namespace GraphEditor.ViewModel
         }
 
         public ObservableCollection<Point> Path { get; }
+
+        public int SourceConnector { get; set; }
+        public int TargetConnector { get; set; }
     }
 }

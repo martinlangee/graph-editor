@@ -23,7 +23,7 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = new EditorAreaViewModel(_canvas, OnAddGraphNode);
+            DataContext = new EditorAreaViewModel(OnAddGraphNode, OnRemoveGraphNode);
         }
 
         private EditorAreaViewModel ViewModel => (EditorAreaViewModel) DataContext;
@@ -37,10 +37,18 @@ namespace GraphEditor.Ui
         private void OnAddGraphNode(GraphNodeViewModel graphNodeVm)
         {
             var graphNode = new GraphNode { DataContext = graphNodeVm };
+
             _canvas.Children.Add(graphNode);
+
             var mousePos = Mouse.GetPosition(_canvas);
             Canvas.SetLeft(graphNode, mousePos.X);
             Canvas.SetTop(graphNode, mousePos.Y);
+        }
+
+        private void OnRemoveGraphNode(GraphNodeViewModel graphNodeVm)
+        {
+            var toRemove = _canvas.Children.OfType<GraphNode>().FirstOrDefault(gn => gn.DataContext.Equals(graphNodeVm));
+            _canvas.Children.Remove(toRemove);
         }
 
         private void SetDragObjectPosition(DragEventArgs e)
@@ -103,6 +111,7 @@ namespace GraphEditor.Ui
             _drawLine.MouseDown += Line_MouseDown;
             _drawLine.MouseMove += Line_MouseMove;
             _drawLine.MouseLeave += Line_MouseLeave;
+            //_drawLine.DataContext = 
             _canvas.Children.Add(_drawLine);
          }
 
