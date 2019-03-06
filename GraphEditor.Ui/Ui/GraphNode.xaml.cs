@@ -29,7 +29,7 @@ namespace GraphEditor
             InitializeComponent();
         }
 
-        EditorAreaViewModel AreaVm => ViewModel.Area;
+        AreaViewModel AreaVm => ViewModel.Area;
 
         EditorArea Area => (EditorArea) ((FrameworkElement) Parent).Parent;
 
@@ -79,6 +79,12 @@ namespace GraphEditor
                 Source = sender
             };
             Area._canvas.RaiseEvent(newarg);            
+        }
+
+        private void UserControl_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            Area.SelectedNodes.ForEach(gn => gn.ViewModel.IsSelected = false);
+            ViewModel.IsSelected = true;
         }
     }
 }

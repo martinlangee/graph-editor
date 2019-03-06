@@ -5,13 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:GraphEditor.ViewModel"
              xmlns:tl="clr-namespace:GraphEditor.Tools"
-             mc:Ignorable="d"  d:DataContext="{d:DesignInstance vm:NodeViewModel}">
+             mc:Ignorable="d"  d:DataContext="{d:DesignInstance vm:NodeViewModel}"
+             GotKeyboardFocus="UserControl_GotKeyboardFocus">
     <UserControl.Resources>
         <tl:BooleanToVisibilityConverter x:Key="BooleanConverter" TrueValue="Visible" FalseValue="Collapsed"/>
     </UserControl.Resources>
     <UserControl.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Delete" Command="{Binding RemoveCommand}"/>
+            <MenuItem Header="Connect to..." Command="{Binding ConnectToCommand}"/>
+            <MenuItem Header="Delete" Command="{Binding RemoveNodeCommand}"/>
         </ContextMenu>
     </UserControl.ContextMenu>
     <Grid MinHeight="70" Width="80">
@@ -23,7 +25,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Rectangle Grid.RowSpan="6" Fill="Transparent" Margin="-4,-3,-4,-5" StrokeThickness="1.5" Stroke="Blue" StrokeDashArray="1,1"
+        <Rectangle Grid.RowSpan="6" Fill="Transparent" Margin="-4,-3,-4,-5" StrokeThickness="1.5" Stroke="LightGray" StrokeDashArray="1.5,1.5" RadiusX="2" RadiusY="2"
                    Visibility="{Binding IsSelected, Converter={StaticResource BooleanConverter}}"/>
         <Rectangle Grid.Row="0" Grid.RowSpan="6" Fill="AliceBlue">
             <Rectangle.Effect>
@@ -35,11 +37,11 @@
         <TextBox Grid.Row="1" Text="{Binding Name}" HorizontalAlignment="Stretch" Margin="8,3"/>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
             <TextBlock Text="In   " VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox ItemsSource="{Binding InConnectorCount}" SelectedItem="{Binding SelectedInConnCount}" Height="21" Width="35"/>
+            <!--<ComboBox ItemsSource="{Binding InConnectorCount}" SelectedItem="{Binding SelectedInConnCount}" Height="21" Width="35"/>-->
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
             <TextBlock Text="Out" VerticalAlignment="Center" Margin="0,0,5,0"/>
-            <ComboBox ItemsSource="{Binding OutConnectorCount}" SelectedItem="{Binding SelectedOutConnCount}" Height="21" Width="35"/>
+            <!--<ComboBox ItemsSource="{Binding OutConnectorCount}" SelectedItem="{Binding SelectedOutConnCount}" Height="21" Width="35"/>-->
         </StackPanel>
         <Border Grid.Row="5" Background="GhostWhite" BorderBrush="LightGray" BorderThickness="0,1,0,0">
             <TextBlock Text="{Binding Type}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Blue" Margin="0,-1,0,2"/>
@@ -48,14 +50,13 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Border>
+                        <Border Tag="InConnector">
                             <Border.Style>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="Height" Value="10" />
                                     <Setter Property="Width" Value="10" />
                                     <Setter Property="Margin" Value="-5,0,0,5"/>
                                     <Setter Property="Background" Value="CornflowerBlue" />
-                                    <Setter Property="Tag" Value="InConnector"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Height" Value="12" />
@@ -75,15 +76,13 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <Border>
+                        <Border Tag="OutConnector" PreviewMouseLeftButtonDown="OutConnector_PreviewMouseLeftButtonDown">
                             <Border.Style>
                                 <Style TargetType="{x:Type Border}">
-                                    <Setter Property="Tag" Value="OutConnector"/>
                                     <Setter Property="Height" Value="10" />
                                     <Setter Property="Width" Value="10" />
                                     <Setter Property="Margin" Value="0,0,-5,5"/>
                                     <Setter Property="Background" Value="CornflowerBlue" />
-                                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="OutConnector_PreviewMouseLeftButtonDown"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="Height" Value="12" />

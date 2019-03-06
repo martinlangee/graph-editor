@@ -27,17 +27,21 @@ namespace GraphEditor.ViewModel
         /// <summary>
         /// Sets the storage (of a property) to the value and fires property changed event only if the storage value is changed
         /// </summary>
+        /// <typeparam name="S">Value type of the view model class</typeparam>
         /// <typeparam name="T">Value type of the storage</typeparam>
         /// <param name="storage">The storage reference</param>
         /// <param name="value">The new value</param>
         /// <param name="propertyName">The property name</param>
+        /// <param name="onChangedEvent">Extra changed event fired when value is changed</param>
         /// <returns>True if the value was changed</returns>
-        protected bool SetProperty<T>(ref T storage, T value, string propertyName)
+        protected bool SetProperty<S,T>(ref T storage, T value, string propertyName, Action<S,T> onChangedEvent = null) where S: BaseNotification
         {
             if (Equals(storage, value))
                 return false;
 
             storage = value;
+
+            onChangedEvent?.Invoke((S) this, value);
 
             CurrentDispatcher.Invoke(() =>
             {
@@ -51,20 +55,27 @@ namespace GraphEditor.ViewModel
         /// <summary>
         /// Sets the storage (of a property) to the value and fires property changed event only if the storage value is changed
         /// </summary>
+        /// <typeparam name="S">Value type of the view model class</typeparam>
         /// <typeparam name="T">Value type of the storage</typeparam>
         /// <param name="doStore">The storage action</param>
         /// <param name="oldValue">The old value</param>
         /// <param name="newValue">The new value</param>
+        /// <param name="onChangedEvent">Extra changed event fired when value is changed</param>
         /// <param name="propertyNames">The property names list the properyt changed event is fired for</param>
         /// <returns>True if the value was changed</returns>
-        protected bool SetProperty<T>(Action<T> doStore, T oldValue, T newValue, params string[] propertyNames)
+        protected bool SetProperty<S,T>(Action<T> doStore, T oldValue, T newValue, Action<S,T> onChangedEvent = null, params string[] propertyNames) where S: BaseNotification
         {
             if (Equals(oldValue, newValue))
                 return false;
 
             doStore(newValue);
+            onChangedEvent?.Invoke((S) this, newValue);
 
-            CurrentDispatcher.Invoke(() => FirePropertiesChanged(propertyNames));
+            CurrentDispatcher.Invoke(() =>
+            {
+                CommandManager.InvalidateRequerySuggested();
+                FirePropertiesChanged(propertyNames);
+            });
 
             return true;
         }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:GraphEditor.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance vm:EditorAreaViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance vm:AreaViewModel}"
              AllowDrop="True">
     <Canvas x:Name="_canvas" Background="LightYellow" 
             MouseLeftButtonUp="_canvas_OnMouseLeftButtonUp" 

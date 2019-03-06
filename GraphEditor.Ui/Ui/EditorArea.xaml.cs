@@ -15,7 +15,7 @@ namespace GraphEditor.Ui
     /// </summary>
     public partial class EditorArea : UserControl
     {
-        Path _drawLine;
+        Path _connLine;
         const double LineThickness = 1.3;
         const double LineThicknessHovered = 3;
 
@@ -23,10 +23,10 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = new EditorAreaViewModel(OnAddNode, OnRemoveNode, OnAddConnection, OnRemoveConnection);
+            DataContext = new AreaViewModel(OnAddNode, OnRemoveNode, OnNodeLocationChanged, OnAddConnection, OnRemoveConnection);
         }
 
-        private EditorAreaViewModel ViewModel => (EditorAreaViewModel) DataContext;
+        private AreaViewModel ViewModel => (AreaViewModel) DataContext;
 
         internal GraphNode NodeOfModel(NodeViewModel viewModel) => GraphNodes.FirstOrDefault(gn => gn.ViewModel.Equals(viewModel));
 
@@ -47,15 +47,26 @@ namespace GraphEditor.Ui
 
         private void OnRemoveNode(NodeViewModel nodeVm)
         {
-            var toRemove = _canvas.Children.OfType<GraphNode>().FirstOrDefault(gn => gn.DataContext.Equals(nodeVm));
+            var toRemove = GraphNodes.FirstOrDefault(gn => gn.DataContext.Equals(nodeVm));
             _canvas.Children.Remove(toRemove);
         }
 
+        private void OnNodeLocationChanged(NodeViewModel nodeVm, Point location)
+        {
+            var node = NodeOfModel(nodeVm);
+            Canvas.SetLeft(node, location.X);
+            Canvas.SetTop(node, location.Y);
+        }
+
         private void OnAddConnection(ConnectionViewModel connVm)
-        { }
+        {
+            // TODO
+        }
 
         private void OnRemoveConnection(ConnectionViewModel connVm)
-        { }
+        {
+            // TODO
+        }
 
         private void SetDragObjectPosition(DragEventArgs e)
         {
@@ -66,9 +77,7 @@ namespace GraphEditor.Ui
             for (var idx = 0; idx < nodeVMs.Count; idx++)
             {
                 var point = e.GetPosition(_canvas) - points[idx];
-                var node = NodeOfModel(nodeVMs[idx]);
-                Canvas.SetLeft(node, point.X);
-                Canvas.SetTop(node, point.Y);
+                nodeVMs[idx].Location = new Point(point.X, point.Y);
             }
         }
 
@@ -86,18 +95,23 @@ namespace GraphEditor.Ui
 
         private void _canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            _drawLine = null;
+            if (_connLine != null)
+            {
+                
+            }
+
+            _connLine = null;
 
             ViewModel.DeselectAll();
         }
 
         private void _canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (_drawLine != null) return;
+            if (_connLine != null) return;
             if (sender is Border) return;
             if (!Equals(((FrameworkElement) e.OriginalSource).Tag, "OutConnector")) return;
 
-            _drawLine = new Path
+            _connLine = new Path
             {
                 Data = new PathGeometry
                 (
@@ -112,17 +126,17 @@ namespace GraphEditor.Ui
                     }
                 )
             };
-            _drawLine.Stroke = Brushes.DimGray;
-            _drawLine.StrokeThickness = LineThickness;
-            _drawLine.MouseDown += Line_MouseDown;
-            _drawLine.MouseMove += Line_MouseMove;
-            _drawLine.MouseLeave += Line_MouseLeave;
-            _canvas.Children.Add(_drawLine);
+            _connLine.Stroke = Brushes.DimGray;
+            _connLine.StrokeThickness = LineThickness;
+            _connLine.MouseDown += Line_MouseDown;
+            _connLine.MouseMove += Line_MouseMove;
+            _connLine.MouseLeave += Line_MouseLeave;
+            _canvas.Children.Add(_connLine);
          }
 
         private void Line_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            
+            // TODO: Connection selktieren und entspr visualisieren; Deselektierung berücksichtigen
         }
 
         private void Line_MouseMove(object sender, MouseEventArgs e)
@@ -137,9 +151,9 @@ namespace GraphEditor.Ui
 
         private void _canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_drawLine == null) return;
+            if (_connLine == null) return;
             
-            ((LineSegment)((PathGeometry)_drawLine.Data).Figures[0].Segments[0]).Point = e.GetPosition(_canvas);
+            ((LineSegment) ((PathGeometry) _connLine.Data).Figures[0].Segments[0]).Point = e.GetPosition(_canvas);
 
             e.Handled = true;            
         }

@@ -6,12 +6,15 @@ namespace GraphEditor.ViewModel
     public class ConnectionViewModel: BaseNotification
     {
         NodeViewModel _sourceNode;
+        NodeViewModel _targetNode;
         bool _isSelected;
 
-        public ConnectionViewModel(NodeViewModel sourceNode, int sourceConn)
+        public ConnectionViewModel(NodeViewModel sourceNode, NodeViewModel targetNode, int sourceConn, int targetConn)
         {
             _sourceNode = sourceNode;
+            _targetNode = targetNode;
             SourceConnector = sourceConn;
+            TargetConnector = targetConn;
 
             Path = new ObservableCollection<Point>();
         }
@@ -19,7 +22,7 @@ namespace GraphEditor.ViewModel
         public bool IsSelected
         {
             get { return _isSelected; }
-            set { SetProperty(ref _isSelected, value, nameof(IsSelected)); }
+            set { SetProperty<ConnectionViewModel, bool>(ref _isSelected, value, nameof(IsSelected)); }
         }
 
         public ObservableCollection<Point> Path { get; }

@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace GraphEditor.ViewModel
 {
-    public class NodeViewModel: BaseNotification
+    public class NodeViewModel : BaseNotification
     {
         private string _selectedOutConnectorCount = "1";
         private string _selectedInConnectorCount = "1";
         private bool _isSelected = false;
-
+        private Point _location;
+        private Action<NodeViewModel, Point> _onLocationChanged;
         private readonly Action<ConnectionViewModel> _onAddConnection;
         private readonly Action<ConnectionViewModel> _onRemoveConnection;
 
-        public NodeViewModel(EditorAreaViewModel area, Action<ConnectionViewModel> onAddConnection, Action<ConnectionViewModel> onRemoveConnection)
+        public NodeViewModel(AreaViewModel area, Action<NodeViewModel, Point> onLocationChanged, Action<ConnectionViewModel> onAddConnection, Action<ConnectionViewModel> onRemoveConnection)
         {
+            Area = area;
+            _onLocationChanged = onLocationChanged;
             _onAddConnection = onAddConnection;
             _onRemoveConnection = onRemoveConnection;
 
@@ -28,9 +29,8 @@ namespace GraphEditor.ViewModel
 
             OutConnections = new ObservableCollection<ConnectionViewModel>();
 
-            Area = area;
-
-            RemoveNodeCommand = new RelayCommand(o => Remove());
+            ConnectToCommand = new RelayCommand(o => ConnectToExec(), CanExecuteConnectTo);
+            RemoveNodeCommand = new RelayCommand(o => RemoveExec());
 
             for (var c = 1; c <= 9; c++)
             {
@@ -48,8 +48,9 @@ namespace GraphEditor.ViewModel
             _onRemoveConnection(connVm);
         }
 
-        public EditorAreaViewModel Area { get; }
+        public AreaViewModel Area { get; }
 
+        public RelayCommand ConnectToCommand { get; }
         public RelayCommand RemoveNodeCommand { get; }
 
         public string Type { get; set; } = "Filter";
@@ -77,9 +78,9 @@ namespace GraphEditor.ViewModel
 
         public ObservableCollection<ConnectionViewModel> OutConnections { get; }
 
-        public void AddOutConnection(int sourceConn)
+        public void AddOutConnection(NodeViewModel targetConn, int sourceConn)
         {
-            var connVm = new ConnectionViewModel(this, sourceConn);
+            var connVm = new ConnectionViewModel(this, targetConn, sourceConn, -1);
             OutConnections.Add(connVm);
             _onAddConnection(connVm);
         }
@@ -103,12 +104,27 @@ namespace GraphEditor.ViewModel
         public bool IsSelected
         {
             get { return _isSelected; }
-            set { SetProperty(ref _isSelected, value, nameof(IsSelected)); }
+            set { SetProperty<NodeViewModel, bool>(ref _isSelected, value, nameof(IsSelected)); }
         }
 
-        public void Remove()
+        public Point Location
+        {
+            get => _location;
+            set { SetProperty(ref _location, value, nameof(Location), _onLocationChanged); }
+        }
+
+        public void ConnectToExec()
+        {
+        }
+
+        public void RemoveExec()
         {
             Area.RemoveNode(this);
+        }
+
+        private bool CanExecuteConnectTo(object obj)
+        {
+            return Area.AnyFreeInputsFor(this);
         }
     }
 }
