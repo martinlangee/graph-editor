@@ -83,18 +83,27 @@ namespace GraphEditor.Ui
             _canvas.Children.Add(line);
         }
 
+        private GraphNode TargetNodeOfConnection(ConnectionViewModel connVm)
+        {
+            return NodeOfModel(ViewModel.NodeVMs.FirstOrDefault(node => node.Equals(connVm.TargetNode)));
+        }
+
         private void OnUpdateConnections(NodeViewModel nodeVm)
         {
-            foreach (var conn in nodeVm.OutConnections)
-            {
-                var line = LineOfModel(conn);
-                var newLoc = NodeOfModel(nodeVm).OutConnectorLocation(_canvas, conn.SourceConnector);
-                line.Points[0] = newLoc;
-            }
+            var node = NodeOfModel(nodeVm);
 
-//            foreach (var conn in nodeVm.InConnections)
-//            {
-//            }
+            foreach (var line in ConnectionLines)
+            {
+                var connVm = (ConnectionViewModel) line.DataContext;
+                if (nodeVm.Equals(connVm.SourceNode))
+                {
+                    line.Points[0] = node.OutConnectorLocation(_canvas, connVm.SourceConnector);
+                }
+                if (nodeVm.Equals(connVm.TargetNode))
+                {
+                    line.Points[line.Points.Count - 1] = node.InConnectorLocation(_canvas, connVm.TargetConnector);
+                }
+            }
         }
 
         private void OnRemoveConnection(ConnectionViewModel connectionVm)
