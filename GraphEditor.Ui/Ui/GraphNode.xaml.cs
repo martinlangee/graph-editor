@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GraphEditor.Tools;
 using GraphEditor.Ui;
 using GraphEditor.ViewModel;
 
@@ -32,6 +33,24 @@ namespace GraphEditor
         AreaViewModel AreaVm => ViewModel.Area;
 
         EditorArea Area => (EditorArea) ((FrameworkElement) Parent).Parent;
+
+        private Point GetConnectorLocation(ItemsControl itemsCtrl, Visual container, int index)
+        {
+            var item = itemsCtrl.Items[index];
+            var conn = itemsCtrl.ItemContainerGenerator.ContainerFromItem(item).FindChild<Border>();
+            var loc = conn.TransformToVisual(container).Transform(new Point(conn.ActualWidth / 2, conn.ActualHeight / 2));
+            return loc;
+        }
+
+        public Point InConnectorLocation(Visual container, int index)
+        {
+            return GetConnectorLocation(_icInConn, container, index);
+        }
+
+        public Point OutConnectorLocation(Visual container, int index)
+        {
+            return GetConnectorLocation(_icOutConn, container, index);
+        }
 
         protected override void OnGiveFeedback(GiveFeedbackEventArgs e)
         {
@@ -85,6 +104,12 @@ namespace GraphEditor
         {
             Area.SelectedNodes.ForEach(gn => gn.ViewModel.IsSelected = false);
             ViewModel.IsSelected = true;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (Area.SelectedNodes.Count == 2)
+                Area.SelectedNodes[0].ViewModel.AddOutConnection(0, Area.SelectedNodes[1].ViewModel, 0);
         }
     }
 }

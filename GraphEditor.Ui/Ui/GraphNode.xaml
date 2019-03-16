@@ -36,7 +36,8 @@
                 MouseMove="UIElement_OnMouseMove" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp"/>
         <TextBox Grid.Row="1" Text="{Binding Name}" HorizontalAlignment="Stretch" Margin="8,3"/>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
-            <TextBlock Text="In   " VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <!--<TextBlock Text="In   " VerticalAlignment="Center" Margin="0,0,5,0"/>-->
+            <Button Content="Connect" Click="Button_Click"/>
             <!--<ComboBox ItemsSource="{Binding InConnectorCount}" SelectedItem="{Binding SelectedInConnCount}" Height="21" Width="35"/>-->
         </StackPanel>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
@@ -46,7 +47,7 @@
         <Border Grid.Row="5" Background="GhostWhite" BorderBrush="LightGray" BorderThickness="0,1,0,0">
             <TextBlock Text="{Binding Type}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Blue" Margin="0,-1,0,2"/>
         </Border>
-        <ItemsControl Grid.Row="1" Grid.RowSpan="4" ItemsSource="{Binding InConnectors}" HorizontalAlignment="Left" Margin="0,5,0,0" Focusable="False">
+        <ItemsControl Grid.Row="1" Grid.RowSpan="4" x:Name="_icInConn" ItemsSource="{Binding InConnectors}" HorizontalAlignment="Left" Margin="0,5,0,0" Focusable="False">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>
@@ -72,7 +73,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <ItemsControl Grid.Row="1" Grid.RowSpan="4" ItemsSource="{Binding OutConnectors}" HorizontalAlignment="Right" Margin="0,5,0,0" Focusable="False">
+        <ItemsControl Grid.Row="1" Grid.RowSpan="4" x:Name="_icOutConn" ItemsSource="{Binding OutConnectors}" HorizontalAlignment="Right" Margin="0,5,0,0" Focusable="False">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>

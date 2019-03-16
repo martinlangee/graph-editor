@@ -57,10 +57,10 @@
     </ApplicationDefinition>
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Tools\BooleanConverter.cs" />
+    <Compile Include="Tools\VisualTreeHelpers.cs" />
     <Compile Include="ViewModel\AreaViewModel.cs" />
     <Compile Include="ViewModel\BaseNotification.cs" />
     <Compile Include="ViewModel\ConnectionViewModel.cs" />
-    <Compile Include="ViewModel\ConnectorViewModel.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />
     <Page Include="Ui\EditorArea.xaml">
       <SubType>Designer</SubType>

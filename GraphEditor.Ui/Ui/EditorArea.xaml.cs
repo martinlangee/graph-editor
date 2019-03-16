@@ -23,16 +23,20 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = new AreaViewModel(OnAddNode, OnRemoveNode, OnNodeLocationChanged, OnAddConnection, OnRemoveConnection);
+            DataContext = new AreaViewModel(OnAddNode, OnRemoveNode, OnNodeLocationChanged, OnAddConnection, OnUpdateConnections, OnRemoveConnection);
         }
 
         private AreaViewModel ViewModel => (AreaViewModel) DataContext;
 
-        internal GraphNode NodeOfModel(NodeViewModel viewModel) => GraphNodes.FirstOrDefault(gn => gn.ViewModel.Equals(viewModel));
-
         private List<GraphNode> GraphNodes => _canvas.Children.OfType<GraphNode>().ToList();
 
         internal List<GraphNode> SelectedNodes => GraphNodes.Where(gn => gn.ViewModel.IsSelected).ToList();
+
+        internal GraphNode NodeOfModel(NodeViewModel viewModel) => GraphNodes.FirstOrDefault(gn => gn.ViewModel.Equals(viewModel));
+
+        private List<Polyline> ConnectionLines => _canvas.Children.OfType<Polyline>().ToList();
+
+        private Polyline LineOfModel(ConnectionViewModel viewModel) => ConnectionLines.FirstOrDefault(cp => cp.DataContext.Equals(viewModel));
 
         private void OnAddNode(NodeViewModel nodeVm)
         {
@@ -58,12 +62,42 @@ namespace GraphEditor.Ui
             Canvas.SetTop(node, location.Y);
         }
 
-        private void OnAddConnection(ConnectionViewModel connVm)
+        private void OnAddConnection(ConnectionViewModel connectionVm)
         {
-            // TODO
+            var p1 = NodeOfModel(connectionVm.SourceNode).OutConnectorLocation(_canvas, connectionVm.SourceConnector);
+            var p2 = NodeOfModel(connectionVm.TargetNode).InConnectorLocation(_canvas, connectionVm.TargetConnector);
+            var line = new Polyline
+            {
+                Stroke = Brushes.DimGray,
+                StrokeThickness = LineThickness,
+                DataContext = connectionVm
+            };
+
+            line.Points.Add(p1);
+            line.Points.Add(p2);
+
+            line.MouseDown += Line_MouseDown;
+            line.MouseMove += Line_MouseMove;
+            line.MouseLeave += Line_MouseLeave;
+            line.DataContext = connectionVm;
+            _canvas.Children.Add(line);
         }
 
-        private void OnRemoveConnection(ConnectionViewModel connVm)
+        private void OnUpdateConnections(NodeViewModel nodeVm)
+        {
+            foreach (var conn in nodeVm.OutConnections)
+            {
+                var line = LineOfModel(conn);
+                var newLoc = NodeOfModel(nodeVm).OutConnectorLocation(_canvas, conn.SourceConnector);
+                line.Points[0] = newLoc;
+            }
+
+//            foreach (var conn in nodeVm.InConnections)
+//            {
+//            }
+        }
+
+        private void OnRemoveConnection(ConnectionViewModel connectionVm)
         {
             // TODO
         }
@@ -78,6 +112,9 @@ namespace GraphEditor.Ui
             {
                 var point = e.GetPosition(_canvas) - points[idx];
                 nodeVMs[idx].Location = new Point(point.X, point.Y);
+
+                nodeVMs[idx].UpdateConnections();
+                OnUpdateConnections(nodeVMs[idx]);
             }
         }
 
@@ -105,35 +142,6 @@ namespace GraphEditor.Ui
             ViewModel.DeselectAll();
         }
 
-        private void _canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (_connLine != null) return;
-            if (sender is Border) return;
-            if (!Equals(((FrameworkElement) e.OriginalSource).Tag, "OutConnector")) return;
-
-            _connLine = new Path
-            {
-                Data = new PathGeometry
-                (
-                    new List<PathFigure>
-                    {
-                        new PathFigure
-                        (
-                            e.GetPosition(_canvas),
-                            new List<LineSegment>{new LineSegment(e.GetPosition(_canvas), true)},
-                            false
-                        )
-                    }
-                )
-            };
-            _connLine.Stroke = Brushes.DimGray;
-            _connLine.StrokeThickness = LineThickness;
-            _connLine.MouseDown += Line_MouseDown;
-            _connLine.MouseMove += Line_MouseMove;
-            _connLine.MouseLeave += Line_MouseLeave;
-            _canvas.Children.Add(_connLine);
-         }
-
         private void Line_MouseDown(object sender, MouseButtonEventArgs e)
         {
             // TODO: Connection selktieren und entspr visualisieren; Deselektierung berücksichtigen
@@ -141,21 +149,12 @@ namespace GraphEditor.Ui
 
         private void Line_MouseMove(object sender, MouseEventArgs e)
         {
-            ((Path) sender).StrokeThickness = LineThicknessHovered;
+            ((Polyline) sender).StrokeThickness = LineThicknessHovered;
         }
 
         private void Line_MouseLeave(object sender, MouseEventArgs e)
         {
-            ((Path) sender).StrokeThickness = LineThickness;
-        }
-
-        private void _canvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (_connLine == null) return;
-            
-            ((LineSegment) ((PathGeometry) _connLine.Data).Figures[0].Segments[0]).Point = e.GetPosition(_canvas);
-
-            e.Handled = true;            
+            ((Polyline) sender).StrokeThickness = LineThickness;
         }
     }
 }

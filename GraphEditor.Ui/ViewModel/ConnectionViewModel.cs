@@ -5,14 +5,12 @@ namespace GraphEditor.ViewModel
 {
     public class ConnectionViewModel: BaseNotification
     {
-        NodeViewModel _sourceNode;
-        NodeViewModel _targetNode;
         bool _isSelected;
 
         public ConnectionViewModel(NodeViewModel sourceNode, NodeViewModel targetNode, int sourceConn, int targetConn)
         {
-            _sourceNode = sourceNode;
-            _targetNode = targetNode;
+            SourceNode = sourceNode;
+            TargetNode = targetNode;
             SourceConnector = sourceConn;
             TargetConnector = targetConn;
 
@@ -30,9 +28,12 @@ namespace GraphEditor.ViewModel
         public int SourceConnector { get; set; }
         public int TargetConnector { get; set; }
 
+        public NodeViewModel SourceNode { get; set; }
+        public NodeViewModel TargetNode { get; set; }
+
         public void Remove()
         {
-            _sourceNode.RemoveConnection(this);
+            SourceNode.RemoveConnection(this);
         }
     }
 }

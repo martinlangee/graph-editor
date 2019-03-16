@@ -6,19 +6,21 @@ namespace GraphEditor.ViewModel
 {
     public class NodeViewModel : BaseNotification
     {
-        private string _selectedOutConnectorCount = "1";
-        private string _selectedInConnectorCount = "1";
+        private string _selectedOutConnectorCount = "5";
+        private string _selectedInConnectorCount = "5";
         private bool _isSelected = false;
         private Point _location;
         private Action<NodeViewModel, Point> _onLocationChanged;
         private readonly Action<ConnectionViewModel> _onAddConnection;
+        private readonly Action<NodeViewModel> _onUpdateConnections;
         private readonly Action<ConnectionViewModel> _onRemoveConnection;
 
-        public NodeViewModel(AreaViewModel area, Action<NodeViewModel, Point> onLocationChanged, Action<ConnectionViewModel> onAddConnection, Action<ConnectionViewModel> onRemoveConnection)
+        public NodeViewModel(AreaViewModel area, Action<NodeViewModel, Point> onLocationChanged, Action<ConnectionViewModel> onAddConnection, Action<NodeViewModel> onUpdateConnections, Action<ConnectionViewModel> onRemoveConnection)
         {
             Area = area;
             _onLocationChanged = onLocationChanged;
             _onAddConnection = onAddConnection;
+            _onUpdateConnections = onUpdateConnections;
             _onRemoveConnection = onRemoveConnection;
 
             InConnectorCount = new ObservableCollection<string>();
@@ -39,7 +41,15 @@ namespace GraphEditor.ViewModel
             }
 
             InConnectors.Add(1);
+            InConnectors.Add(2);
+            InConnectors.Add(3);
+            InConnectors.Add(4);
+            InConnectors.Add(5);
             OutConnectors.Add(1);
+            OutConnectors.Add(2);
+            OutConnectors.Add(3);
+            OutConnectors.Add(4);
+            OutConnectors.Add(5);
         }
 
         internal void RemoveConnection(ConnectionViewModel connVm)
@@ -78,9 +88,9 @@ namespace GraphEditor.ViewModel
 
         public ObservableCollection<ConnectionViewModel> OutConnections { get; }
 
-        public void AddOutConnection(NodeViewModel targetConn, int sourceConn)
+        public void AddOutConnection(int sourceConn, NodeViewModel targetConnVm, int targetConn)
         {
-            var connVm = new ConnectionViewModel(this, targetConn, sourceConn, -1);
+            var connVm = new ConnectionViewModel(this, targetConnVm, sourceConn, targetConn);
             OutConnections.Add(connVm);
             _onAddConnection(connVm);
         }
@@ -125,6 +135,11 @@ namespace GraphEditor.ViewModel
         private bool CanExecuteConnectTo(object obj)
         {
             return Area.AnyFreeInputsFor(this);
+        }
+
+        internal void UpdateConnections()
+        {
+            _onUpdateConnections(this);
         }
     }
 }
