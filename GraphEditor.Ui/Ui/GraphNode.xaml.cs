@@ -106,10 +106,11 @@ namespace GraphEditor
             ViewModel.IsSelected = true;
         }
 
+        int conn = 0;
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (Area.SelectedNodes.Count == 2)
-                Area.SelectedNodes[0].ViewModel.AddOutConnection(0, Area.SelectedNodes[1].ViewModel, 0);
+                Area.SelectedNodes[0].ViewModel.AddOutConnection(conn, Area.SelectedNodes[1].ViewModel, conn++);
         }
     }
 }

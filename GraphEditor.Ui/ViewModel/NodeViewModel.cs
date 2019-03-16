@@ -12,15 +12,13 @@ namespace GraphEditor.ViewModel
         private Point _location;
         private Action<NodeViewModel, Point> _onLocationChanged;
         private readonly Action<ConnectionViewModel> _onAddConnection;
-        private readonly Action<NodeViewModel> _onUpdateConnections;
         private readonly Action<ConnectionViewModel> _onRemoveConnection;
 
-        public NodeViewModel(AreaViewModel area, Action<NodeViewModel, Point> onLocationChanged, Action<ConnectionViewModel> onAddConnection, Action<NodeViewModel> onUpdateConnections, Action<ConnectionViewModel> onRemoveConnection)
+        public NodeViewModel(AreaViewModel area, Action<NodeViewModel, Point> onLocationChanged, Action<ConnectionViewModel> onAddConnection, Action<ConnectionViewModel> onRemoveConnection)
         {
             Area = area;
             _onLocationChanged = onLocationChanged;
             _onAddConnection = onAddConnection;
-            _onUpdateConnections = onUpdateConnections;
             _onRemoveConnection = onRemoveConnection;
 
             InConnectorCount = new ObservableCollection<string>();
@@ -135,11 +133,6 @@ namespace GraphEditor.ViewModel
         private bool CanExecuteConnectTo(object obj)
         {
             return Area.AnyFreeInputsFor(this);
-        }
-
-        internal void UpdateConnections()
-        {
-            _onUpdateConnections(this);
         }
     }
 }

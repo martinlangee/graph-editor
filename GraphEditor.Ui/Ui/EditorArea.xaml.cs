@@ -23,7 +23,7 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = new AreaViewModel(OnAddNode, OnRemoveNode, OnNodeLocationChanged, OnAddConnection, OnUpdateConnections, OnRemoveConnection);
+            DataContext = new AreaViewModel(OnAddNode, OnRemoveNode, OnNodeLocationChanged, OnAddConnection, OnRemoveConnection);
         }
 
         private AreaViewModel ViewModel => (AreaViewModel) DataContext;
@@ -83,11 +83,6 @@ namespace GraphEditor.Ui
             _canvas.Children.Add(line);
         }
 
-        private GraphNode TargetNodeOfConnection(ConnectionViewModel connVm)
-        {
-            return NodeOfModel(ViewModel.NodeVMs.FirstOrDefault(node => node.Equals(connVm.TargetNode)));
-        }
-
         private void OnUpdateConnections(NodeViewModel nodeVm)
         {
             var node = NodeOfModel(nodeVm);
@@ -122,7 +117,6 @@ namespace GraphEditor.Ui
                 var point = e.GetPosition(_canvas) - points[idx];
                 nodeVMs[idx].Location = new Point(point.X, point.Y);
 
-                nodeVMs[idx].UpdateConnections();
                 OnUpdateConnections(nodeVMs[idx]);
             }
         }
