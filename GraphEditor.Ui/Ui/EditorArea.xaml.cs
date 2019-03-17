@@ -64,9 +64,6 @@ namespace GraphEditor.Ui
 
         private void OnAddConnection(ConnectionViewModel connectionVm)
         {
-            var p1 = NodeOfModel(connectionVm.SourceNode).OutConnectorLocation(_canvas, connectionVm.SourceConnector);
-            var p2 = NodeOfModel(connectionVm.TargetNode).InConnectorLocation(_canvas, connectionVm.TargetConnector);
-
             var line = new Polyline
             {
                 Stroke = Brushes.DimGray,
@@ -74,14 +71,51 @@ namespace GraphEditor.Ui
                 DataContext = connectionVm
             };
 
-            line.Points.Add(p1);
-            line.Points.Add(p2);
+            line.Points.Add(NodeOfModel(connectionVm.SourceNode).OutConnectorLocation(_canvas, connectionVm.SourceConnector));
+            line.Points.Add(NodeOfModel(connectionVm.TargetNode).InConnectorLocation(_canvas, connectionVm.TargetConnector));
 
-            line.MouseDown += Line_MouseDown;
             line.MouseMove += Line_MouseMove;
             line.MouseLeave += Line_MouseLeave;
+            line.ContextMenuOpening += Line_ContextMenuOpening;
+            line.ContextMenuClosing += Line_ContextMenuClosing;
             line.DataContext = connectionVm;
+
+            line.ContextMenu = new ContextMenu();
+            line.ContextMenu.Items.Add(new MenuItem());
+
+            var deleteItem = (MenuItem) line.ContextMenu.Items[0];
+            deleteItem.DataContext = line.DataContext;
+            deleteItem.Header = "Delete";
+            deleteItem.Click += LineDeleteClick;
+
             _canvas.Children.Add(line);
+        }
+
+        private void Line_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            ((Polyline)sender).StrokeThickness = LineThicknessHovered;
+        }
+
+        private void Line_ContextMenuClosing(object sender, ContextMenuEventArgs e)
+        {
+            ((Polyline)sender).StrokeThickness = LineThickness;
+        }
+
+        private void Line_MouseMove(object sender, MouseEventArgs e)
+        {
+            ((Polyline)sender).StrokeThickness = LineThicknessHovered;
+        }
+
+        private void Line_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (!((Polyline)sender).ContextMenu.IsOpen)
+                ((Polyline)sender).StrokeThickness = LineThickness;
+        }
+
+        private void LineDeleteClick(object sender, RoutedEventArgs e)
+        {
+            var connVm = (ConnectionViewModel) ((FrameworkElement) sender).DataContext;
+            connVm.SourceNode.RemoveConnection(connVm);
         }
 
         private void OnUpdateConnections(NodeViewModel nodeVm)
@@ -104,7 +138,7 @@ namespace GraphEditor.Ui
 
         private void OnRemoveConnection(ConnectionViewModel connectionVm)
         {
-            // TODO
+            _canvas.Children.Remove(LineOfModel(connectionVm));
         }
 
         private void SetDragObjectPosition(DragEventArgs e)
@@ -142,21 +176,6 @@ namespace GraphEditor.Ui
             _connLine = null;
 
             ViewModel.DeselectAll();
-        }
-
-        private void Line_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            // TODO: Connection selktieren und entspr visualisieren; Deselektierung berücksichtigen
-        }
-
-        private void Line_MouseMove(object sender, MouseEventArgs e)
-        {
-            ((Polyline) sender).StrokeThickness = LineThicknessHovered;
-        }
-
-        private void Line_MouseLeave(object sender, MouseEventArgs e)
-        {
-            ((Polyline) sender).StrokeThickness = LineThickness;
         }
     }
 }

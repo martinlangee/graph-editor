@@ -38,8 +38,7 @@ namespace GraphEditor
         {
             var item = itemsCtrl.Items[index];
             var conn = itemsCtrl.ItemContainerGenerator.ContainerFromItem(item).FindChild<Border>();
-            var loc = conn.TransformToVisual(container).Transform(new Point(conn.ActualWidth / 2, conn.ActualHeight / 2));
-            return loc;
+            return conn.TransformToVisual(container).Transform(new Point(conn.ActualWidth / 2, conn.ActualHeight / 2));
         }
 
         public Point InConnectorLocation(Visual container, int index)
