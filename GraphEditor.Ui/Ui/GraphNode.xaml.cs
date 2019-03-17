@@ -34,21 +34,21 @@ namespace GraphEditor
 
         EditorArea Area => (EditorArea) ((FrameworkElement) Parent).Parent;
 
-        private Point GetConnectorLocation(ItemsControl itemsCtrl, Visual container, int index)
+        private Point GetConnectorLocation(ItemsControl itemsCtrl, Visual container, int index, bool isInput)
         {
             var item = itemsCtrl.Items[index];
             var conn = itemsCtrl.ItemContainerGenerator.ContainerFromItem(item).FindChild<Border>();
-            return conn.TransformToVisual(container).Transform(new Point(conn.ActualWidth / 2, conn.ActualHeight / 2));
+            return conn.TransformToVisual(container).Transform(new Point(isInput ? 0 : conn.ActualWidth, conn.ActualHeight / 2));
         }
 
         public Point InConnectorLocation(Visual container, int index)
         {
-            return GetConnectorLocation(_icInConn, container, index);
+            return GetConnectorLocation(_icInConn, container, index, isInput: true);
         }
 
         public Point OutConnectorLocation(Visual container, int index)
         {
-            return GetConnectorLocation(_icOutConn, container, index);
+            return GetConnectorLocation(_icOutConn, container, index, isInput: false);
         }
 
         protected override void OnGiveFeedback(GiveFeedbackEventArgs e)

@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using GraphEditor.Components;
 using GraphEditor.ViewModel;
 
 namespace GraphEditor.Ui
@@ -34,9 +35,9 @@ namespace GraphEditor.Ui
 
         internal GraphNode NodeOfModel(NodeViewModel viewModel) => GraphNodes.FirstOrDefault(gn => gn.ViewModel.Equals(viewModel));
 
-        private List<Polyline> ConnectionLines => _canvas.Children.OfType<Polyline>().ToList();
+        private List<ArrowPolyline> ConnectionLines => _canvas.Children.OfType<ArrowPolyline>().ToList();
 
-        private Polyline LineOfModel(ConnectionViewModel viewModel) => ConnectionLines.FirstOrDefault(cp => cp.DataContext.Equals(viewModel));
+        private ArrowPolyline LineOfModel(ConnectionViewModel viewModel) => ConnectionLines.FirstOrDefault(cp => cp.DataContext.Equals(viewModel));
 
         private void OnAddNode(NodeViewModel nodeVm)
         {
@@ -64,10 +65,12 @@ namespace GraphEditor.Ui
 
         private void OnAddConnection(ConnectionViewModel connectionVm)
         {
-            var line = new Polyline
+            var line = new ArrowPolyline
             {
                 Stroke = Brushes.DimGray,
                 StrokeThickness = LineThickness,
+                HeadWidth = 8,
+                HeadHeight = 2,
                 DataContext = connectionVm
             };
 
@@ -78,7 +81,6 @@ namespace GraphEditor.Ui
             line.MouseLeave += Line_MouseLeave;
             line.ContextMenuOpening += Line_ContextMenuOpening;
             line.ContextMenuClosing += Line_ContextMenuClosing;
-            line.DataContext = connectionVm;
 
             line.ContextMenu = new ContextMenu();
             line.ContextMenu.Items.Add(new MenuItem());
@@ -93,23 +95,24 @@ namespace GraphEditor.Ui
 
         private void Line_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
-            ((Polyline)sender).StrokeThickness = LineThicknessHovered;
+            ((ArrowPolyline)sender).StrokeThickness = LineThicknessHovered;
         }
 
         private void Line_ContextMenuClosing(object sender, ContextMenuEventArgs e)
         {
-            ((Polyline)sender).StrokeThickness = LineThickness;
+            ((ArrowPolyline)sender).StrokeThickness = LineThickness;
         }
 
         private void Line_MouseMove(object sender, MouseEventArgs e)
         {
-            ((Polyline)sender).StrokeThickness = LineThicknessHovered;
+            ((ArrowPolyline)sender).StrokeThickness = LineThicknessHovered;
         }
 
         private void Line_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (!((Polyline)sender).ContextMenu.IsOpen)
-                ((Polyline)sender).StrokeThickness = LineThickness;
+            var line = (ArrowPolyline) sender;
+            if (!line.ContextMenu.IsOpen)
+                line.StrokeThickness = LineThickness;
         }
 
         private void LineDeleteClick(object sender, RoutedEventArgs e)
@@ -168,13 +171,6 @@ namespace GraphEditor.Ui
 
         private void _canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (_connLine != null)
-            {
-                
-            }
-
-            _connLine = null;
-
             ViewModel.DeselectAll();
         }
     }
