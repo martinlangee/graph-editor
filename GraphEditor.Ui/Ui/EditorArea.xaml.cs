@@ -23,7 +23,7 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = new AreaViewModel(OnAddNode, OnRemoveNode, OnNodeLocationChanged, OnAddConnection, OnRemoveConnection);
+            DataContext = new AreaViewModel(OnAddNode, OnRemoveNode, OnNodeLocationChanged, OnAddConnection, OnUpdateConnections, OnRemoveConnection);
         }
 
         private AreaViewModel ViewModel => (AreaViewModel) DataContext;
@@ -66,6 +66,7 @@ namespace GraphEditor.Ui
         {
             var p1 = NodeOfModel(connectionVm.SourceNode).OutConnectorLocation(_canvas, connectionVm.SourceConnector);
             var p2 = NodeOfModel(connectionVm.TargetNode).InConnectorLocation(_canvas, connectionVm.TargetConnector);
+
             var line = new Polyline
             {
                 Stroke = Brushes.DimGray,
@@ -86,7 +87,7 @@ namespace GraphEditor.Ui
         private void OnUpdateConnections(NodeViewModel nodeVm)
         {
             var node = NodeOfModel(nodeVm);
-
+            
             foreach (var line in ConnectionLines)
             {
                 var connVm = (ConnectionViewModel) line.DataContext;
@@ -116,8 +117,6 @@ namespace GraphEditor.Ui
             {
                 var point = e.GetPosition(_canvas) - points[idx];
                 nodeVMs[idx].Location = new Point(point.X, point.Y);
-
-                OnUpdateConnections(nodeVMs[idx]);
             }
         }
 
