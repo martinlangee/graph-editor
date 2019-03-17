@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -16,6 +18,8 @@ namespace GraphEditor.Components
 
         public static readonly DependencyProperty HeadHeightProperty = DependencyProperty.Register("HeadHeight", typeof(double), typeof(ArrowPolyline), 
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        double _origStrokeThickness;
 
         public PointCollection Points
         {
@@ -40,6 +44,35 @@ namespace GraphEditor.Components
         public ArrowPolyline()
         {
             Points = new PointCollection();
+            MouseMove += ArrowLineMouseMove;
+            MouseLeave += ArrowLineMouseLeave;
+            ContextMenuOpening += ArrowLineContextMenuOpening;
+            ContextMenuClosing += ArrowLineContextMenuClosing;
+        }
+
+        public double HoverStrokeThickness { get; set; }
+
+        private void ArrowLineMouseMove(object sender, MouseEventArgs e)
+        {
+            if (StrokeThickness != HoverStrokeThickness)
+                _origStrokeThickness = StrokeThickness;
+            StrokeThickness = HoverStrokeThickness;
+        }
+
+        private void ArrowLineMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (ContextMenu == null || !ContextMenu.IsOpen)
+                StrokeThickness = _origStrokeThickness;
+        }
+
+        private void ArrowLineContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            StrokeThickness = HoverStrokeThickness;
+        }
+
+        private void ArrowLineContextMenuClosing(object sender, ContextMenuEventArgs e)
+        {
+            StrokeThickness = _origStrokeThickness;
         }
 
         protected override Geometry DefiningGeometry

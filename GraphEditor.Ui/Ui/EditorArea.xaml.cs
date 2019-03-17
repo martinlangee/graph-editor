@@ -19,8 +19,6 @@ namespace GraphEditor.Ui
     public partial class EditorArea : UserControl
     {
         Path _connLine;
-        const double LineThickness = 1.3;
-        const double LineThicknessHovered = 3;
 
         public EditorArea()
         {
@@ -70,7 +68,8 @@ namespace GraphEditor.Ui
             var line = new ArrowPolyline
             {
                 Stroke = Brushes.DimGray,
-                StrokeThickness = LineThickness,
+                StrokeThickness = 1.3,
+                HoverStrokeThickness = 3,
                 HeadWidth = 8,
                 HeadHeight = 2,
                 DataContext = connectionVm
@@ -78,11 +77,6 @@ namespace GraphEditor.Ui
 
             line.Points.Add(NodeOfModel(connectionVm.SourceNode).OutConnectorLocation(_canvas, connectionVm.SourceConnector));
             line.Points.Add(NodeOfModel(connectionVm.TargetNode).InConnectorLocation(_canvas, connectionVm.TargetConnector));
-
-            line.MouseMove += Line_MouseMove;
-            line.MouseLeave += Line_MouseLeave;
-            line.ContextMenuOpening += Line_ContextMenuOpening;
-            line.ContextMenuClosing += Line_ContextMenuClosing;
 
             line.ContextMenu = new ContextMenu();
             line.ContextMenu.Items.Add(new MenuItem());
@@ -93,28 +87,6 @@ namespace GraphEditor.Ui
             deleteItem.Click += LineDeleteClick;
 
             _canvas.Children.Add(line);
-        }
-
-        private void Line_ContextMenuOpening(object sender, ContextMenuEventArgs e)
-        {
-            ((ArrowPolyline)sender).StrokeThickness = LineThicknessHovered;
-        }
-
-        private void Line_ContextMenuClosing(object sender, ContextMenuEventArgs e)
-        {
-            ((ArrowPolyline)sender).StrokeThickness = LineThickness;
-        }
-
-        private void Line_MouseMove(object sender, MouseEventArgs e)
-        {
-            ((ArrowPolyline)sender).StrokeThickness = LineThicknessHovered;
-        }
-
-        private void Line_MouseLeave(object sender, MouseEventArgs e)
-        {
-            var line = (ArrowPolyline) sender;
-            if (!line.ContextMenu.IsOpen)
-                line.StrokeThickness = LineThickness;
         }
 
         private void LineDeleteClick(object sender, RoutedEventArgs e)
