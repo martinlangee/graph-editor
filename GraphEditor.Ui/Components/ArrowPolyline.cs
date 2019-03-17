@@ -19,22 +19,22 @@ namespace GraphEditor.Components
 
         public PointCollection Points
         {
-            get { return (PointCollection)base.GetValue(PointsProperty); }
-            set { base.SetValue(PointsProperty, value); }
+            get { return (PointCollection)GetValue(PointsProperty); }
+            set { SetValue(PointsProperty, value); }
         }
 
         [TypeConverter(typeof(LengthConverter))]
         public double HeadWidth
         {
-            get { return (double)base.GetValue(HeadWidthProperty); }
-            set { base.SetValue(HeadWidthProperty, value); }
+            get { return (double)GetValue(HeadWidthProperty); }
+            set { SetValue(HeadWidthProperty, value); }
         }
 
         [TypeConverter(typeof(LengthConverter))]
         public double HeadHeight
         {
-            get { return (double)base.GetValue(HeadHeightProperty); }
-            set { base.SetValue(HeadHeightProperty, value); }
+            get { return (double)GetValue(HeadHeightProperty); }
+            set { SetValue(HeadHeightProperty, value); }
         }
 
         public ArrowPolyline()

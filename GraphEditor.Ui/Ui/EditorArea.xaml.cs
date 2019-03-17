@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -165,8 +167,12 @@ namespace GraphEditor.Ui
 
         protected override void OnDrop(DragEventArgs e)
         {
-            base.OnDrop(e);
             SetDragObjectPosition(e);
+
+            // workaround to place the connections correctly after node dropped
+            Thread.Sleep(10);
+            var nodeVMs = (List<NodeViewModel>)e.Data.GetData("Objects");
+            nodeVMs.ForEach(nv => OnUpdateConnections(nv));
         }
 
         private void _canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
