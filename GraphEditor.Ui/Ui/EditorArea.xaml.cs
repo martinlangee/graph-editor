@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -170,7 +171,12 @@ namespace GraphEditor.Ui
 
         private void _canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            var selectedNodes = ViewModel.NodeVMs.Where(nv => nv.IsSelected).ToList();
             ViewModel.DeselectAll();
+
+            // workaround to place the connections correctly after node dropped
+            Thread.Sleep(10);
+            selectedNodes.ForEach(nv => OnUpdateConnections(nv));
         }
     }
 }

@@ -34,8 +34,8 @@
         </Rectangle>
         <Border Grid.Row="0" Height="10" Background="CadetBlue" Cursor="SizeAll" Margin="-1,0" 
                 MouseMove="UIElement_OnMouseMove" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp"/>
-        <TextBox Grid.Row="1" Text="{Binding Name}" HorizontalAlignment="Stretch" Margin="8,3"/>
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
+        <!--<TextBox Grid.Row="1" Text="{Binding Name}" HorizontalAlignment="Stretch" Margin="8,3"/>-->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,25,0,5">
             <!--<TextBlock Text="In   " VerticalAlignment="Center" Margin="0,0,5,0"/>-->
             <Button Content="Connect" Click="Button_Click"/>
             <!--<ComboBox ItemsSource="{Binding InConnectorCount}" SelectedItem="{Binding SelectedInConnCount}" Height="21" Width="35"/>-->
