@@ -10,13 +10,16 @@ namespace GraphEditor.Components
 {
     class ArrowPolyline : Shape
     {
-        public static readonly DependencyProperty PointsProperty = DependencyProperty.Register("Points", typeof(PointCollection), typeof(ArrowPolyline), 
+        public static readonly DependencyProperty PointsProperty = DependencyProperty.Register("Points", typeof(PointCollection), typeof(ArrowPolyline),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        public static readonly DependencyProperty HeadWidthProperty = DependencyProperty.Register("HeadWidth", typeof(double), typeof(ArrowPolyline), 
+        public static readonly DependencyProperty HeadWidthProperty = DependencyProperty.Register("HeadWidth", typeof(double), typeof(ArrowPolyline),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        public static readonly DependencyProperty HeadHeightProperty = DependencyProperty.Register("HeadHeight", typeof(double), typeof(ArrowPolyline), 
+        public static readonly DependencyProperty HeadHeightProperty = DependencyProperty.Register("HeadHeight", typeof(double), typeof(ArrowPolyline),
+            new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+
+        public static readonly DependencyProperty BendPointSizeProperty = DependencyProperty.Register("BendPointSize", typeof(double), typeof(ArrowPolyline),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         double _origStrokeThickness;
@@ -41,6 +44,15 @@ namespace GraphEditor.Components
             set { SetValue(HeadHeightProperty, value); }
         }
 
+        [TypeConverter(typeof(LengthConverter))]
+        public double BendPointSize
+        {
+            get { return (double)GetValue(BendPointSizeProperty); }
+            set { SetValue(BendPointSizeProperty, value); }
+        }
+
+        bool _isHovering;
+
         public ArrowPolyline()
         {
             Points = new PointCollection();
@@ -52,8 +64,15 @@ namespace GraphEditor.Components
 
         public double HoverStrokeThickness { get; set; }
 
+        public void AddBend(Point location)
+        {
+            // todo
+        }
+
         private void ArrowLineMouseMove(object sender, MouseEventArgs e)
         {
+            _isHovering = true;
+
             if (StrokeThickness != HoverStrokeThickness)
                 _origStrokeThickness = StrokeThickness;
             StrokeThickness = HoverStrokeThickness;
@@ -62,7 +81,10 @@ namespace GraphEditor.Components
         private void ArrowLineMouseLeave(object sender, MouseEventArgs e)
         {
             if (ContextMenu == null || !ContextMenu.IsOpen)
+            {
+                _isHovering = false;
                 StrokeThickness = _origStrokeThickness;
+            }
         }
 
         private void ArrowLineContextMenuOpening(object sender, ContextMenuEventArgs e)
@@ -72,6 +94,7 @@ namespace GraphEditor.Components
 
         private void ArrowLineContextMenuClosing(object sender, ContextMenuEventArgs e)
         {
+            _isHovering = false;
             StrokeThickness = _origStrokeThickness;
         }
 
@@ -115,6 +138,7 @@ namespace GraphEditor.Components
                 pt2.Y - (HeadHeight * cost - HeadWidth * sint));
 
             context.BeginFigure(pt1, true, false);
+
             foreach (var pt in Points)
             {
                 context.LineTo(pt, true, true);
@@ -122,6 +146,20 @@ namespace GraphEditor.Components
             context.LineTo(pt3, true, true);
             context.LineTo(pt2, true, true);
             context.LineTo(pt4, true, true);
+
+            if (!_isHovering || Points.Count < 3) return;
+
+            var bendPtDelta = BendPointSize / 2;
+
+            for (var zPt = 1; zPt < Points.Count - 1; zPt++)
+            {
+                var pt = Points[zPt];
+                context.BeginFigure(new Point(pt.X - bendPtDelta, pt.Y - bendPtDelta), isFilled: true, isClosed: true);
+                context.LineTo(new Point(pt.X - bendPtDelta, pt.Y + bendPtDelta), true, true);
+                context.LineTo(new Point(pt.X + bendPtDelta, pt.Y + bendPtDelta), true, true);
+                context.LineTo(new Point(pt.X + bendPtDelta, pt.Y - bendPtDelta), true, true);
+            }
+
         }
     }
 }

@@ -63,6 +63,34 @@ namespace GraphEditor.Ui
             Canvas.SetTop(node, location.Y);
         }
 
+        private void CreateLineContextMenu(ArrowPolyline line)
+        {
+            line.ContextMenu = new ContextMenu();
+            line.ContextMenu.Items.Add(new MenuItem());
+            line.ContextMenu.Items.Add(new Separator());
+            line.ContextMenu.Items.Add(new MenuItem());
+
+            var item = (MenuItem)line.ContextMenu.Items[0];
+            item.DataContext = line.DataContext;
+            item.Header = "Bend line here";
+            item.Click += LineBendClick;
+
+            item = (MenuItem)line.ContextMenu.Items[2];
+            item.DataContext = line.DataContext;
+            item.Header = "Delete";
+            item.Click += LineDeleteClick;
+        }
+
+        private void LineDeleteClick(object sender, RoutedEventArgs e)
+        {
+            var connVm = (ConnectionViewModel)((FrameworkElement)sender).DataContext;
+            connVm.SourceNode.RemoveConnection(connVm);
+        }
+
+        private void LineBendClick(object sender, RoutedEventArgs e)
+        {
+        }
+
         private void OnAddConnection(ConnectionViewModel connectionVm)
         {
             var line = new ArrowPolyline
@@ -72,27 +100,20 @@ namespace GraphEditor.Ui
                 HoverStrokeThickness = 3,
                 HeadWidth = 8,
                 HeadHeight = 2,
+                BendPointSize = 6,
                 DataContext = connectionVm
             };
 
-            line.Points.Add(NodeOfModel(connectionVm.SourceNode).OutConnectorLocation(_canvas, connectionVm.SourceConnector));
-            line.Points.Add(NodeOfModel(connectionVm.TargetNode).InConnectorLocation(_canvas, connectionVm.TargetConnector));
+            var p1 = NodeOfModel(connectionVm.SourceNode).OutConnectorLocation(_canvas, connectionVm.SourceConnector);
+            var p2 = NodeOfModel(connectionVm.TargetNode).InConnectorLocation(_canvas, connectionVm.TargetConnector);
 
-            line.ContextMenu = new ContextMenu();
-            line.ContextMenu.Items.Add(new MenuItem());
+            line.Points.Add(p1);
+            //line.Points.Add(new Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2));  // only test
+            line.Points.Add(p2);
 
-            var deleteItem = (MenuItem) line.ContextMenu.Items[0];
-            deleteItem.DataContext = line.DataContext;
-            deleteItem.Header = "Delete";
-            deleteItem.Click += LineDeleteClick;
+            CreateLineContextMenu(line);
 
             _canvas.Children.Add(line);
-        }
-
-        private void LineDeleteClick(object sender, RoutedEventArgs e)
-        {
-            var connVm = (ConnectionViewModel) ((FrameworkElement) sender).DataContext;
-            connVm.SourceNode.RemoveConnection(connVm);
         }
 
         private void OnUpdateConnections(NodeViewModel nodeVm)
