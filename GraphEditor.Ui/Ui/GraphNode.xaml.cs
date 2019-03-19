@@ -23,16 +23,16 @@ namespace GraphEditor
     /// </summary>
     public partial class GraphNode : UserControl
     {
-        internal NodeViewModel ViewModel => (NodeViewModel) DataContext;
-
         public GraphNode()
         {
             InitializeComponent();
         }
 
-        AreaViewModel AreaVm => ViewModel.Area;
+        internal NodeViewModel ViewModel => (NodeViewModel)DataContext;
 
-        EditorArea Area => (EditorArea) ((FrameworkElement) Parent).Parent;
+        internal AreaViewModel AreaVm => ViewModel.Area;
+
+        internal EditorArea Area => (EditorArea) ((FrameworkElement) Parent).Parent;
 
         private Point GetConnectorLocation(ItemsControl itemsCtrl, Visual container, int index, bool isInput)
         {
@@ -89,14 +89,15 @@ namespace GraphEditor
             e.Handled = true;
         }
 
+        private void InConnector_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
         private void OutConnector_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MouseButtonEventArgs newarg = new MouseButtonEventArgs(e.MouseDevice, e.Timestamp, e.ChangedButton, e.StylusDevice)
-            {
-                RoutedEvent = MouseLeftButtonDownEvent,
-                Source = sender
-            };
-            Area._canvas.RaiseEvent(newarg);            
+            var conn = (ConnectorViewModel)((FrameworkElement)sender).DataContext;
+            conn.IsConnecting = !conn.IsConnecting;
         }
 
         private void UserControl_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)

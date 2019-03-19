@@ -1,35 +1,15 @@
-﻿using System;
+﻿using GraphEditor.Tools;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
 
 namespace GraphEditor.ViewModel
 {
-    /// Todo: ConnectionLines einführen
-
     public class AreaViewModel: BaseNotification
     {
-        private readonly Action<NodeViewModel> _onAddNode;
-        private readonly Action<NodeViewModel> _onRemoveNode;
-        private readonly Action<NodeViewModel, Point> _onNodeLocationChanged;
-        private readonly Action<ConnectionViewModel> _onAddConnection;
-        private readonly Action<NodeViewModel> _onUpdateConnections;
-        private readonly Action<ConnectionViewModel> _onRemoveConnection;
-
-        public AreaViewModel(Action<NodeViewModel> onAddNode, Action<NodeViewModel> onRemoveNode,
-            Action<NodeViewModel, Point> onNodeLocationChanged,
-            Action<ConnectionViewModel> onAddConnection, 
-            Action<NodeViewModel> onUpdateConnections,
-            Action<ConnectionViewModel> onRemoveConnection)
+        public AreaViewModel()
         {
-            _onAddNode = onAddNode;
-            _onRemoveNode = onRemoveNode;
-            _onNodeLocationChanged = onNodeLocationChanged;
-            _onAddConnection = onAddConnection;
-            _onUpdateConnections = onUpdateConnections;
-            _onRemoveConnection = onRemoveConnection;
-
             NodeVMs = new ObservableCollection<NodeViewModel>();
             AddNodeCommand = new RelayCommand(o => AddNodeExec());
         }
@@ -40,11 +20,11 @@ namespace GraphEditor.ViewModel
 
         public NodeViewModel AddNodeExec(Action<NodeViewModel> initNode = null)
         {
-            var newNodeVm = new NodeViewModel(this, _onNodeLocationChanged, _onAddConnection, _onUpdateConnections, _onRemoveConnection);
+            var newNodeVm = new NodeViewModel(this);
             initNode?.Invoke(newNodeVm);
             NodeVMs.Add(newNodeVm);
 
-            _onAddNode(newNodeVm);
+            MessageHub.Inst.AddNode(newNodeVm);
 
             return newNodeVm;
         }
@@ -52,7 +32,7 @@ namespace GraphEditor.ViewModel
         public void RemoveNode(NodeViewModel nodeVm)
         {
             NodeVMs.Remove(nodeVm);
-            _onRemoveNode(nodeVm);
+            MessageHub.Inst.RemoveNode(nodeVm);
         }
 
         public List<NodeViewModel> Selected

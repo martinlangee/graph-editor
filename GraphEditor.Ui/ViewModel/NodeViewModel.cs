@@ -1,4 +1,4 @@
-﻿using System;
+﻿using GraphEditor.Tools;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -10,24 +10,20 @@ namespace GraphEditor.ViewModel
         private string _selectedInConnectorCount = "5";
         private bool _isSelected = false;
         private Point _location;
-        private Action<NodeViewModel, Point> _onLocationChanged;
-        private readonly Action<ConnectionViewModel> _onAddConnection;
-        private readonly Action<NodeViewModel> _onUpdateConnections;
-        private readonly Action<ConnectionViewModel> _onRemoveConnection;
+        //private Action<NodeViewModel, Point> _onLocationChanged;
+        //private readonly Action<ConnectionViewModel> _onAddConnection;
+        //private readonly Action<NodeViewModel> _onUpdateConnections;
+        //private readonly Action<ConnectionViewModel> _onRemoveConnection;
 
-        public NodeViewModel(AreaViewModel area, Action<NodeViewModel, Point> onLocationChanged, Action<ConnectionViewModel> onAddConnection, Action<NodeViewModel> onUpdateConnections, Action<ConnectionViewModel> onRemoveConnection)
+        public NodeViewModel(AreaViewModel area)
         {
             Area = area;
-            _onLocationChanged = onLocationChanged;
-            _onAddConnection = onAddConnection;
-            _onUpdateConnections = onUpdateConnections;
-            _onRemoveConnection = onRemoveConnection;
 
             InConnectorCount = new ObservableCollection<string>();
-            InConnectors = new ObservableCollection<int>();
+            InConnectors = new ObservableCollection<ConnectorViewModel>();
 
             OutConnectorCount = new ObservableCollection<string>();
-            OutConnectors = new ObservableCollection<int>();
+            OutConnectors = new ObservableCollection<ConnectorViewModel>();
 
             OutConnections = new ObservableCollection<ConnectionViewModel>();
 
@@ -40,22 +36,17 @@ namespace GraphEditor.ViewModel
                 OutConnectorCount.Add(c.ToString());
             }
 
-            InConnectors.Add(1);
-            InConnectors.Add(2);
-            InConnectors.Add(3);
-            InConnectors.Add(4);
-            InConnectors.Add(5);
-            OutConnectors.Add(1);
-            OutConnectors.Add(2);
-            OutConnectors.Add(3);
-            OutConnectors.Add(4);
-            OutConnectors.Add(5);
+            for (int i = 0; i < 5; i++)
+                InConnectors.Add(new ConnectorViewModel(this, i));
+
+            for (int i = 0; i < 5; i++)
+                OutConnectors.Add(new ConnectorViewModel(this, i));
         }
 
         internal void RemoveConnection(ConnectionViewModel connVm)
         {
             OutConnections.Remove(connVm);
-            _onRemoveConnection(connVm);
+            MessageHub.Inst.RemoveConnection(connVm);
         }
 
         public AreaViewModel Area { get; }
@@ -77,22 +68,22 @@ namespace GraphEditor.ViewModel
 
                 _selectedInConnectorCount = value;
                 InConnectors.Clear();
-                for (var c = 1; c <= int.Parse(value); c++)
-                    InConnectors.Add(c);
+                for (var idx = 0; idx < int.Parse(value); idx++)
+                    InConnectors.Add(new ConnectorViewModel(this, idx));
             }
         }
 
-        public ObservableCollection<int> InConnectors { get; }
+        public ObservableCollection<ConnectorViewModel> InConnectors { get; }
 
         public ObservableCollection<string> OutConnectorCount { get; }
 
         public ObservableCollection<ConnectionViewModel> OutConnections { get; }
 
         public void AddOutConnection(int sourceConn, NodeViewModel targetConnVm, int targetConn)
-        {
+        {  // todo  => ConnectorViewModel
             var connVm = new ConnectionViewModel(this, targetConnVm, sourceConn, targetConn);
             OutConnections.Add(connVm);
-            _onAddConnection(connVm);
+            MessageHub.Inst.AddConnection(connVm);
         }
 
         public string SelectedOutConnectorCount
@@ -104,12 +95,12 @@ namespace GraphEditor.ViewModel
 
                 _selectedOutConnectorCount = value;
                 OutConnectors.Clear();
-                for (var c = 1; c <= int.Parse(value); c++)
-                    OutConnectors.Add(c);
+                for (var idx = 0; idx < int.Parse(value); idx++)
+                    OutConnectors.Add(new ConnectorViewModel(this, idx));
             }
         }
 
-        public ObservableCollection<int> OutConnectors { get; }
+        public ObservableCollection<ConnectorViewModel> OutConnectors { get; }
 
         public bool IsSelected
         {
@@ -121,10 +112,10 @@ namespace GraphEditor.ViewModel
         {
             get => _location;
             set { SetProperty<NodeViewModel, Point>(ref _location, value, nameof(Location), 
-                (vm, s) => 
+                (vm, pt) => 
                 {
-                    _onLocationChanged(vm, s);
-                    _onUpdateConnections(vm);
+                    MessageHub.Inst.NodeLocationChanged(vm, pt);
+                    MessageHub.Inst.UpdateConnections(vm);
                 }
                 ); }
         }

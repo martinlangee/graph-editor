@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using GraphEditor.Components;
+using GraphEditor.Tools;
 using GraphEditor.ViewModel;
 
 namespace GraphEditor.Ui
@@ -25,7 +23,7 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = new AreaViewModel(OnAddNode, OnRemoveNode, OnNodeLocationChanged, OnAddConnection, OnUpdateConnections, OnRemoveConnection);
+            DataContext = new AreaViewModel();
         }
 
         private AreaViewModel ViewModel => (AreaViewModel) DataContext;
@@ -64,34 +62,6 @@ namespace GraphEditor.Ui
             Canvas.SetTop(node, location.Y);
         }
 
-        private void CreateLineContextMenu(ArrowPolyline line)
-        {
-            line.ContextMenu = new ContextMenu();
-            line.ContextMenu.Items.Add(new MenuItem());
-            line.ContextMenu.Items.Add(new Separator());
-            line.ContextMenu.Items.Add(new MenuItem());
-
-            var item = (MenuItem)line.ContextMenu.Items[0];
-            item.DataContext = line.DataContext;
-            item.Header = "Bend line here";
-            item.Click += LineBendClick;
-
-            item = (MenuItem)line.ContextMenu.Items[2];
-            item.DataContext = line.DataContext;
-            item.Header = "Delete";
-            item.Click += LineDeleteClick;
-        }
-
-        private void LineDeleteClick(object sender, RoutedEventArgs e)
-        {
-            var connVm = (ConnectionViewModel)((FrameworkElement)sender).DataContext;
-            connVm.SourceNode.RemoveConnection(connVm);
-        }
-
-        private void LineBendClick(object sender, RoutedEventArgs e)
-        {
-        }
-
         private void OnAddConnection(ConnectionViewModel connectionVm)
         {
             var line = new ArrowPolyline
@@ -120,10 +90,10 @@ namespace GraphEditor.Ui
         private void OnUpdateConnections(NodeViewModel nodeVm)
         {
             var node = NodeOfModel(nodeVm);
-            
+
             foreach (var line in ConnectionLines)
             {
-                var connVm = (ConnectionViewModel) line.DataContext;
+                var connVm = (ConnectionViewModel)line.DataContext;
                 if (nodeVm.Equals(connVm.SourceNode))
                 {
                     line.Points[0] = node.OutConnectorLocation(_canvas, connVm.SourceConnector);
@@ -138,6 +108,34 @@ namespace GraphEditor.Ui
         private void OnRemoveConnection(ConnectionViewModel connectionVm)
         {
             _canvas.Children.Remove(LineOfModel(connectionVm));
+        }
+
+        private void CreateLineContextMenu(ArrowPolyline line)
+        {
+            line.ContextMenu = new ContextMenu();
+            line.ContextMenu.Items.Add(new MenuItem());
+            line.ContextMenu.Items.Add(new Separator());
+            line.ContextMenu.Items.Add(new MenuItem());
+
+            var item = (MenuItem)line.ContextMenu.Items[0];
+            item.DataContext = line.DataContext;
+            item.Header = "Bend line here";
+            item.Click += LineBendClick;
+
+            item = (MenuItem)line.ContextMenu.Items[2];
+            item.DataContext = line.DataContext;
+            item.Header = "Delete";
+            item.Click += LineDeleteClick;
+        }
+
+        private void LineDeleteClick(object sender, RoutedEventArgs e)
+        {
+            var connVm = (ConnectionViewModel)((FrameworkElement)sender).DataContext;
+            connVm.SourceNode.RemoveConnection(connVm);
+        }
+
+        private void LineBendClick(object sender, RoutedEventArgs e)
+        {
         }
 
         private void SetDragObjectPosition(DragEventArgs e)
@@ -166,7 +164,7 @@ namespace GraphEditor.Ui
             // workaround to place the connections correctly after node dropped
             Thread.Sleep(10);
             var nodeVMs = (List<NodeViewModel>)e.Data.GetData("Objects");
-            nodeVMs.ForEach(nv => OnUpdateConnections(nv));
+            nodeVMs.ForEach(nv => MessageHub.Inst.UpdateConnections(nv));
         }
 
         private void _canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -177,6 +175,15 @@ namespace GraphEditor.Ui
             // workaround to place the connections correctly after node dropped
             Thread.Sleep(10);
             selectedNodes.ForEach(nv => OnUpdateConnections(nv));
+        }
+
+        private void Editor_Loaded(object sender, RoutedEventArgs e)
+        {
+            MessageHub.Inst.OnAddNode += OnAddNode;
+            MessageHub.Inst.OnRemoveNode += OnRemoveNode;
+            MessageHub.Inst.OnNodeLocationChanged += OnNodeLocationChanged;
+            MessageHub.Inst.OnAddConnection += OnAddConnection;
+            MessageHub.Inst.OnUpdateConnections += OnUpdateConnections;
         }
     }
 }
