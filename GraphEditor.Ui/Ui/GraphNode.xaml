@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:GraphEditor.ViewModel"
              xmlns:tl="clr-namespace:GraphEditor.Tools"
+             xmlns:ge="clr-namespace:GraphEditor"
              mc:Ignorable="d"  d:DataContext="{d:DesignInstance vm:NodeViewModel}"
              GotKeyboardFocus="UserControl_GotKeyboardFocus">
     <UserControl.Resources>
@@ -48,63 +49,18 @@
         <Border Grid.Row="5" Background="GhostWhite" BorderBrush="LightGray" BorderThickness="0,1,0,0">
             <TextBlock Text="{Binding Type}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Blue" Margin="0,-1,0,2"/>
         </Border>
+        <!--<ConnectorBar></ConnectorBar>-->
         <ItemsControl Grid.Row="1" Grid.RowSpan="4" x:Name="_icInConn" ItemsSource="{Binding InConnectors}" HorizontalAlignment="Left" Margin="0,5,0,0" Focusable="False">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Tag="InConnector" PreviewMouseLeftButtonDown="InConnector_PreviewMouseLeftButtonDown">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Height" Value="10"/>
-                                <Setter Property="Width" Value="10"/>
-                                <Setter Property="Margin" Value="-5,0,0,5"/>
-                                <Setter Property="Background" Value="CornflowerBlue"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Height" Value="12"/>
-                                        <Setter Property="Width" Value="12"/>
-                                        <Setter Property="Margin" Value="-6,-1,-1,4"/>
-                                        <Setter Property="Background" Value="DeepSkyBlue"/>
-                                    </Trigger>
-                                    <DataTrigger Binding="{Binding IsConnecting}" Value="True">
-                                        <Setter Property="Height" Value="12"/>
-                                        <Setter Property="Width" Value="12"/>
-                                        <Setter Property="Margin" Value="-6,-1,-1,4"/>
-                                        <Setter Property="Background" Value="Coral"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                    </Border>
+                    <ge:ConnectorBar Tag="In"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <ItemsControl Grid.Row="1" Grid.RowSpan="4" x:Name="_icOutConn" ItemsSource="{Binding OutConnectors}" HorizontalAlignment="Right" Margin="0,5,0,0" Focusable="False">
+        <ItemsControl Grid.Row="1" Grid.RowSpan="4" x:Name="_icOutConn" ItemsSource="{Binding OutConnectors}" HorizontalAlignment="Right" Margin="0,5,-5,0" Focusable="False">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Tag="OutConnector" PreviewMouseLeftButtonDown="OutConnector_PreviewMouseLeftButtonDown">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Height" Value="10" />
-                                <Setter Property="Width" Value="10" />
-                                <Setter Property="Margin" Value="0,0,-5,5"/>
-                                <Setter Property="Background" Value="CornflowerBlue" />
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Height" Value="12" />
-                                        <Setter Property="Width" Value="12" />
-                                        <Setter Property="Margin" Value="-1,-1,-6,4"/>
-                                        <Setter Property="Background" Value="DeepSkyBlue" />
-                                    </Trigger>
-                                    <DataTrigger Binding="{Binding IsConnecting}" Value="True">
-                                        <Setter Property="Height" Value="12" />
-                                        <Setter Property="Width" Value="12" />
-                                        <Setter Property="Margin" Value="-1,-1,-6,4"/>
-                                        <Setter Property="Background" Value="Coral" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                    </Border>
+                    <ge:ConnectorBar Tag="Out"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

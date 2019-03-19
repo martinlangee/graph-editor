@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="GraphEditor.ConnectorBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Style>
+        <Style TargetType="{x:Type UserControl}">
+            <Setter Property="Content">
+                <Setter.Value>
+                    <Border x:Name="InBorder">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="Border_PreviewMouseLeftButtonDown"/>
+                                <Setter Property="Tag" Value="In"/>
+                                <Setter Property="Height" Value="10"/>
+                                <Setter Property="Width" Value="10"/>
+                                <Setter Property="Margin" Value="-5,0,0,5"/>
+                                <Setter Property="Background" Value="CornflowerBlue"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Height" Value="12"/>
+                                        <Setter Property="Width" Value="12"/>
+                                        <Setter Property="Margin" Value="-6,-1,-1,4"/>
+                                        <Setter Property="Background" Value="DeepSkyBlue"/>
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding IsConnecting}" Value="True">
+                                        <Setter Property="Height" Value="12"/>
+                                        <Setter Property="Width" Value="12"/>
+                                        <Setter Property="Margin" Value="-6,-1,-1,4"/>
+                                        <Setter Property="Background" Value="Coral"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsOut}">
+                    <Setter Property="Content">
+                        <Setter.Value>
+                            <Border x:Name="OutBorder">
+                                <Border.Style>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="Tag" Value="Out"/>
+                                        <Setter Property="Height" Value="10" />
+                                        <Setter Property="Width" Value="10" />
+                                        <Setter Property="Margin" Value="0,0,-5,5"/>
+                                        <Setter Property="Background" Value="CornflowerBlue" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Height" Value="12" />
+                                                <Setter Property="Width" Value="12" />
+                                                <Setter Property="Margin" Value="-1,-1,-6,4"/>
+                                                <Setter Property="Background" Value="DeepSkyBlue" />
+                                            </Trigger>
+                                            <DataTrigger Binding="{Binding IsConnecting}" Value="True">
+                                                <Setter Property="Height" Value="12" />
+                                                <Setter Property="Width" Value="12" />
+                                                <Setter Property="Margin" Value="-1,-1,-6,4"/>
+                                                <Setter Property="Background" Value="Coral" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+</UserControl>

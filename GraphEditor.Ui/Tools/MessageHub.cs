@@ -1,17 +1,23 @@
 ﻿using GraphEditor.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 
 namespace GraphEditor.Tools
 {
-    public class MessageHub
+    public class MessageHub: IDisposable
     {
         static MessageHub _instance;
         public static MessageHub Inst => _instance = _instance ?? new MessageHub();
+
+        Timer _updateTimer;
+        Dictionary<NodeViewModel, Point> _actNodePos = new Dictionary<NodeViewModel, Point>();
+
+        public MessageHub()
+        {
+            _updateTimer = new Timer(DoUpdateLocation, null, 500, 10);
+        }
 
         public void AddNode(NodeViewModel node)
         {
@@ -25,12 +31,26 @@ namespace GraphEditor.Tools
 
         public void NodeLocationChanged(NodeViewModel node, Point location)
         {
-            OnNodeLocationChanged?.Invoke(node, location);
+            if (!_actNodePos.ContainsKey(node))
+                _actNodePos.Add(node, location);
+
+            _actNodePos[node] = location;
         }
 
-        public void UpdateConnections(NodeViewModel node)
+        private void DoUpdateLocation(object state)
         {
-            OnUpdateConnections?.Invoke(node);
+            if (_actNodePos == null) return;
+            if (Application.Current == null) return;
+
+            Application.Current.Dispatcher.Invoke(
+                () =>
+                {
+                    foreach (var item in _actNodePos)
+                    {
+                        OnNodeLocationChanged?.Invoke(item.Key, item.Value);
+                        OnUpdateConnections?.Invoke(item.Key);
+                    }
+                });
         }
 
         public void AddConnection(ConnectionViewModel connection)
@@ -41,6 +61,11 @@ namespace GraphEditor.Tools
         public void RemoveConnection(ConnectionViewModel connection)
         {
             OnRemoveConnection?.Invoke(connection);
+        }
+
+        public void Dispose()
+        {
+            _actNodePos = null;
         }
 
         public event Action<NodeViewModel> OnAddNode;

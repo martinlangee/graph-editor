@@ -37,8 +37,9 @@ namespace GraphEditor
         private Point GetConnectorLocation(ItemsControl itemsCtrl, Visual container, int index, bool isInput)
         {
             var item = itemsCtrl.Items[index];
-            var conn = itemsCtrl.ItemContainerGenerator.ContainerFromItem(item).FindChild<Border>();
-            return conn.TransformToVisual(container).Transform(new Point(isInput ? 0 : conn.ActualWidth, conn.ActualHeight / 2));
+            var conn = itemsCtrl.ItemContainerGenerator.ContainerFromItem(item).FindChild<Border>().FindChild<Border>();
+            return conn.TransformToVisual(container).Transform(
+                new Point(isInput ? 0 : conn.ActualWidth, conn.ActualHeight / 2));
         }
 
         public Point InConnectorLocation(Visual container, int index)
@@ -87,17 +88,6 @@ namespace GraphEditor
             ViewModel.IsSelected = !ViewModel.IsSelected;
 
             e.Handled = true;
-        }
-
-        private void InConnector_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void OutConnector_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            var conn = (ConnectorViewModel)((FrameworkElement)sender).DataContext;
-            conn.IsConnecting = !conn.IsConnecting;
         }
 
         private void UserControl_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)

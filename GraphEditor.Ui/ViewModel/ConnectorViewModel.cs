@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GraphEditor.ViewModel
+﻿namespace GraphEditor.ViewModel
 {
     public class ConnectorViewModel : BaseNotification
     {
@@ -13,10 +7,11 @@ namespace GraphEditor.ViewModel
 
         public int Index { get; set; }
 
-        public ConnectorViewModel(NodeViewModel node, int index)
+        public ConnectorViewModel(NodeViewModel node, int index, bool isOut)
         {
             _node = node;
             Index = index;
+            IsOut = isOut;
         }
 
         public bool IsConnecting
@@ -26,5 +21,7 @@ namespace GraphEditor.ViewModel
         }
 
         public ConnectionViewModel Connection { get; set; }
+
+        public bool IsOut { get; set; }
     }
 }

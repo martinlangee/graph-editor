@@ -57,9 +57,24 @@ namespace GraphEditor.Ui
 
         private void OnNodeLocationChanged(NodeViewModel nodeVm, Point location)
         {
+            // set new node location
             var node = NodeOfModel(nodeVm);
             Canvas.SetLeft(node, location.X);
             Canvas.SetTop(node, location.Y);
+
+            // update concerned connection lines
+            foreach (var line in ConnectionLines)
+            {
+                var connVm = (ConnectionViewModel)line.DataContext;
+                if (nodeVm.Equals(connVm.SourceNode))
+                {
+                    line.Points[0] = node.OutConnectorLocation(_canvas, connVm.SourceConnector);
+                }
+                if (nodeVm.Equals(connVm.TargetNode))
+                {
+                    line.Points[line.Points.Count - 1] = node.InConnectorLocation(_canvas, connVm.TargetConnector);
+                }
+            }
         }
 
         private void OnAddConnection(ConnectionViewModel connectionVm)
@@ -85,24 +100,6 @@ namespace GraphEditor.Ui
             CreateLineContextMenu(line);
 
             _canvas.Children.Add(line);
-        }
-
-        private void OnUpdateConnections(NodeViewModel nodeVm)
-        {
-            var node = NodeOfModel(nodeVm);
-
-            foreach (var line in ConnectionLines)
-            {
-                var connVm = (ConnectionViewModel)line.DataContext;
-                if (nodeVm.Equals(connVm.SourceNode))
-                {
-                    line.Points[0] = node.OutConnectorLocation(_canvas, connVm.SourceConnector);
-                }
-                if (nodeVm.Equals(connVm.TargetNode))
-                {
-                    line.Points[line.Points.Count - 1] = node.InConnectorLocation(_canvas, connVm.TargetConnector);
-                }
-            }
         }
 
         private void OnRemoveConnection(ConnectionViewModel connectionVm)
@@ -136,6 +133,7 @@ namespace GraphEditor.Ui
 
         private void LineBendClick(object sender, RoutedEventArgs e)
         {
+            // TODO
         }
 
         private void SetDragObjectPosition(DragEventArgs e)
@@ -160,21 +158,12 @@ namespace GraphEditor.Ui
         protected override void OnDrop(DragEventArgs e)
         {
             SetDragObjectPosition(e);
-
-            // workaround to place the connections correctly after node dropped
-            Thread.Sleep(10);
-            var nodeVMs = (List<NodeViewModel>)e.Data.GetData("Objects");
-            nodeVMs.ForEach(nv => MessageHub.Inst.UpdateConnections(nv));
         }
 
         private void _canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var selectedNodes = ViewModel.NodeVMs.Where(nv => nv.IsSelected).ToList();
             ViewModel.DeselectAll();
-
-            // workaround to place the connections correctly after node dropped
-            Thread.Sleep(10);
-            selectedNodes.ForEach(nv => OnUpdateConnections(nv));
         }
 
         private void Editor_Loaded(object sender, RoutedEventArgs e)
@@ -183,7 +172,12 @@ namespace GraphEditor.Ui
             MessageHub.Inst.OnRemoveNode += OnRemoveNode;
             MessageHub.Inst.OnNodeLocationChanged += OnNodeLocationChanged;
             MessageHub.Inst.OnAddConnection += OnAddConnection;
-            MessageHub.Inst.OnUpdateConnections += OnUpdateConnections;
+            MessageHub.Inst.OnRemoveConnection += OnRemoveConnection;
+        }
+
+        private void Editor_Unloaded(object sender, RoutedEventArgs e)
+        {
+            MessageHub.Inst.Dispose();
         }
     }
 }

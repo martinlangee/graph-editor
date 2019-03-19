@@ -37,10 +37,10 @@ namespace GraphEditor.ViewModel
             }
 
             for (int i = 0; i < 5; i++)
-                InConnectors.Add(new ConnectorViewModel(this, i));
+                InConnectors.Add(new ConnectorViewModel(this, i, isOut: false));
 
             for (int i = 0; i < 5; i++)
-                OutConnectors.Add(new ConnectorViewModel(this, i));
+                OutConnectors.Add(new ConnectorViewModel(this, i, isOut: true));
         }
 
         internal void RemoveConnection(ConnectionViewModel connVm)
@@ -69,7 +69,7 @@ namespace GraphEditor.ViewModel
                 _selectedInConnectorCount = value;
                 InConnectors.Clear();
                 for (var idx = 0; idx < int.Parse(value); idx++)
-                    InConnectors.Add(new ConnectorViewModel(this, idx));
+                    InConnectors.Add(new ConnectorViewModel(this, idx, isOut: false));
             }
         }
 
@@ -96,7 +96,7 @@ namespace GraphEditor.ViewModel
                 _selectedOutConnectorCount = value;
                 OutConnectors.Clear();
                 for (var idx = 0; idx < int.Parse(value); idx++)
-                    OutConnectors.Add(new ConnectorViewModel(this, idx));
+                    OutConnectors.Add(new ConnectorViewModel(this, idx, isOut: true));
             }
         }
 
@@ -111,13 +111,11 @@ namespace GraphEditor.ViewModel
         public Point Location
         {
             get => _location;
-            set { SetProperty<NodeViewModel, Point>(ref _location, value, nameof(Location), 
-                (vm, pt) => 
-                {
-                    MessageHub.Inst.NodeLocationChanged(vm, pt);
-                    MessageHub.Inst.UpdateConnections(vm);
-                }
-                ); }
+            set
+            {
+                SetProperty<NodeViewModel, Point>(ref _location, value, nameof(Location),
+                    (vm, pt) => MessageHub.Inst.NodeLocationChanged(vm, pt));
+            }
         }
 
         public void ConnectToExec()
