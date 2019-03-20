@@ -12,13 +12,27 @@ namespace GraphEditor.Tools
         static MessageHub _instance;
         public static MessageHub Inst => _instance = _instance ?? new MessageHub();
 
-        Timer _updateTimer;
-        Dictionary<NodeViewModel, Point> _actNodePos = new Dictionary<NodeViewModel, Point>();
-        Dispatcher _dispatcher = Application.Current.Dispatcher;
+        private Timer _updateTimer;
+        private Dictionary<NodeViewModel, Point> _actNodePos = new Dictionary<NodeViewModel, Point>();
+        private Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
 
         public MessageHub()
         {
-            _updateTimer = new Timer(DoUpdateLocation, null, 500, 10);
+            _updateTimer = new Timer(UpdateLocation, null, 500, 10);
+        }
+
+        private void UpdateLocation(object state)
+        {
+            if (_actNodePos == null) return;
+
+            _dispatcher?.Invoke(() =>
+            {
+                foreach (var item in _actNodePos)
+                {
+                    OnNodeLocationChanged?.Invoke(item.Key, item.Value);
+                    OnUpdateConnections?.Invoke(item.Key);
+                }
+            });
         }
 
         public void AddNode(NodeViewModel node)
@@ -39,21 +53,6 @@ namespace GraphEditor.Tools
             _actNodePos[node] = location;
         }
 
-        private void DoUpdateLocation(object state)
-        {
-            if (_actNodePos == null) return;
-            if (Application.Current == null) return;
-
-            _dispatcher.Invoke(() =>
-            {
-                foreach (var item in _actNodePos)
-                {
-                    OnNodeLocationChanged?.Invoke(item.Key, item.Value);
-                    OnUpdateConnections?.Invoke(item.Key);
-                }
-            });
-        }
-
         public void AddConnection(ConnectionViewModel connection)
         {
             OnAddConnection?.Invoke(connection);
@@ -66,6 +65,7 @@ namespace GraphEditor.Tools
 
         public void Dispose()
         {
+            _dispatcher = null;
             _actNodePos = null;
         }
 

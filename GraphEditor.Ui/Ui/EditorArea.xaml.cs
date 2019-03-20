@@ -59,6 +59,9 @@ namespace GraphEditor.Ui
         {
             // set new node location
             var node = NodeOfModel(nodeVm);
+
+            if (node == null) return;
+
             Canvas.SetLeft(node, location.X);
             Canvas.SetTop(node, location.Y);
 

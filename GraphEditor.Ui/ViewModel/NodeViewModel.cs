@@ -1,5 +1,8 @@
 ﻿using GraphEditor.Tools;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 
 namespace GraphEditor.ViewModel
@@ -78,12 +81,29 @@ namespace GraphEditor.ViewModel
 
         public void RemoveExec()
         {
+            new List<ConnectionViewModel>(OutConnections).ForEach(conn => conn.Remove());
+            InConnections.ForEach(ic => ic.Remove());
             Area.RemoveNode(this);
         }
 
         private bool CanExecuteConnectTo(object obj)
         {
             return Area.AnyFreeInputsFor(this);
+        }
+
+        private List<ConnectionViewModel> InConnections
+        {
+            get
+            {
+                var nodeVMs = new List<NodeViewModel>(Area.NodeVMs);
+                var result = new List<ConnectionViewModel>();
+
+                nodeVMs.Where(nv => !nv.Equals(this)).ToList().
+                    ForEach(nv => nv.OutConnections.Where(conn => conn.TargetNode.Equals(this)).ToList().
+                    ForEach(conn => result.Add(conn)));
+
+                return result;
+            }
         }
     }
 }
