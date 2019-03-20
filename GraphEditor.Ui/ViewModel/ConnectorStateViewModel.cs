@@ -1,17 +1,17 @@
 ﻿namespace GraphEditor.ViewModel
 {
-    public class ConnectorViewModel : BaseNotification
+    public class ConnectorStateViewModel : BaseNotification
     {
         private NodeViewModel _node;
         private bool _isConnecting;
 
         public int Index { get; set; }
 
-        public ConnectorViewModel(NodeViewModel node, int index, bool isOut)
+        public ConnectorStateViewModel(NodeViewModel node, int index, bool isOutBound)
         {
             _node = node;
             Index = index;
-            IsOut = isOut;
+            IsOutBound = isOutBound;
         }
 
         public bool IsConnecting
@@ -19,9 +19,6 @@
             get { return _isConnecting; }
             set { SetProperty<NodeViewModel, bool>(ref _isConnecting, value, nameof(IsConnecting)); }
         }
-
-        public ConnectionViewModel Connection { get; set; }
-
-        public bool IsOut { get; set; }
+        public bool IsOutBound { get; set; }
     }
 }

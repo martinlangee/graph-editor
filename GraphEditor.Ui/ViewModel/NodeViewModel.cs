@@ -6,41 +6,27 @@ namespace GraphEditor.ViewModel
 {
     public class NodeViewModel : BaseNotification
     {
-        private string _selectedOutConnectorCount = "5";
-        private string _selectedInConnectorCount = "5";
         private bool _isSelected = false;
         private Point _location;
-        //private Action<NodeViewModel, Point> _onLocationChanged;
-        //private readonly Action<ConnectionViewModel> _onAddConnection;
-        //private readonly Action<NodeViewModel> _onUpdateConnections;
-        //private readonly Action<ConnectionViewModel> _onRemoveConnection;
 
         public NodeViewModel(AreaViewModel area)
         {
             Area = area;
 
-            InConnectorCount = new ObservableCollection<string>();
-            InConnectors = new ObservableCollection<ConnectorViewModel>();
-
-            OutConnectorCount = new ObservableCollection<string>();
-            OutConnectors = new ObservableCollection<ConnectorViewModel>();
+            InConnectors = new ObservableCollection<ConnectorStateViewModel>();
+            OutConnectors = new ObservableCollection<ConnectorStateViewModel>();
 
             OutConnections = new ObservableCollection<ConnectionViewModel>();
 
             ConnectToCommand = new RelayCommand(o => ConnectToExec(), CanExecuteConnectTo);
             RemoveNodeCommand = new RelayCommand(o => RemoveExec());
 
-            for (var c = 1; c <= 9; c++)
-            {
-                InConnectorCount.Add(c.ToString());
-                OutConnectorCount.Add(c.ToString());
-            }
+            // todo: provisorisch
+            for (int i = 0; i < 5; i++)
+                InConnectors.Add(new ConnectorStateViewModel(this, i, isOutBound: false));
 
             for (int i = 0; i < 5; i++)
-                InConnectors.Add(new ConnectorViewModel(this, i, isOut: false));
-
-            for (int i = 0; i < 5; i++)
-                OutConnectors.Add(new ConnectorViewModel(this, i, isOut: true));
+                OutConnectors.Add(new ConnectorStateViewModel(this, i, isOutBound: true));
         }
 
         internal void RemoveConnection(ConnectionViewModel connVm)
@@ -57,50 +43,18 @@ namespace GraphEditor.ViewModel
         public string Type { get; set; } = "Filter";
         public string Name { get; set; } = "Neu";
 
-        public ObservableCollection<string> InConnectorCount { get; }
-
-        public string SelectedInConnectorCount
-        {
-            get { return _selectedInConnectorCount; }
-            set
-            {
-                if (_selectedInConnectorCount == value) return;
-
-                _selectedInConnectorCount = value;
-                InConnectors.Clear();
-                for (var idx = 0; idx < int.Parse(value); idx++)
-                    InConnectors.Add(new ConnectorViewModel(this, idx, isOut: false));
-            }
-        }
-
-        public ObservableCollection<ConnectorViewModel> InConnectors { get; }
-
-        public ObservableCollection<string> OutConnectorCount { get; }
+        public ObservableCollection<ConnectorStateViewModel> InConnectors { get; }
 
         public ObservableCollection<ConnectionViewModel> OutConnections { get; }
 
         public void AddOutConnection(int sourceConn, NodeViewModel targetConnVm, int targetConn)
-        {  // todo  => ConnectorViewModel
+        {
             var connVm = new ConnectionViewModel(this, targetConnVm, sourceConn, targetConn);
             OutConnections.Add(connVm);
             MessageHub.Inst.AddConnection(connVm);
         }
 
-        public string SelectedOutConnectorCount
-        {
-            get { return _selectedOutConnectorCount; }
-            set
-            {
-                if (_selectedOutConnectorCount == value) return;
-
-                _selectedOutConnectorCount = value;
-                OutConnectors.Clear();
-                for (var idx = 0; idx < int.Parse(value); idx++)
-                    OutConnectors.Add(new ConnectorViewModel(this, idx, isOut: true));
-            }
-        }
-
-        public ObservableCollection<ConnectorViewModel> OutConnectors { get; }
+        public ObservableCollection<ConnectorStateViewModel> OutConnectors { get; }
 
         public bool IsSelected
         {

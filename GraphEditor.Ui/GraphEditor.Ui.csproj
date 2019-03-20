@@ -64,7 +64,7 @@
     <Compile Include="ViewModel\AreaViewModel.cs" />
     <Compile Include="ViewModel\BaseNotification.cs" />
     <Compile Include="ViewModel\ConnectionViewModel.cs" />
-    <Compile Include="ViewModel\ConnectorViewModel.cs" />
+    <Compile Include="ViewModel\ConnectorStateViewModel.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />
     <Page Include="Ui\EditorArea.xaml">
       <SubType>Designer</SubType>
@@ -74,7 +74,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Ui\ConnectorBar.xaml">
+    <Page Include="Ui\ConnectorButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -92,8 +92,8 @@
     <Compile Include="Ui\GraphNode.xaml.cs">
       <DependentUpon>GraphNode.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ui\ConnectorBar.xaml.cs">
-      <DependentUpon>ConnectorBar.xaml</DependentUpon>
+    <Compile Include="Ui\ConnectorButton.xaml.cs">
+      <DependentUpon>ConnectorButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

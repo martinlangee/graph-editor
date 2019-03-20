@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace GraphEditor.Tools
 {
@@ -13,6 +14,7 @@ namespace GraphEditor.Tools
 
         Timer _updateTimer;
         Dictionary<NodeViewModel, Point> _actNodePos = new Dictionary<NodeViewModel, Point>();
+        Dispatcher _dispatcher = Application.Current.Dispatcher;
 
         public MessageHub()
         {
@@ -42,15 +44,14 @@ namespace GraphEditor.Tools
             if (_actNodePos == null) return;
             if (Application.Current == null) return;
 
-            Application.Current.Dispatcher.Invoke(
-                () =>
+            _dispatcher.Invoke(() =>
+            {
+                foreach (var item in _actNodePos)
                 {
-                    foreach (var item in _actNodePos)
-                    {
-                        OnNodeLocationChanged?.Invoke(item.Key, item.Value);
-                        OnUpdateConnections?.Invoke(item.Key);
-                    }
-                });
+                    OnNodeLocationChanged?.Invoke(item.Key, item.Value);
+                    OnUpdateConnections?.Invoke(item.Key);
+                }
+            });
         }
 
         public void AddConnection(ConnectionViewModel connection)
