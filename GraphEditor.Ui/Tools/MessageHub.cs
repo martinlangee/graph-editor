@@ -14,7 +14,6 @@ namespace GraphEditor.Tools
 
         private Timer _updateTimer;
         private Dictionary<NodeViewModel, Point> _actNodePos = new Dictionary<NodeViewModel, Point>();
-        private Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
 
         public MessageHub()
         {
@@ -25,15 +24,17 @@ namespace GraphEditor.Tools
         {
             if (_actNodePos == null) return;
 
-            _dispatcher?.Invoke(() =>
-            {
-                foreach (var item in _actNodePos)
+            Dispatcher?.Invoke(() =>
                 {
-                    OnNodeLocationChanged?.Invoke(item.Key, item.Value);
-                    OnUpdateConnections?.Invoke(item.Key);
-                }
-            });
+                    foreach (var item in _actNodePos)
+                    {
+                        OnNodeLocationChanged?.Invoke(item.Key, item.Value);
+                        OnUpdateConnections?.Invoke(item.Key);
+                    }
+                });
         }
+
+        public Dispatcher Dispatcher { get; set; }
 
         public void AddNode(NodeViewModel node)
         {
@@ -63,10 +64,17 @@ namespace GraphEditor.Tools
             OnRemoveConnection?.Invoke(connection);
         }
 
+        public void NotifyConnectRequested(bool value, NodeViewModel sourceNode, int connectorIdx)
+        {
+            OnConnectRequested?.Invoke(value, sourceNode, connectorIdx);
+        }
+
         public void Dispose()
         {
-            _dispatcher = null;
+            _updateTimer.Dispose();
+            Thread.Sleep(100);
             _actNodePos = null;
+            Dispatcher = null;
         }
 
         public event Action<NodeViewModel> OnAddNode;
@@ -75,5 +83,6 @@ namespace GraphEditor.Tools
         public event Action<NodeViewModel> OnUpdateConnections;
         public event Action<ConnectionViewModel> OnAddConnection;
         public event Action<ConnectionViewModel> OnRemoveConnection;
+        public event Action<bool, NodeViewModel, int> OnConnectRequested;
     }
 }

@@ -24,6 +24,8 @@ namespace GraphEditor.Ui
             InitializeComponent();
 
             DataContext = new AreaViewModel();
+
+            MessageHub.Inst.Dispatcher = Application.Current.Dispatcher;
         }
 
         private AreaViewModel ViewModel => (AreaViewModel) DataContext;

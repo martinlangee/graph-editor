@@ -21,7 +21,6 @@ namespace GraphEditor.ViewModel
 
             OutConnections = new ObservableCollection<ConnectionViewModel>();
 
-            ConnectToCommand = new RelayCommand(o => ConnectToExec(), CanExecuteConnectTo);
             RemoveNodeCommand = new RelayCommand(o => RemoveExec());
 
             // todo: provisorisch
@@ -39,6 +38,11 @@ namespace GraphEditor.ViewModel
         }
 
         public AreaViewModel Area { get; }
+
+        internal void ConnectRequested(bool value, NodeViewModel sourceNode, int connectorIdx)
+        {
+            InConnectors.Where(conn => conn.Index % 2 == 0).ToList().ForEach(conn => conn.IsConnectRequested = value);
+        }
 
         public RelayCommand ConnectToCommand { get; }
         public RelayCommand RemoveNodeCommand { get; }
@@ -71,24 +75,16 @@ namespace GraphEditor.ViewModel
             set
             {
                 SetProperty<NodeViewModel, Point>(ref _location, value, nameof(Location),
-                    (vm, pt) => MessageHub.Inst.NodeLocationChanged(vm, pt));
+                    (node, pt) => MessageHub.Inst.NodeLocationChanged(this, pt));
             }
         }
 
-        public void ConnectToExec()
-        {
-        }
 
         public void RemoveExec()
         {
             new List<ConnectionViewModel>(OutConnections).ForEach(conn => conn.Remove());
             InConnections.ForEach(ic => ic.Remove());
-            Area.RemoveNode(this);
-        }
-
-        private bool CanExecuteConnectTo(object obj)
-        {
-            return Area.AnyFreeInputsFor(this);
+            MessageHub.Inst.RemoveNode(this);
         }
 
         private List<ConnectionViewModel> InConnections

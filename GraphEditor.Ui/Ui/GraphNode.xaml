@@ -6,15 +6,13 @@
              xmlns:vm="clr-namespace:GraphEditor.ViewModel"
              xmlns:tl="clr-namespace:GraphEditor.Tools"
              xmlns:ge="clr-namespace:GraphEditor"
-             mc:Ignorable="d"  d:DataContext="{d:DesignInstance vm:NodeViewModel}"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:NodeViewModel}"
              GotKeyboardFocus="UserControl_GotKeyboardFocus">
     <UserControl.Resources>
         <tl:BooleanToVisibilityConverter x:Key="BooleanConverter" TrueValue="Visible" FalseValue="Collapsed"/>
     </UserControl.Resources>
     <UserControl.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Connect to..." Command="{Binding ConnectToCommand}"/>
-            <Separator/>
             <MenuItem Header="Delete" Command="{Binding RemoveNodeCommand}"/>
         </ContextMenu>
     </UserControl.ContextMenu>

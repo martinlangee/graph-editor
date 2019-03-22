@@ -12,6 +12,9 @@ namespace GraphEditor.ViewModel
         {
             NodeVMs = new ObservableCollection<NodeViewModel>();
             AddNodeCommand = new RelayCommand(o => AddNodeExec());
+
+            MessageHub.Inst.OnRemoveNode += OnRemoveNode;
+            MessageHub.Inst.OnConnectRequested += OnConnectRequested;
         }
 
         public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
@@ -29,10 +32,14 @@ namespace GraphEditor.ViewModel
             return newNodeVm;
         }
 
-        public void RemoveNode(NodeViewModel nodeVm)
+        public void OnRemoveNode(NodeViewModel nodeVm)
         {
             NodeVMs.Remove(nodeVm);
-            MessageHub.Inst.RemoveNode(nodeVm);
+        }
+
+        private void OnConnectRequested(bool value, NodeViewModel sourceNode, int connectorIdx)
+        {
+            NodeVMs.Where(node => !node.Equals(sourceNode)).ToList().ForEach(node => node.ConnectRequested(value, sourceNode, connectorIdx));
         }
 
         public List<NodeViewModel> Selected
@@ -51,12 +58,6 @@ namespace GraphEditor.ViewModel
             {
                 nodeVm.IsSelected = false;
             }
-        }
-
-        internal bool AnyFreeInputsFor(NodeViewModel nodeVm)
-        {
-            //NodeVMs.Any(gn => gn.InConnectors.Any(conn => conn.)
-            return true;
         }
     }
 }
