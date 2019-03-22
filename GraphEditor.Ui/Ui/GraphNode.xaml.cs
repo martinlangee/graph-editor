@@ -5,13 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using GraphEditor.Tools;
 using GraphEditor.Ui;
 using GraphEditor.ViewModel;
@@ -28,11 +23,12 @@ namespace GraphEditor
             InitializeComponent();
         }
 
-        internal NodeViewModel ViewModel => (NodeViewModel)DataContext;
+        internal NodeViewModel ViewModel => (NodeViewModel) DataContext;
 
-        internal AreaViewModel AreaVm => ViewModel.Area;
+        private EditorArea _area;
+        internal EditorArea Area => _area = _area ?? (EditorArea) ((FrameworkElement) Parent).Parent;
 
-        internal EditorArea Area => (EditorArea) ((FrameworkElement) Parent).Parent;
+        internal AreaViewModel AreaVm => (AreaViewModel) Area.DataContext;
 
         private Point GetConnectorLocation(ItemsControl itemsCtrl, Visual container, int index, bool isInput)
         {

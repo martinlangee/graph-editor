@@ -9,12 +9,13 @@ namespace GraphEditor.ViewModel
 {
     public class NodeViewModel : BaseNotification
     {
+        private Func<List<NodeViewModel>> _onGetAllNodeVMs;
         private bool _isSelected = false;
         private Point _location;
 
-        public NodeViewModel(AreaViewModel area)
+        public NodeViewModel(Func<List<NodeViewModel>> onGetAllNodeVMs)
         {
-            Area = area;
+            _onGetAllNodeVMs = onGetAllNodeVMs;
 
             InConnectors = new ObservableCollection<ConnectorStateViewModel>();
             OutConnectors = new ObservableCollection<ConnectorStateViewModel>();
@@ -36,9 +37,6 @@ namespace GraphEditor.ViewModel
             OutConnections.Remove(connVm);
             MessageHub.Inst.RemoveConnection(connVm);
         }
-
-        // TODO: per inversion of control hier raus nehmen?
-        public AreaViewModel Area { get; }
 
         internal void ConnectRequested(bool value, NodeViewModel sourceNode, int connectorIdx, bool isOutBound)
         {
@@ -107,7 +105,7 @@ namespace GraphEditor.ViewModel
         {
             get
             {
-                var nodeVMs = new List<NodeViewModel>(Area.NodeVMs);
+                var nodeVMs = _onGetAllNodeVMs();
                 var result = new List<ConnectionViewModel>();
 
                 nodeVMs.Where(nv => !nv.Equals(this)).ToList().

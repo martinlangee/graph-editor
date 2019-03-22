@@ -33,7 +33,7 @@ namespace GraphEditor.ViewModel
 
         public NodeViewModel AddNodeExec(Action<NodeViewModel> initNode = null)
         {
-            var newNodeVm = new NodeViewModel(this);
+            var newNodeVm = new NodeViewModel(() => NodeVMs.ToList());
             initNode?.Invoke(newNodeVm);
             NodeVMs.Add(newNodeVm);
 
