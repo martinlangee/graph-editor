@@ -35,6 +35,10 @@ namespace GraphEditor.ViewModel
         internal void RemoveConnection(ConnectionViewModel connVm)
         {
             OutConnections.Remove(connVm);
+
+            OutConnectors[connVm.SourceConnector].IsConnected = false;
+            connVm.TargetNode.InConnectors[connVm.TargetConnector].IsConnected = false;
+
             MessageHub.Inst.RemoveConnection(connVm);
         }
 
