@@ -86,9 +86,11 @@ namespace GraphEditor.Ui
         {
             var line = new ArrowPolyline
             {
+                SnapsToDevicePixels = true,
                 Stroke = Brushes.DimGray,
-                StrokeThickness = 1.3,
-                HoverStrokeThickness = 3,
+                StrokeThickness = 1,
+                HoverStrokeThickness = 2.5,
+                HoverStroke = Brushes.DarkBlue,
                 HeadWidth = 8,
                 HeadHeight = 2,
                 BendPointSize = 6,

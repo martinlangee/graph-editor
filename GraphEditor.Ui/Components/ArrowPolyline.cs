@@ -23,6 +23,7 @@ namespace GraphEditor.Components
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         double _origStrokeThickness;
+        Brush _origStroke;
 
         public PointCollection Points
         {
@@ -63,6 +64,7 @@ namespace GraphEditor.Components
         }
 
         public double HoverStrokeThickness { get; set; }
+        public Brush HoverStroke { get; set; }
 
         public void AddBend(Point location)
         {
@@ -74,8 +76,12 @@ namespace GraphEditor.Components
             _isHovering = true;
 
             if (StrokeThickness != HoverStrokeThickness)
+            {
                 _origStrokeThickness = StrokeThickness;
+                _origStroke = Stroke;
+            }
             StrokeThickness = HoverStrokeThickness;
+            Stroke = HoverStroke;
         }
 
         private void ArrowLineMouseLeave(object sender, MouseEventArgs e)
@@ -84,18 +90,21 @@ namespace GraphEditor.Components
             {
                 _isHovering = false;
                 StrokeThickness = _origStrokeThickness;
+                Stroke = _origStroke;
             }
         }
 
         private void ArrowLineContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             StrokeThickness = HoverStrokeThickness;
+            Stroke = HoverStroke;
         }
 
         private void ArrowLineContextMenuClosing(object sender, ContextMenuEventArgs e)
         {
             _isHovering = false;
             StrokeThickness = _origStrokeThickness;
+            Stroke = _origStroke;
         }
 
         protected override Geometry DefiningGeometry
