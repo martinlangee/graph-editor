@@ -64,9 +64,14 @@ namespace GraphEditor.Tools
             OnRemoveConnection?.Invoke(connection);
         }
 
-        public void NotifyConnectRequested(bool value, NodeViewModel sourceNode, int connectorIdx, bool isOutBound)
+        public void NotifyConnectRequested(bool value, NodeViewModel sourceNode, int connIdx, bool isOutBound)
         {
-            OnConnectRequested?.Invoke(value, sourceNode, connectorIdx, isOutBound);
+            OnConnectRequested?.Invoke(value, sourceNode, connIdx, isOutBound);
+        }
+
+        public void CreateConnection(NodeViewModel targetNode, int connIdx)
+        {
+            OnCreateConnection?.Invoke(targetNode, connIdx);
         }
 
         public void Dispose()
@@ -84,5 +89,6 @@ namespace GraphEditor.Tools
         public event Action<ConnectionViewModel> OnAddConnection;
         public event Action<ConnectionViewModel> OnRemoveConnection;
         public event Action<bool, NodeViewModel, int, bool> OnConnectRequested;
+        public event Action<NodeViewModel, int> OnCreateConnection;
     }
 }

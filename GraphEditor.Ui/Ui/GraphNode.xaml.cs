@@ -39,7 +39,7 @@ namespace GraphEditor
             var item = itemsCtrl.Items[index];
             var conn = itemsCtrl.ItemContainerGenerator.ContainerFromItem(item).FindChild<Border>().FindChild<Border>();
             return conn.TransformToVisual(container).Transform(
-                new Point(isInput ? 0 : conn.ActualWidth, conn.ActualHeight / 2));
+                new Point(isInput ? 1 : conn.ActualWidth - 1, conn.ActualHeight / 2));
         }
 
         public Point InConnectorLocation(Visual container, int index)
@@ -94,13 +94,6 @@ namespace GraphEditor
         {
             Area.SelectedNodes.ForEach(gn => gn.ViewModel.IsSelected = false);
             ViewModel.IsSelected = true;
-        }
-
-        int conn = 0;
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (Area.SelectedNodes.Count == 2)
-                Area.SelectedNodes[0].ViewModel.AddOutConnection(conn, Area.SelectedNodes[1].ViewModel, conn++);
         }
     }
 }

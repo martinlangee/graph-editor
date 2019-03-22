@@ -102,7 +102,7 @@ namespace GraphEditor.Ui
             //line.Points.Add(new Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2));  // only test
             line.Points.Add(p2);
 
-            CreateLineContextMenu(line);
+            CreateConnectionContextMenu(line);
 
             _canvas.Children.Add(line);
         }
@@ -112,7 +112,7 @@ namespace GraphEditor.Ui
             _canvas.Children.Remove(LineOfModel(connectionVm));
         }
 
-        private void CreateLineContextMenu(ArrowPolyline line)
+        private void CreateConnectionContextMenu(ArrowPolyline line)
         {
             line.ContextMenu = new ContextMenu();
             line.ContextMenu.Items.Add(new MenuItem());

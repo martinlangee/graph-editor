@@ -22,16 +22,34 @@ namespace GraphEditor.ViewModel
             get { return _isConnecting; }
             set
             {
-                SetProperty<ConnectorStateViewModel, bool>(ref _isConnecting, value, nameof(IsConnecting),
-                    (node, connecting) => MessageHub.Inst.NotifyConnectRequested(connecting, _node, Index, IsOutBound));
+                if (value && IsConnectRequested)
+                {
+                    MessageHub.Inst.CreateConnection(_node, Index);
+                }
+                else
+                {
+                    if (!IsConnected || !value)
+                    {
+                        SetProperty<ConnectorStateViewModel, bool>(ref _isConnecting, value, nameof(IsConnecting),
+                            (node, connecting) => MessageHub.Inst.NotifyConnectRequested(connecting, _node, Index, IsOutBound));
+                    }
+                }
             }
         }
 
         public bool IsConnectRequested
         {
             get { return _isConnectRequested; }
-            set { SetProperty<ConnectorStateViewModel, bool>(ref _isConnectRequested, value, nameof(IsConnectRequested)); }
+            set
+            {
+                if (!IsConnected || !value)
+                {
+                    SetProperty<ConnectorStateViewModel, bool>(ref _isConnectRequested, value, nameof(IsConnectRequested));
+                }
+            }
         }
+
+        public bool IsConnected { get; set; }
 
         public bool IsOutBound { get; set; }
     }

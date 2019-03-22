@@ -11,7 +11,7 @@ namespace GraphEditor.ViewModel
         private struct ConnectingNodeData
         {
             internal NodeViewModel SourceNode;
-            internal int ConnectorIdx;
+            internal int ConnIdx;
             internal bool IsOutBound;
         }
 
@@ -24,6 +24,7 @@ namespace GraphEditor.ViewModel
 
             MessageHub.Inst.OnRemoveNode += OnRemoveNode;
             MessageHub.Inst.OnConnectRequested += OnConnectRequested;
+            MessageHub.Inst.OnCreateConnection += OnCreateConnection;
         }
 
         public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
@@ -46,27 +47,48 @@ namespace GraphEditor.ViewModel
             NodeVMs.Remove(nodeVm);
         }
 
-        private void OnConnectRequested(bool value, NodeViewModel sourceNode, int connectorIdx, bool isOutBound)
+        private void RevokeConnectRequestStatus()
         {
-            // first deactivate the connecting status of a former connecting node
             if (_connNode.SourceNode != null)
             {
                 if (_connNode.IsOutBound)
-                    _connNode.SourceNode.OutConnectors[_connNode.ConnectorIdx].IsConnecting = false;
+                    _connNode.SourceNode.OutConnectors[_connNode.ConnIdx].IsConnecting = false;
                 else
-                    _connNode.SourceNode.InConnectors[_connNode.ConnectorIdx].IsConnecting = false;
+                    _connNode.SourceNode.InConnectors[_connNode.ConnIdx].IsConnecting = false;
             }
+        }
 
-            NodeVMs.Where(node => !node.Equals(sourceNode)).ToList().ForEach(node => node.ConnectRequested(value, sourceNode, connectorIdx, isOutBound));
+        private void OnConnectRequested(bool value, NodeViewModel sourceNode, int connIdx, bool isOutBound)
+        {
+            // first deactivate the connecting status of a former connecting node
+            RevokeConnectRequestStatus();
+
+            NodeVMs.Where(node => !node.Equals(sourceNode)).ToList().ForEach(node => node.ConnectRequested(value, sourceNode, connIdx, isOutBound));
 
             if (value)
             {
                 _connNode.SourceNode = sourceNode;
-                _connNode.ConnectorIdx = connectorIdx;
+                _connNode.ConnIdx = connIdx;
                 _connNode.IsOutBound = isOutBound;
             }
             else
                 _connNode.SourceNode = null;
+        }
+
+        private void OnCreateConnection(NodeViewModel targetNode, int connIdx)
+        {
+            if (_connNode.SourceNode != null)
+            {
+                if (_connNode.IsOutBound)
+                {
+                    _connNode.SourceNode.AddOutConnection(_connNode.ConnIdx, targetNode, connIdx);
+                }
+                else
+                {
+                    targetNode.AddOutConnection(connIdx, _connNode.SourceNode, _connNode.ConnIdx);
+                }
+                RevokeConnectRequestStatus();
+            }
         }
 
         public List<NodeViewModel> Selected

@@ -72,6 +72,8 @@ namespace GraphEditor.ViewModel
         {
             var connVm = new ConnectionViewModel(this, targetConnVm, sourceConn, targetConn);
             OutConnections.Add(connVm);
+            OutConnectors[connVm.SourceConnector].IsConnected = true;
+            targetConnVm.InConnectors[connVm.TargetConnector].IsConnected = true;
             MessageHub.Inst.AddConnection(connVm);
         }
 
