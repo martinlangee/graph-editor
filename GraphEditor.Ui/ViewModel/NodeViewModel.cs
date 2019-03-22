@@ -38,18 +38,20 @@ namespace GraphEditor.ViewModel
             MessageHub.Inst.RemoveConnection(connVm);
         }
 
-        internal void ConnectRequested(bool value, NodeViewModel sourceNode, int connectorIdx, bool isOutBound)
+        internal void ConnectRequested(bool isConnecting, NodeViewModel sourceNode, int connectorIdx, bool isOutBound)
         {
             if (isOutBound)
             {
-                if (value)
+                if (isConnecting)
+                    // TODO: provisorisch; welche Connectors als Target erlaubt sind muss in konkreten Node-Klassen bestimmt werden
                     InConnectors.Where(conn => conn.Index % 2 == connectorIdx % 2).ToList().ForEach(conn => conn.IsConnectRequested = true);
                 else
                     InConnectors.ToList().ForEach(conn => conn.IsConnectRequested = false);
             }
             else
             {
-                if (value)
+                if (isConnecting)
+                    // TODO: provisorisch; welche Connectors als Target erlaubt sind muss in konkreten Node-Klassen bestimmt werden
                     OutConnectors.Where(conn => conn.Index % 2 == connectorIdx % 2).ToList().ForEach(conn => conn.IsConnectRequested = true);
                 else
                     OutConnectors.ToList().ForEach(conn => conn.IsConnectRequested = false);

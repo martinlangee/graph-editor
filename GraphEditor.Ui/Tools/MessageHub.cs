@@ -64,9 +64,9 @@ namespace GraphEditor.Tools
             OnRemoveConnection?.Invoke(connection);
         }
 
-        public void NotifyConnectRequested(bool value, NodeViewModel sourceNode, int connIdx, bool isOutBound)
+        public void NotifyConnectRequested(bool isConnecting, NodeViewModel sourceNode, int connIdx, bool isOutBound)
         {
-            OnConnectRequested?.Invoke(value, sourceNode, connIdx, isOutBound);
+            OnConnectRequested?.Invoke(isConnecting, sourceNode, connIdx, isOutBound);
         }
 
         public void CreateConnection(NodeViewModel targetNode, int connIdx)

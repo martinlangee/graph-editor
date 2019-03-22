@@ -58,14 +58,9 @@ namespace GraphEditor.ViewModel
             }
         }
 
-        private void OnConnectRequested(bool value, NodeViewModel sourceNode, int connIdx, bool isOutBound)
+        private void UpdateConnectingNodeData(bool isConnecting, NodeViewModel sourceNode, int connIdx, bool isOutBound)
         {
-            // first deactivate the connecting status of a former connecting node
-            RevokeConnectRequestStatus();
-
-            NodeVMs.Where(node => !node.Equals(sourceNode)).ToList().ForEach(node => node.ConnectRequested(value, sourceNode, connIdx, isOutBound));
-
-            if (value)
+            if (isConnecting)
             {
                 _connNode.SourceNode = sourceNode;
                 _connNode.ConnIdx = connIdx;
@@ -73,6 +68,16 @@ namespace GraphEditor.ViewModel
             }
             else
                 _connNode.SourceNode = null;
+        }
+
+        private void OnConnectRequested(bool isConnecting, NodeViewModel sourceNode, int connIdx, bool isOutBound)
+        {
+            // first deactivate the connecting status of a former connecting node
+            RevokeConnectRequestStatus();
+
+            NodeVMs.Where(node => !node.Equals(sourceNode)).ToList().ForEach(node => node.ConnectRequested(isConnecting, sourceNode, connIdx, isOutBound));
+
+            UpdateConnectingNodeData(isConnecting, sourceNode, connIdx, isOutBound);
         }
 
         private void OnCreateConnection(NodeViewModel targetNode, int connIdx)

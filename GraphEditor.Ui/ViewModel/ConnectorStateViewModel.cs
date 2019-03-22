@@ -31,7 +31,7 @@ namespace GraphEditor.ViewModel
                     if (!IsConnected || !value)
                     {
                         SetProperty<ConnectorStateViewModel, bool>(ref _isConnecting, value, nameof(IsConnecting),
-                            (node, connecting) => MessageHub.Inst.NotifyConnectRequested(connecting, _node, Index, IsOutBound));
+                            (n, isConnecting) => MessageHub.Inst.NotifyConnectRequested(isConnecting, _node, Index, IsOutBound));
                     }
                 }
             }
