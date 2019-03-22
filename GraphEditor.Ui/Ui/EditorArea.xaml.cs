@@ -169,7 +169,10 @@ namespace GraphEditor.Ui
 
         private void _canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            Application.Current.MainWindow.Cursor = Cursors.Arrow;
+
             var selectedNodes = ViewModel.NodeVMs.Where(nv => nv.IsSelected).ToList();
+            ViewModel.RevokeConnectRequestStatus();
             ViewModel.DeselectAll();
         }
 

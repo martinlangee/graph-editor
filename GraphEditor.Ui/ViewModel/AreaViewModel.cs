@@ -47,7 +47,7 @@ namespace GraphEditor.ViewModel
             NodeVMs.Remove(nodeVm);
         }
 
-        private void RevokeConnectRequestStatus()
+        public void RevokeConnectRequestStatus()
         {
             if (_connNode.SourceNode != null)
             {

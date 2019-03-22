@@ -7,7 +7,7 @@
              xmlns:tl="clr-namespace:GraphEditor.Tools"
              xmlns:ge="clr-namespace:GraphEditor"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:NodeViewModel}"
-             GotKeyboardFocus="UserControl_GotKeyboardFocus">
+             GotKeyboardFocus="GraphNode_GotKeyboardFocus">
     <UserControl.Resources>
         <tl:BooleanToVisibilityConverter x:Key="BooleanConverter" TrueValue="Visible" FalseValue="Collapsed"/>
     </UserControl.Resources>
@@ -33,7 +33,7 @@
             </Rectangle.Effect>
         </Rectangle>
         <Border Grid.Row="0" Height="10" Background="CadetBlue" Cursor="SizeAll" Margin="-1,0" 
-                MouseMove="UIElement_OnMouseMove" MouseLeftButtonUp="UIElement_OnMouseLeftButtonUp"/>
+                MouseMove="Border_OnMouseMove" MouseLeftButtonUp="Border_OnMouseLeftButtonUp"/>
         <Grid Grid.Row="4">
             <TextBlock Text="Comp X" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>

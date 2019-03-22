@@ -7,7 +7,7 @@
     <Border>
         <Border.Style>
             <Style TargetType="{x:Type Border}">
-                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="Border_PreviewMouseLeftButtonDown"/>
+                <EventSetter Event="PreviewMouseLeftButtonUp" Handler="Border_PreviewMouseLeftButtonUp"/>
                 <Setter Property="Tag" Value="In"/>
                 <Setter Property="Height" Value="10"/>
                 <Setter Property="Width" Value="10"/>

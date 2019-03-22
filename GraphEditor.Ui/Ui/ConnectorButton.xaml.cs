@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using GraphEditor.Tools;
 using GraphEditor.ViewModel;
@@ -18,9 +19,16 @@ namespace GraphEditor
             InitializeComponent();
         }
 
-        private void Border_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Border_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             ViewModel.IsConnecting = !ViewModel.IsConnecting;
+
+            if (ViewModel.IsConnecting)
+                Application.Current.MainWindow.Cursor = Cursors.UpArrow;
+            else
+                Application.Current.MainWindow.Cursor = Cursors.Arrow;
+
+            e.Handled = true;
         }
     }
 }

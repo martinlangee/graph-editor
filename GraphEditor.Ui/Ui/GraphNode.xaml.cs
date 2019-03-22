@@ -56,7 +56,7 @@ namespace GraphEditor
             e.Handled = true;
         }
 
-        private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
+        private void Border_OnMouseMove(object sender, MouseEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
@@ -77,7 +77,7 @@ namespace GraphEditor
             }
         }
 
-        private void UIElement_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void Border_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (Keyboard.Modifiers != ModifierKeys.Control)
                AreaVm.DeselectAll();
@@ -86,7 +86,7 @@ namespace GraphEditor
             e.Handled = true;
         }
 
-        private void UserControl_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void GraphNode_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             Area.SelectedNodes.ForEach(gn => gn.ViewModel.IsSelected = false);
             ViewModel.IsSelected = true;
