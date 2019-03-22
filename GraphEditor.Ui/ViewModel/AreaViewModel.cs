@@ -8,6 +8,15 @@ namespace GraphEditor.ViewModel
 {
     public class AreaViewModel: BaseNotification
     {
+        private struct ConnectingNodeData
+        {
+            internal NodeViewModel SourceNode;
+            internal int ConnectorIdx;
+            internal bool IsOutBound;
+        }
+
+        ConnectingNodeData _connNode;
+
         public AreaViewModel()
         {
             NodeVMs = new ObservableCollection<NodeViewModel>();
@@ -37,9 +46,27 @@ namespace GraphEditor.ViewModel
             NodeVMs.Remove(nodeVm);
         }
 
-        private void OnConnectRequested(bool value, NodeViewModel sourceNode, int connectorIdx)
+        private void OnConnectRequested(bool value, NodeViewModel sourceNode, int connectorIdx, bool isOutBound)
         {
-            NodeVMs.Where(node => !node.Equals(sourceNode)).ToList().ForEach(node => node.ConnectRequested(value, sourceNode, connectorIdx));
+            // first deactivate the connecting status of a former connecting node
+            if (_connNode.SourceNode != null)
+            {
+                if (_connNode.IsOutBound)
+                    _connNode.SourceNode.OutConnectors[_connNode.ConnectorIdx].IsConnecting = false;
+                else
+                    _connNode.SourceNode.InConnectors[_connNode.ConnectorIdx].IsConnecting = false;
+            }
+
+            NodeVMs.Where(node => !node.Equals(sourceNode)).ToList().ForEach(node => node.ConnectRequested(value, sourceNode, connectorIdx, isOutBound));
+
+            if (value)
+            {
+                _connNode.SourceNode = sourceNode;
+                _connNode.ConnectorIdx = connectorIdx;
+                _connNode.IsOutBound = isOutBound;
+            }
+            else
+                _connNode.SourceNode = null;
         }
 
         public List<NodeViewModel> Selected

@@ -37,11 +37,25 @@ namespace GraphEditor.ViewModel
             MessageHub.Inst.RemoveConnection(connVm);
         }
 
+        // TODO: per inversion of control hier raus nehmen?
         public AreaViewModel Area { get; }
 
-        internal void ConnectRequested(bool value, NodeViewModel sourceNode, int connectorIdx)
+        internal void ConnectRequested(bool value, NodeViewModel sourceNode, int connectorIdx, bool isOutBound)
         {
-            InConnectors.Where(conn => conn.Index % 2 == 0).ToList().ForEach(conn => conn.IsConnectRequested = value);
+            if (isOutBound)
+            {
+                if (value)
+                    InConnectors.Where(conn => conn.Index % 2 == connectorIdx % 2).ToList().ForEach(conn => conn.IsConnectRequested = true);
+                else
+                    InConnectors.ToList().ForEach(conn => conn.IsConnectRequested = false);
+            }
+            else
+            {
+                if (value)
+                    OutConnectors.Where(conn => conn.Index % 2 == connectorIdx % 2).ToList().ForEach(conn => conn.IsConnectRequested = true);
+                else
+                    OutConnectors.ToList().ForEach(conn => conn.IsConnectRequested = false);
+            }
         }
 
         public RelayCommand ConnectToCommand { get; }

@@ -4,77 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d">
-    <UserControl.Style>
-        <Style TargetType="{x:Type UserControl}">
-            <Setter Property="Content">
-                <Setter.Value>
-                    <Border>
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="Border_PreviewMouseLeftButtonDown"/>
-                                <Setter Property="Tag" Value="In"/>
-                                <Setter Property="Height" Value="10"/>
-                                <Setter Property="Width" Value="10"/>
-                                <Setter Property="Margin" Value="-5,0,0,5"/>
-                                <Setter Property="Background" Value="CornflowerBlue"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Height" Value="12"/>
-                                        <Setter Property="Width" Value="12"/>
-                                        <Setter Property="Margin" Value="-6,-1,-1,4"/>
-                                        <Setter Property="Background" Value="DeepSkyBlue"/>
-                                    </Trigger>
-                                    <DataTrigger Binding="{Binding IsConnecting}" Value="True">
-                                        <Setter Property="Height" Value="12"/>
-                                        <Setter Property="Width" Value="12"/>
-                                        <Setter Property="Margin" Value="-6,-1,-1,4"/>
-                                        <Setter Property="Background" Value="Coral"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsConnectRequested}" Value="True">
-                                        <Setter Property="Height" Value="10"/>
-                                        <Setter Property="Width" Value="10"/>
-                                        <Setter Property="Margin" Value="-5,0,0,5"/>
-                                        <Setter Property="Background" Value="Coral"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                    </Border>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsOutBound}">
-                    <Setter Property="Content">
-                        <Setter.Value>
-                            <Border>
-                                <Border.Style>
-                                    <Style TargetType="{x:Type Border}">
-                                        <Setter Property="Tag" Value="Out"/>
-                                        <Setter Property="Height" Value="10" />
-                                        <Setter Property="Width" Value="10" />
-                                        <Setter Property="Margin" Value="0,0,-5,5"/>
-                                        <Setter Property="Background" Value="CornflowerBlue" />
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Height" Value="12" />
-                                                <Setter Property="Width" Value="12" />
-                                                <Setter Property="Margin" Value="-1,-1,-6,4"/>
-                                                <Setter Property="Background" Value="DeepSkyBlue" />
-                                            </Trigger>
-                                            <DataTrigger Binding="{Binding IsConnecting}" Value="True">
-                                                <Setter Property="Height" Value="12" />
-                                                <Setter Property="Width" Value="12" />
-                                                <Setter Property="Margin" Value="-1,-1,-6,4"/>
-                                                <Setter Property="Background" Value="Coral" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                            </Border>
-                        </Setter.Value>
-                    </Setter>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Style>
+    <Border>
+        <Border.Style>
+            <Style TargetType="{x:Type Border}">
+                <EventSetter Event="PreviewMouseLeftButtonDown" Handler="Border_PreviewMouseLeftButtonDown"/>
+                <Setter Property="Tag" Value="In"/>
+                <Setter Property="Height" Value="10"/>
+                <Setter Property="Width" Value="10"/>
+                <Setter Property="Margin" Value="-5,0,0,5"/>
+                <Setter Property="Background" Value="CornflowerBlue"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Height" Value="12"/>
+                        <Setter Property="Width" Value="12"/>
+                        <Setter Property="Margin" Value="-6,-1,-1,4"/>
+                        <Setter Property="Background" Value="DeepSkyBlue"/>
+                    </Trigger>
+                    <DataTrigger Binding="{Binding IsConnecting}" Value="True">
+                        <Setter Property="Background" Value="Coral"/>
+                        <Setter Property="BorderBrush" Value="Red"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsConnectRequested}" Value="True">
+                        <Setter Property="Background" Value="Coral"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+    </Border>
 </UserControl>
