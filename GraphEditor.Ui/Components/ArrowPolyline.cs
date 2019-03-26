@@ -22,9 +22,6 @@ namespace GraphEditor.Components
         public static readonly DependencyProperty BendPointSizeProperty = DependencyProperty.Register(nameof(BendPointSize), typeof(double), typeof(ArrowPolyline),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        double _origStrokeThickness;
-        Brush _origStroke;
-
         public PointCollection Points
         {
             get { return (PointCollection)GetValue(PointsProperty); }
@@ -53,26 +50,23 @@ namespace GraphEditor.Components
         }
 
         bool _isHovering;
+        double _origStrokeThickness;
+        Brush _origStroke;
 
         public ArrowPolyline()
         {
             Points = new PointCollection();
 
-            MouseMove += ArrowLineMouseMove;
-            MouseLeave += ArrowLineMouseLeave;
-            ContextMenuOpening += ArrowLineContextMenuOpening;
-            ContextMenuClosing += ArrowLineContextMenuClosing;
+            MouseMove += ArrowLine_MouseMove;
+            MouseLeave += ArrowLine_MouseLeave;
+            ContextMenuOpening += ArrowLine_ContextMenuOpening;
+            ContextMenuClosing += ArrowLine_ContextMenuClosing;
         }
 
         public double HoverStrokeThickness { get; set; }
         public Brush HoverStroke { get; set; }
 
-        public void AddBend(Point location)
-        {
-            // todo
-        }
-
-        private void ArrowLineMouseMove(object sender, MouseEventArgs e)
+        private void ArrowLine_MouseMove(object sender, MouseEventArgs e)
         {
             _isHovering = true;
 
@@ -85,7 +79,7 @@ namespace GraphEditor.Components
             Stroke = HoverStroke;
         }
 
-        private void ArrowLineMouseLeave(object sender, MouseEventArgs e)
+        private void ArrowLine_MouseLeave(object sender, MouseEventArgs e)
         {
             if (ContextMenu == null || !ContextMenu.IsOpen)
             {
@@ -95,13 +89,13 @@ namespace GraphEditor.Components
             }
         }
 
-        private void ArrowLineContextMenuOpening(object sender, ContextMenuEventArgs e)
+        private void ArrowLine_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
             StrokeThickness = HoverStrokeThickness;
             Stroke = HoverStroke;
         }
 
-        private void ArrowLineContextMenuClosing(object sender, ContextMenuEventArgs e)
+        private void ArrowLine_ContextMenuClosing(object sender, ContextMenuEventArgs e)
         {
             _isHovering = false;
             StrokeThickness = _origStrokeThickness;
@@ -113,8 +107,10 @@ namespace GraphEditor.Components
             get
             {
                 // Create a StreamGeometry for describing the shape
-                StreamGeometry geometry = new StreamGeometry();
-                geometry.FillRule = FillRule.EvenOdd;
+                StreamGeometry geometry = new StreamGeometry
+                {
+                    FillRule = FillRule.EvenOdd
+                };
 
                 using (StreamGeometryContext context = geometry.Open())
                 {
@@ -147,17 +143,17 @@ namespace GraphEditor.Components
                 pt2.X + (HeadWidth * cost + HeadHeight * sint),
                 pt2.Y - (HeadHeight * cost - HeadWidth * sint));
 
-            context.BeginFigure(pt1, true, false);
-
-            foreach (var pt in Points)
-            {
-                context.LineTo(pt, true, true);
-            }
-            context.LineTo(pt3, true, true);
+            context.BeginFigure(pt3, true, false);
             context.LineTo(pt2, true, true);
             context.LineTo(pt4, true, true);
 
-            if (!_isHovering || Points.Count < 3) return;
+            context.BeginFigure(Points[0], true, false);
+            for (int zPt = 1; zPt < Points.Count; zPt++)
+            {
+                context.LineTo(Points[zPt], true, true);
+            }
+
+            if (!_isHovering || Points.Count < 3 || BendPointSize.Equals(0.0)) return;
 
             // draw bend points if mouse is hovering
             var bendPtDelta = BendPointSize / 2;
@@ -165,12 +161,11 @@ namespace GraphEditor.Components
             for (var zPt = 1; zPt < Points.Count - 1; zPt++)
             {
                 var pt = Points[zPt];
-                context.BeginFigure(new Point(pt.X - bendPtDelta, pt.Y - bendPtDelta), isFilled: true, isClosed: true);
+                context.BeginFigure(new Point(pt.X - bendPtDelta, pt.Y - bendPtDelta), true, true);
                 context.LineTo(new Point(pt.X - bendPtDelta, pt.Y + bendPtDelta), true, true);
                 context.LineTo(new Point(pt.X + bendPtDelta, pt.Y + bendPtDelta), true, true);
                 context.LineTo(new Point(pt.X + bendPtDelta, pt.Y - bendPtDelta), true, true);
             }
-
         }
     }
 }

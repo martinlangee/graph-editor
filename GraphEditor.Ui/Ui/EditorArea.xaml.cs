@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
@@ -20,6 +21,9 @@ namespace GraphEditor.Ui
     /// </summary>
     public partial class EditorArea : UserControl
     {
+        Point _lineContextMenuOrigin;
+        int _draggingBendPoint;
+
         public EditorArea()
         {
             InitializeComponent();
@@ -89,14 +93,18 @@ namespace GraphEditor.Ui
             {
                 SnapsToDevicePixels = true,
                 Stroke = Brushes.DimGray,
-                StrokeThickness = 1,
-                HoverStrokeThickness = 2.5,
+                StrokeThickness = 1.2,
+                HoverStrokeThickness = 2.0,
                 HoverStroke = Brushes.DarkBlue,
                 HeadWidth = 8,
                 HeadHeight = 2,
-                BendPointSize = 6,
-                DataContext = connectionVm
+                BendPointSize = 8,
+                DataContext = connectionVm,
             };
+
+            line.MouseLeftButtonDown += Line_MouseLeftButtonDown;
+            line.MouseMove += Line_MouseMove;
+            line.MouseLeftButtonUp += Line_MouseLeftButtonUp;
 
             CreateConnectionContextMenu(line);
             CreateLinePointsBinding(line);
@@ -105,10 +113,29 @@ namespace GraphEditor.Ui
             var p2 = NodeOfModel(connectionVm.TargetNode).InConnectorLocation(_canvas, connectionVm.TargetConnector);
 
             connectionVm.AddPoint(p1);
-            //line.Points.Add(new Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2));  // only test
             connectionVm.AddPoint(p2);
 
             _canvas.Children.Add(line);
+        }
+
+        private void Line_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _draggingBendPoint = ((ConnectionViewModel) ((ArrowPolyline) sender).DataContext).NearestBendPointIndex(Mouse.GetPosition(_canvas));
+        }
+
+        private void Line_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_draggingBendPoint >= 0)
+            {
+                ((ConnectionViewModel) ((ArrowPolyline) sender).DataContext).SetPoint(_draggingBendPoint, Mouse.GetPosition(_canvas));
+                Mouse.Capture((ArrowPolyline) sender);
+            }
+        }
+
+        private void Line_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Mouse.Capture(null);
+            _draggingBendPoint = -1;
         }
 
         private void OnRemoveConnection(ConnectionViewModel connectionVm)
@@ -122,11 +149,12 @@ namespace GraphEditor.Ui
             line.ContextMenu.Items.Add(new MenuItem());
             line.ContextMenu.Items.Add(new Separator());
             line.ContextMenu.Items.Add(new MenuItem());
+            line.ContextMenu.Opened += (s, e) => _lineContextMenuOrigin = Mouse.GetPosition(_canvas);
 
             var item = (MenuItem) line.ContextMenu.Items[0];
             item.DataContext = line.DataContext;
             item.Header = "Bend line here";
-            item.Click += LineBendClick;
+            item.Click += BendLineClick;
 
             item = (MenuItem) line.ContextMenu.Items[2];
             item.DataContext = line.DataContext;
@@ -149,13 +177,13 @@ namespace GraphEditor.Ui
 
         private void LineDeleteClick(object sender, RoutedEventArgs e)
         {
-            var connVm = (ConnectionViewModel)((FrameworkElement)sender).DataContext;
+            var connVm = (ConnectionViewModel) ((FrameworkElement) sender).DataContext;
             connVm.SourceNode.RemoveConnection(connVm);
         }
 
-        private void LineBendClick(object sender, RoutedEventArgs e)
+        private void BendLineClick(object sender, RoutedEventArgs e)
         {
-            // TODO ((ConnectionViewModel)((ArrowPolyline)sender).DataContext).InsertPoint(1, new Point(200, 200));
+            ((ConnectionViewModel) ((MenuItem) sender).DataContext).InsertPointNear(_lineContextMenuOrigin);
         }
 
         private void SetDragObjectPosition(DragEventArgs e)
