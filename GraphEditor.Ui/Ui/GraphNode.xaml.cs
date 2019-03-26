@@ -35,7 +35,7 @@ namespace GraphEditor
             var item = itemsCtrl.Items[index];
             var conn = itemsCtrl.ItemContainerGenerator.ContainerFromItem(item).FindChild<Border>().FindChild<Border>();
             return conn.TransformToVisual(container).Transform(
-                new Point(isInput ? 1 : conn.ActualWidth - 1, conn.ActualHeight / 2));
+                new Point(isInput ? 0 : conn.ActualWidth - 2, conn.ActualHeight / 2));
         }
 
         public Point InConnectorLocation(Visual container, int index)
@@ -66,6 +66,8 @@ namespace GraphEditor
                     AreaVm.DeselectAll();
 
                 ViewModel.IsSelected = true;
+
+                AreaVm.RevokeConnectRequestStatus();
 
                 var pointsToScreen = AreaVm.Selected.Select(nodeVm => Mouse.GetPosition(Area.NodeOfModel(nodeVm))).ToList();
 

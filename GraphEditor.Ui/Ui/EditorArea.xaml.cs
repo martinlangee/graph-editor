@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using GraphEditor.Components;
+using GraphEditor.Converter;
 using GraphEditor.Tools;
 using GraphEditor.ViewModel;
 
@@ -17,8 +20,6 @@ namespace GraphEditor.Ui
     /// </summary>
     public partial class EditorArea : UserControl
     {
-        Path _connLine;
-
         public EditorArea()
         {
             InitializeComponent();
@@ -73,11 +74,11 @@ namespace GraphEditor.Ui
                 var connVm = (ConnectionViewModel)line.DataContext;
                 if (nodeVm.Equals(connVm.SourceNode))
                 {
-                    line.Points[0] = node.OutConnectorLocation(_canvas, connVm.SourceConnector);
+                    connVm.SetPoint(0, node.OutConnectorLocation(_canvas, connVm.SourceConnector));
                 }
                 if (nodeVm.Equals(connVm.TargetNode))
                 {
-                    line.Points[line.Points.Count - 1] = node.InConnectorLocation(_canvas, connVm.TargetConnector);
+                    connVm.SetPoint(connVm.Points.Count - 1, node.InConnectorLocation(_canvas, connVm.TargetConnector));
                 }
             }
         }
@@ -97,14 +98,15 @@ namespace GraphEditor.Ui
                 DataContext = connectionVm
             };
 
+            CreateConnectionContextMenu(line);
+            CreateLinePointsBinding(line);
+
             var p1 = NodeOfModel(connectionVm.SourceNode).OutConnectorLocation(_canvas, connectionVm.SourceConnector);
             var p2 = NodeOfModel(connectionVm.TargetNode).InConnectorLocation(_canvas, connectionVm.TargetConnector);
 
-            line.Points.Add(p1);
+            connectionVm.AddPoint(p1);
             //line.Points.Add(new Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2));  // only test
-            line.Points.Add(p2);
-
-            CreateConnectionContextMenu(line);
+            connectionVm.AddPoint(p2);
 
             _canvas.Children.Add(line);
         }
@@ -121,15 +123,28 @@ namespace GraphEditor.Ui
             line.ContextMenu.Items.Add(new Separator());
             line.ContextMenu.Items.Add(new MenuItem());
 
-            var item = (MenuItem)line.ContextMenu.Items[0];
+            var item = (MenuItem) line.ContextMenu.Items[0];
             item.DataContext = line.DataContext;
             item.Header = "Bend line here";
             item.Click += LineBendClick;
 
-            item = (MenuItem)line.ContextMenu.Items[2];
+            item = (MenuItem) line.ContextMenu.Items[2];
             item.DataContext = line.DataContext;
             item.Header = "Delete";
             item.Click += LineDeleteClick;
+        }
+
+        private void CreateLinePointsBinding(ArrowPolyline line)
+        {
+            Binding pointsBinding = new Binding
+            {
+                Source = line.DataContext,
+                Path = new PropertyPath(nameof(line.Points)),
+                Mode = BindingMode.OneWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
+                Converter = new ListToPointCollectionConverter()
+            };
+            BindingOperations.SetBinding(line, ArrowPolyline.PointsProperty, pointsBinding);
         }
 
         private void LineDeleteClick(object sender, RoutedEventArgs e)
@@ -140,7 +155,7 @@ namespace GraphEditor.Ui
 
         private void LineBendClick(object sender, RoutedEventArgs e)
         {
-            // TODO
+            // TODO ((ConnectionViewModel)((ArrowPolyline)sender).DataContext).InsertPoint(1, new Point(200, 200));
         }
 
         private void SetDragObjectPosition(DragEventArgs e)

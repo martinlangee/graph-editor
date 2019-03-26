@@ -10,16 +10,16 @@ namespace GraphEditor.Components
 {
     class ArrowPolyline : Shape
     {
-        public static readonly DependencyProperty PointsProperty = DependencyProperty.Register("Points", typeof(PointCollection), typeof(ArrowPolyline),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
+        public static readonly DependencyProperty PointsProperty = DependencyProperty.Register(nameof(Points), typeof(PointCollection), typeof(ArrowPolyline),
+            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsArrange | FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        public static readonly DependencyProperty HeadWidthProperty = DependencyProperty.Register("HeadWidth", typeof(double), typeof(ArrowPolyline),
+        public static readonly DependencyProperty HeadWidthProperty = DependencyProperty.Register(nameof(HeadWidth), typeof(double), typeof(ArrowPolyline),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        public static readonly DependencyProperty HeadHeightProperty = DependencyProperty.Register("HeadHeight", typeof(double), typeof(ArrowPolyline),
+        public static readonly DependencyProperty HeadHeightProperty = DependencyProperty.Register(nameof(HeadHeight), typeof(double), typeof(ArrowPolyline),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
-        public static readonly DependencyProperty BendPointSizeProperty = DependencyProperty.Register("BendPointSize", typeof(double), typeof(ArrowPolyline),
+        public static readonly DependencyProperty BendPointSizeProperty = DependencyProperty.Register(nameof(BendPointSize), typeof(double), typeof(ArrowPolyline),
             new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         double _origStrokeThickness;
@@ -28,7 +28,7 @@ namespace GraphEditor.Components
         public PointCollection Points
         {
             get { return (PointCollection)GetValue(PointsProperty); }
-            set { SetValue(PointsProperty, value); }
+            private set { SetValue(PointsProperty, value); }
         }
 
         [TypeConverter(typeof(LengthConverter))]
@@ -57,6 +57,7 @@ namespace GraphEditor.Components
         public ArrowPolyline()
         {
             Points = new PointCollection();
+
             MouseMove += ArrowLineMouseMove;
             MouseLeave += ArrowLineMouseLeave;
             ContextMenuOpening += ArrowLineContextMenuOpening;
@@ -129,7 +130,7 @@ namespace GraphEditor.Components
 
         private void InternalDrawArrowGeometry(StreamGeometryContext context)
         {
-            if (Points.Count < 2) return;
+            if (Points == null || Points.Count < 2) return;
 
             var pt1 = Points[Points.Count - 2];
             var pt2 = Points[Points.Count - 1];
@@ -158,6 +159,7 @@ namespace GraphEditor.Components
 
             if (!_isHovering || Points.Count < 3) return;
 
+            // draw bend points if mouse is hovering
             var bendPtDelta = BendPointSize / 2;
 
             for (var zPt = 1; zPt < Points.Count - 1; zPt++)
