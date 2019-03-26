@@ -29,7 +29,6 @@ namespace GraphEditor.Tools
                     foreach (var item in _actNodePos)
                     {
                         OnNodeLocationChanged?.Invoke(item.Key, item.Value);
-                        OnUpdateConnections?.Invoke(item.Key);
                     }
                 });
         }
@@ -85,7 +84,6 @@ namespace GraphEditor.Tools
         public event Action<NodeViewModel> OnAddNode;
         public event Action<NodeViewModel> OnRemoveNode;
         public event Action<NodeViewModel, Point> OnNodeLocationChanged;
-        public event Action<NodeViewModel> OnUpdateConnections;
         public event Action<ConnectionViewModel> OnAddConnection;
         public event Action<ConnectionViewModel> OnRemoveConnection;
         public event Action<bool, NodeViewModel, int, bool> OnConnectRequested;
