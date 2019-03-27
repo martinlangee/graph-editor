@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using GraphEditor.Components;
 using GraphEditor.Converter;
 using GraphEditor.Tools;
@@ -22,7 +19,10 @@ namespace GraphEditor.Ui
     public partial class EditorArea : UserControl
     {
         Point _lineContextMenuOrigin;
-        int _draggingBendPoint;
+        int _draggingBendPoint = -1;
+
+        const int TagAddBendPoint = 100;
+        const int TagRemoveBendPoint = 200;
 
         public EditorArea()
         {
@@ -75,7 +75,7 @@ namespace GraphEditor.Ui
             // update concerned connection lines
             foreach (var line in ConnectionLines)
             {
-                var connVm = (ConnectionViewModel)line.DataContext;
+                var connVm = (ConnectionViewModel) line.DataContext;
                 if (nodeVm.Equals(connVm.SourceNode))
                 {
                     connVm.SetPoint(0, node.OutConnectorLocation(_canvas, connVm.SourceConnector));
@@ -118,16 +118,26 @@ namespace GraphEditor.Ui
             _canvas.Children.Add(line);
         }
 
+        private ConnectionViewModel ConnViewModelFromMenuItem(object sender)
+        {
+            return (ConnectionViewModel) ((MenuItem) sender).DataContext;
+        }
+
+        private ConnectionViewModel ConnViewModelFromLine(object sender)
+        {
+            return (ConnectionViewModel) ((ArrowPolyline) sender).DataContext;
+        }
+
         private void Line_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _draggingBendPoint = ((ConnectionViewModel) ((ArrowPolyline) sender).DataContext).NearestBendPointIndex(Mouse.GetPosition(_canvas));
+            _draggingBendPoint = ConnViewModelFromLine(sender).NearestBendPointIndex(Mouse.GetPosition(_canvas));
         }
 
         private void Line_MouseMove(object sender, MouseEventArgs e)
         {
             if (_draggingBendPoint >= 0)
             {
-                ((ConnectionViewModel) ((ArrowPolyline) sender).DataContext).SetPoint(_draggingBendPoint, Mouse.GetPosition(_canvas));
+                ConnViewModelFromLine(sender).SetPoint(_draggingBendPoint, Mouse.GetPosition(_canvas));
                 Mouse.Capture((ArrowPolyline) sender);
             }
         }
@@ -147,18 +157,28 @@ namespace GraphEditor.Ui
         {
             line.ContextMenu = new ContextMenu();
             line.ContextMenu.Items.Add(new MenuItem());
+            line.ContextMenu.Items.Add(new MenuItem());
             line.ContextMenu.Items.Add(new Separator());
             line.ContextMenu.Items.Add(new MenuItem());
-            line.ContextMenu.Opened += (s, e) => _lineContextMenuOrigin = Mouse.GetPosition(_canvas);
+            line.ContextMenu.Tag = line;
+            line.ContextMenu.Opened += LineMenu_ContextMenuOpening;
 
-            var item = (MenuItem) line.ContextMenu.Items[0];
+            var item = (MenuItem) line.ContextMenu.Items[1];
             item.DataContext = line.DataContext;
-            item.Header = "Bend line here";
-            item.Click += BendLineClick;
+            item.Header = "Bend connection here";
+            item.Tag = TagAddBendPoint;
+            item.Click += AddBendPointClick;
 
-            item = (MenuItem) line.ContextMenu.Items[2];
+            item = (MenuItem) line.ContextMenu.Items[0];
             item.DataContext = line.DataContext;
-            item.Header = "Delete";
+            item.Header = "Straighten connection here";
+            item.Tag = TagRemoveBendPoint;
+            item.Click += RemoveBendPointClick; ;
+
+            item = (MenuItem) line.ContextMenu.Items[3];
+            item.DataContext = line.DataContext;
+            item.Header = "Delete connection";
+            item.Tag = 0;
             item.Click += LineDeleteClick;
         }
 
@@ -175,15 +195,41 @@ namespace GraphEditor.Ui
             BindingOperations.SetBinding(line, ArrowPolyline.PointsProperty, pointsBinding);
         }
 
+        private MenuItem FindMenuItemByTag(object tag, ContextMenu contextMenu)
+        {
+            foreach (var item in contextMenu.Items.Cast<MenuItem>())
+            {
+                if (tag.Equals(item.Tag))
+                    return item;
+            }
+            return null;
+        }
+
+        private void LineMenu_ContextMenuOpening(object sender, RoutedEventArgs e)
+        {
+            _lineContextMenuOrigin = Mouse.GetPosition(_canvas);
+
+            var contextMenu = (ContextMenu) sender;
+            var isNearBendPoint = ConnViewModelFromLine(contextMenu.Tag).NearestBendPointIndex(Mouse.GetPosition(_canvas)) > -1;
+
+            FindMenuItemByTag(TagAddBendPoint, contextMenu).Visibility = isNearBendPoint ? Visibility.Collapsed : Visibility.Visible;
+            FindMenuItemByTag(TagRemoveBendPoint, contextMenu).Visibility = isNearBendPoint ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void AddBendPointClick(object sender, RoutedEventArgs e)
+        {
+            ConnViewModelFromMenuItem(sender).InsertPointNear(_lineContextMenuOrigin);
+        }
+
+        private void RemoveBendPointClick(object sender, RoutedEventArgs e)
+        {
+            ConnViewModelFromMenuItem(sender).RemovePointNear(_lineContextMenuOrigin);
+        }
+
         private void LineDeleteClick(object sender, RoutedEventArgs e)
         {
             var connVm = (ConnectionViewModel) ((FrameworkElement) sender).DataContext;
             connVm.SourceNode.RemoveConnection(connVm);
-        }
-
-        private void BendLineClick(object sender, RoutedEventArgs e)
-        {
-            ((ConnectionViewModel) ((MenuItem) sender).DataContext).InsertPointNear(_lineContextMenuOrigin);
         }
 
         private void SetDragObjectPosition(DragEventArgs e)
@@ -208,6 +254,9 @@ namespace GraphEditor.Ui
         protected override void OnDrop(DragEventArgs e)
         {
             SetDragObjectPosition(e);
+
+            Console.WriteLine("Capture OFF (OnDrop)");
+            Mouse.Capture(null);
         }
 
         private void _canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)

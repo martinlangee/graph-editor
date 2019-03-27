@@ -42,24 +42,6 @@ namespace GraphEditor.ViewModel
             FirePropertyChanged(nameof(Points));
         }
 
-        public void SetPoint(int index, Point point)
-        {
-            _points[index] = point;
-            NotifyPointsChanged();
-        }
-
-        public void AddPoint(Point point)
-        {
-            _points.Add(point);
-            NotifyPointsChanged();
-        }
-
-        public void InsertPoint(int index, Point point)
-        {
-            _points.Insert(index, point);
-            NotifyPointsChanged();
-        }
-
         private Point GetClosestPointOnLine(Point start, Point end, Point p)
         {
             double length = (start - end).LengthSquared;
@@ -103,10 +85,21 @@ namespace GraphEditor.ViewModel
             return _points.IndexOf(nearest.Item1);
         }
 
-        public void InsertPointNear(Point point)
+        public void SetPoint(int index, Point point)
         {
-            var closestPoint = GetClosestPointOnPolyline(point);
-            _points.Insert(closestPoint.Item1, closestPoint.Item2);
+            _points[index] = point;
+            NotifyPointsChanged();
+        }
+
+        public void AddPoint(Point point)
+        {
+            _points.Add(point);
+            NotifyPointsChanged();
+        }
+
+        public void InsertPoint(int index, Point point)
+        {
+            _points.Insert(index, point);
             NotifyPointsChanged();
         }
 
@@ -120,6 +113,18 @@ namespace GraphEditor.ViewModel
         {
             _points.RemoveAt(index);
             NotifyPointsChanged();
+        }
+
+        public void InsertPointNear(Point point)
+        {
+            var closestPoint = GetClosestPointOnPolyline(point);
+            InsertPoint(closestPoint.Item1, closestPoint.Item2);
+        }
+
+        public void RemovePointNear(Point point)
+        {
+            var closestPoint = GetClosestPointOnPolyline(point);
+            RemovePointAt(closestPoint.Item1);
         }
 
         public void Remove()
