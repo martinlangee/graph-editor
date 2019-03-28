@@ -4,11 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2C246BB5-5076-4011-99B3-9B22683A5995}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GraphEditor.Ui</RootNamespace>
-    <AssemblyName>GraphEditor.Ui</AssemblyName>
+    <ProjectGuid>{0BA11BF6-007F-4F11-AA3A-7B01949AE122}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>DebugApp</RootNamespace>
+    <AssemblyName>DebugApp</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,7 +37,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -53,37 +51,21 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\ArrowPolyline.cs" />
-    <Compile Include="Converters\ListToPointCollectionConverter.cs" />
-    <Compile Include="Commands\RelayCommand.cs" />
-    <Compile Include="Converters\BooleanConverter.cs" />
-    <Compile Include="Tools\MessageHub.cs" />
-    <Compile Include="Tools\VisualTreeHelpers.cs" />
-    <Compile Include="ViewModel\AreaViewModel.cs" />
-    <Compile Include="ViewModel\BaseNotification.cs" />
-    <Compile Include="ViewModel\ConnectionViewModel.cs" />
-    <Compile Include="ViewModel\ConnectorStateViewModel.cs" />
-    <Compile Include="ViewModel\NodeViewModel.cs" />
-    <Page Include="Ui\EditorArea.xaml">
-      <SubType>Designer</SubType>
+    <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Ui\GraphNode.xaml">
       <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Ui\ConnectorButton.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Ui\EditorArea.xaml.cs">
-      <DependentUpon>EditorArea.xaml</DependentUpon>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Ui\GraphNode.xaml.cs">
-      <DependentUpon>GraphNode.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Ui\ConnectorButton.xaml.cs">
-      <DependentUpon>ConnectorButton.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -110,9 +92,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GraphEditor.Services\GraphEditor.Services.csproj">
-      <Project>{880fd03e-9ae7-454f-bb66-5704d097c7f6}</Project>
-      <Name>GraphEditor.Services</Name>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GraphEditor.Ui\GraphEditor.Ui.csproj">
+      <Project>{2c246bb5-5076-4011-99b3-9b22683a5995}</Project>
+      <Name>GraphEditor.Ui</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

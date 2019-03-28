@@ -1,4 +1,5 @@
-﻿using GraphEditor.Tools;
+﻿using GraphEditor.Commands;
+using GraphEditor.Tools;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

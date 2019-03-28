@@ -7,9 +7,22 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using GraphEditor.Components;
-using GraphEditor.Converter;
+using GraphEditor.Converters;
 using GraphEditor.Tools;
 using GraphEditor.ViewModel;
+
+
+/* ----------------------------------------------------------------------------------
+ * TODO:
+ *  Konkrete Node-Klassen
+ *  Visualisierung der konkreten Node auf der "Kachel"
+ *  Konfigurationsdialoge für konkrete Nodeklassen
+ *  Serialisierung/Deserialisierung
+ *  Gitter-Rastung: Rastung auf Gitterkoordinaten, Gitterpunkte darstellen
+ * 
+ * 
+ * ------------------------------------------------------------------------------- */
+
 
 namespace GraphEditor.Ui
 {

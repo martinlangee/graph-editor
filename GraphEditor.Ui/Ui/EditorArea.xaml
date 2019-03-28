@@ -9,12 +9,18 @@
              AllowDrop="True"
              Loaded="Editor_Loaded"
              Unloaded="Editor_Unloaded">
-    <Canvas x:Name="_canvas" Background="LightYellow" 
-            MouseLeftButtonUp="_canvas_OnMouseLeftButtonUp">
-        <Canvas.ContextMenu>
-            <ContextMenu>
-                <MenuItem Header="Add element" Command="{Binding AddNodeCommand}"/>
-            </ContextMenu>
-        </Canvas.ContextMenu>
-    </Canvas>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Canvas Grid.Row="1" x:Name="_canvas" Background="LightYellow" 
+                MouseLeftButtonUp="_canvas_OnMouseLeftButtonUp">
+            <Canvas.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add element" Command="{Binding AddNodeCommand}"/>
+                </ContextMenu>
+            </Canvas.ContextMenu>
+        </Canvas>
+    </Grid>
 </UserControl>

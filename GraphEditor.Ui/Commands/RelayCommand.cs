@@ -6,7 +6,7 @@
 using System;
 using System.Windows.Input;
 
-namespace GraphEditor
+namespace GraphEditor.Commands
 {
     /// <summary>
     /// To register commands in MMVM pattern

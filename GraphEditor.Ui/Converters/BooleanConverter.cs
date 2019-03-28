@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace GraphEditor.Tools
+namespace GraphEditor.Converters
 {
     public class BooleanConverter<T> : IValueConverter
     {

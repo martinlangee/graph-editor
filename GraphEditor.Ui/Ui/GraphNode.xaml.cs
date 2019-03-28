@@ -26,7 +26,7 @@ namespace GraphEditor
         internal NodeViewModel ViewModel => (NodeViewModel) DataContext;
 
         private EditorArea _area;
-        internal EditorArea Area => _area = _area ?? (EditorArea) ((FrameworkElement) Parent).Parent;
+        internal EditorArea Area => _area = _area ?? this.FindAncestor<EditorArea>();
 
         internal AreaViewModel AreaVm => (AreaViewModel) Area.DataContext;
 
