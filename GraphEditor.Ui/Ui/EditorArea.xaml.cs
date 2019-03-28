@@ -96,7 +96,7 @@ namespace GraphEditor.Ui
                 StrokeThickness = 1.2,
                 HoverStrokeThickness = 2.0,
                 HoverStroke = Brushes.DarkBlue,
-                HeadWidth = 8,
+                HeadWidth = 10,
                 HeadHeight = 2,
                 BendPointSize = 8,
                 DataContext = connectionVm,
@@ -118,33 +118,39 @@ namespace GraphEditor.Ui
             _canvas.Children.Add(line);
         }
 
-        private ConnectionViewModel ConnViewModelFromMenuItem(object sender)
+        private ConnectionViewModel ConnectionVmFromMenuItem(object sender)
         {
             return (ConnectionViewModel) ((MenuItem) sender).DataContext;
         }
 
-        private ConnectionViewModel ConnViewModelFromLine(object sender)
+        private ConnectionViewModel ConnectionVmFromLine(object sender)
         {
             return (ConnectionViewModel) ((ArrowPolyline) sender).DataContext;
         }
 
         private void Line_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            _draggingBendPoint = ConnViewModelFromLine(sender).NearestBendPointIndex(Mouse.GetPosition(_canvas));
+            _draggingBendPoint = ConnectionVmFromLine(sender).NearestBendPointIndex(Mouse.GetPosition(_canvas));
+            if (_draggingBendPoint >= 0)
+            {
+                Mouse.Capture((ArrowPolyline) sender);
+            }
         }
 
         private void Line_MouseMove(object sender, MouseEventArgs e)
         {
             if (_draggingBendPoint >= 0)
             {
-                ConnViewModelFromLine(sender).SetPoint(_draggingBendPoint, Mouse.GetPosition(_canvas));
-                Mouse.Capture((ArrowPolyline) sender);
+                ConnectionVmFromLine(sender).SetPoint(_draggingBendPoint, Mouse.GetPosition(_canvas));
             }
         }
 
         private void Line_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Mouse.Capture(null);
+            if (_draggingBendPoint >= 0)
+            {
+                Mouse.Capture(null);
+            }
             _draggingBendPoint = -1;
         }
 
@@ -210,7 +216,7 @@ namespace GraphEditor.Ui
             _lineContextMenuOrigin = Mouse.GetPosition(_canvas);
 
             var contextMenu = (ContextMenu) sender;
-            var isNearBendPoint = ConnViewModelFromLine(contextMenu.Tag).NearestBendPointIndex(Mouse.GetPosition(_canvas)) > -1;
+            var isNearBendPoint = ConnectionVmFromLine(contextMenu.Tag).NearestBendPointIndex(Mouse.GetPosition(_canvas)) > -1;
 
             FindMenuItemByTag(TagAddBendPoint, contextMenu).Visibility = isNearBendPoint ? Visibility.Collapsed : Visibility.Visible;
             FindMenuItemByTag(TagRemoveBendPoint, contextMenu).Visibility = isNearBendPoint ? Visibility.Visible : Visibility.Collapsed;
@@ -218,12 +224,12 @@ namespace GraphEditor.Ui
 
         private void AddBendPointClick(object sender, RoutedEventArgs e)
         {
-            ConnViewModelFromMenuItem(sender).InsertPointNear(_lineContextMenuOrigin);
+            ConnectionVmFromMenuItem(sender).InsertPointNear(_lineContextMenuOrigin);
         }
 
         private void RemoveBendPointClick(object sender, RoutedEventArgs e)
         {
-            ConnViewModelFromMenuItem(sender).RemovePointNear(_lineContextMenuOrigin);
+            ConnectionVmFromMenuItem(sender).RemovePointNear(_lineContextMenuOrigin);
         }
 
         private void LineDeleteClick(object sender, RoutedEventArgs e)
