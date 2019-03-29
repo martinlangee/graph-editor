@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BootStrapper.cs" />
     <Compile Include="Persistence\GraphPersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -49,17 +50,11 @@
       <Project>{d5307d83-9681-4336-985f-749cc3fc1bb1}</Project>
       <Name>GraphEditor.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GraphEditor.Services\GraphEditor.Services.csproj">
-      <Project>{880fd03e-9ae7-454f-bb66-5704d097c7f6}</Project>
-      <Name>GraphEditor.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GraphEditor.Ui\GraphEditor.Ui.csproj">
       <Project>{2c246bb5-5076-4011-99b3-9b22683a5995}</Project>
       <Name>GraphEditor.Ui</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

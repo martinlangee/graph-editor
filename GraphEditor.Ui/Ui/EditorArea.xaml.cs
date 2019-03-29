@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using GraphEditor.Components;
 using GraphEditor.Converters;
+using GraphEditor.Interfaces.Container;
 using GraphEditor.Tools;
 using GraphEditor.ViewModel;
 
@@ -41,7 +42,7 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = new AreaViewModel();
+            DataContext = ServiceContainer.Resolve<AreaViewModel>();
 
             MessageHub.Inst.Dispatcher = Application.Current.Dispatcher;
         }

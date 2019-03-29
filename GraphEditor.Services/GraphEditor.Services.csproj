@@ -44,5 +44,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceContainer.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GraphEditor.Interfaces\GraphEditor.Interfaces.csproj">
+      <Project>{d5307d83-9681-4336-985f-749cc3fc1bb1}</Project>
+      <Name>GraphEditor.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

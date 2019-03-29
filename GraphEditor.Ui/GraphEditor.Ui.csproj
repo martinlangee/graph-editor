@@ -110,9 +110,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GraphEditor.Services\GraphEditor.Services.csproj">
-      <Project>{880fd03e-9ae7-454f-bb66-5704d097c7f6}</Project>
-      <Name>GraphEditor.Services</Name>
+    <ProjectReference Include="..\GraphEditor.Interfaces\GraphEditor.Interfaces.csproj">
+      <Project>{d5307d83-9681-4336-985f-749cc3fc1bb1}</Project>
+      <Name>GraphEditor.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
