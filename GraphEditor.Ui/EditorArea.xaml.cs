@@ -6,11 +6,11 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using GraphEditor.Components;
-using GraphEditor.Converters;
+using GraphEditor.Ui.Components;
+using GraphEditor.Ui.Converters;
 using GraphEditor.Interfaces.Container;
-using GraphEditor.Tools;
-using GraphEditor.ViewModel;
+using GraphEditor.Ui.Tools;
+using GraphEditor.Ui.ViewModel;
 
 
 /* ----------------------------------------------------------------------------------

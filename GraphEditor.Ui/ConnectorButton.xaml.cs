@@ -1,10 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using GraphEditor.Tools;
-using GraphEditor.ViewModel;
+using GraphEditor.Ui.ViewModel;
 
-namespace GraphEditor
+namespace GraphEditor.Ui
 {
     /// <summary>
     /// Interaktionslogik für ConnectorButton.xaml

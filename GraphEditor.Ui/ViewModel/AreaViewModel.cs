@@ -1,14 +1,11 @@
-﻿using GraphEditor.Commands;
-using GraphEditor.Interfaces.Container;
-using GraphEditor.Interfaces.Nodes;
-using GraphEditor.Tools;
-using GraphEditor.Ui.ViewModel;
+﻿using GraphEditor.Ui.Commands;
+using GraphEditor.Ui.Tools;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace GraphEditor.ViewModel
+namespace GraphEditor.Ui.ViewModel
 {
     public class AreaViewModel : BaseNotification
     {

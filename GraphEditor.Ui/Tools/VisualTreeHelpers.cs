@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace GraphEditor.Tools
+namespace GraphEditor.Ui.Tools
 {
     public static class VisualTreeHelpers
     {

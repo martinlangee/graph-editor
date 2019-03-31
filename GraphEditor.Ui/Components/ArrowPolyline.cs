@@ -6,7 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace GraphEditor.Components
+namespace GraphEditor.Ui.Components
 {
     class ArrowPolyline : Shape
     {

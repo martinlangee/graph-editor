@@ -59,7 +59,7 @@
     <Compile Include="Converters\BooleanConverter.cs" />
     <Compile Include="Tools\UiMessageHub.cs" />
     <Compile Include="Tools\VisualTreeHelpers.cs" />
-    <Compile Include="Ui\EditorToolBar.xaml.cs">
+    <Compile Include="EditorToolBar.xaml.cs">
       <DependentUpon>EditorToolBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AreaViewModel.cs" />
@@ -68,29 +68,29 @@
     <Compile Include="ViewModel\ConnectorStateViewModel.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />
     <Compile Include="ViewModel\ToolBarViewModel.cs" />
-    <Page Include="Ui\EditorArea.xaml">
+    <Page Include="EditorArea.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Ui\EditorToolBar.xaml">
+    <Page Include="EditorToolBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Ui\GraphNode.xaml">
+    <Page Include="GraphNode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Ui\ConnectorButton.xaml">
+    <Page Include="ConnectorButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="Ui\EditorArea.xaml.cs">
+    <Compile Include="EditorArea.xaml.cs">
       <DependentUpon>EditorArea.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ui\GraphNode.xaml.cs">
+    <Compile Include="GraphNode.xaml.cs">
       <DependentUpon>GraphNode.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Ui\ConnectorButton.xaml.cs">
+    <Compile Include="ConnectorButton.xaml.cs">
       <DependentUpon>ConnectorButton.xaml</DependentUpon>
     </Compile>
   </ItemGroup>

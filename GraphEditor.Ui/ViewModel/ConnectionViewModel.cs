@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Media;
 
-namespace GraphEditor.ViewModel
+namespace GraphEditor.Ui.ViewModel
 {
     public class ConnectionViewModel: BaseNotification
     {

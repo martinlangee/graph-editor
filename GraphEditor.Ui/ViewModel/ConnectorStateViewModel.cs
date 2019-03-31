@@ -1,6 +1,6 @@
-﻿using GraphEditor.Tools;
+﻿using GraphEditor.Ui.Tools;
 
-namespace GraphEditor.ViewModel
+namespace GraphEditor.Ui.ViewModel
 {
     public class ConnectorStateViewModel : BaseNotification
     {

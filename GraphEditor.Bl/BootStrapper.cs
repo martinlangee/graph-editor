@@ -3,7 +3,7 @@ using GraphEditor.Interfaces.Container;
 using GraphEditor.Interfaces.Nodes;
 using GraphEditor.Interfaces.Persistence;
 using GraphEditor.Nodes.Bl;
-using GraphEditor.ViewModel;
+using GraphEditor.Ui.ViewModel;
 
 namespace GraphEditor.Bl
 {

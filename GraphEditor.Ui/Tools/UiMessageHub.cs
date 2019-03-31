@@ -1,11 +1,11 @@
-﻿using GraphEditor.ViewModel;
+﻿using GraphEditor.Ui.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace GraphEditor.Tools
+namespace GraphEditor.Ui.Tools
 {
     public class UiMessageHub
     {

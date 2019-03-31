@@ -1,12 +1,12 @@
-﻿using GraphEditor.Commands;
-using GraphEditor.Tools;
+﻿using GraphEditor.Ui.Commands;
+using GraphEditor.Ui.Tools;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 
-namespace GraphEditor.ViewModel
+namespace GraphEditor.Ui.ViewModel
 {
     public class NodeViewModel : BaseNotification
     {

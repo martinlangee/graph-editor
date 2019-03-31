@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using GraphEditor.Tools;
-using GraphEditor.Ui;
-using GraphEditor.ViewModel;
+using GraphEditor.Ui.Tools;
+using GraphEditor.Ui.ViewModel;
 
-namespace GraphEditor
+namespace GraphEditor.Ui
 {
     /// <summary>
     /// Interaktionslogik für GraphNode.xaml

@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace GraphEditor.ViewModel
+namespace GraphEditor.Ui.ViewModel
 {
     /// <summary>
     /// Base PropertyChanged implementation
