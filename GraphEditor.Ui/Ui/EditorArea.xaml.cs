@@ -42,9 +42,9 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = ServiceContainer.Resolve<AreaViewModel>();
+            DataContext = ServiceContainer.Get<AreaViewModel>();
 
-            MessageHub.Inst.Dispatcher = Application.Current.Dispatcher;
+            UiMessageHub.Dispatcher = Application.Current.Dispatcher;
         }
 
         private AreaViewModel ViewModel => (AreaViewModel) DataContext;
@@ -290,16 +290,16 @@ namespace GraphEditor.Ui
 
         private void Editor_Loaded(object sender, RoutedEventArgs e)
         {
-            MessageHub.Inst.OnAddNode += OnAddNode;
-            MessageHub.Inst.OnRemoveNode += OnRemoveNode;
-            MessageHub.Inst.OnNodeLocationChanged += OnNodeLocationChanged;
-            MessageHub.Inst.OnAddConnection += OnAddConnection;
-            MessageHub.Inst.OnRemoveConnection += OnRemoveConnection;
+            UiMessageHub.OnAddNode += OnAddNode;
+            UiMessageHub.OnRemoveNode += OnRemoveNode;
+            UiMessageHub.OnNodeLocationChanged += OnNodeLocationChanged;
+            UiMessageHub.OnAddConnection += OnAddConnection;
+            UiMessageHub.OnRemoveConnection += OnRemoveConnection;
         }
 
         private void Editor_Unloaded(object sender, RoutedEventArgs e)
         {
-            MessageHub.Inst.Dispose();
+            UiMessageHub.Dispose();
         }
     }
 }

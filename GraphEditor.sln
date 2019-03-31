@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugApp", "DebugApp\DebugA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.Interfaces", "GraphEditor.Interfaces\GraphEditor.Interfaces.csproj", "{D5307D83-9681-4336-985F-749CC3FC1BB1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.Nodes.Ui", "GraphEditor.Nodes.Ui\GraphEditor.Nodes.Ui.csproj", "{80297193-EAF8-4017-8D25-62AC5F467B22}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.Nodes.Bl", "GraphEditor.Nodes.Bl\GraphEditor.Nodes.Bl.csproj", "{D2482399-696C-427B-BF7B-54D37BA19DE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{D5307D83-9681-4336-985F-749CC3FC1BB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5307D83-9681-4336-985F-749CC3FC1BB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5307D83-9681-4336-985F-749CC3FC1BB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80297193-EAF8-4017-8D25-62AC5F467B22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80297193-EAF8-4017-8D25-62AC5F467B22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80297193-EAF8-4017-8D25-62AC5F467B22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80297193-EAF8-4017-8D25-62AC5F467B22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2482399-696C-427B-BF7B-54D37BA19DE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2482399-696C-427B-BF7B-54D37BA19DE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2482399-696C-427B-BF7B-54D37BA19DE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2482399-696C-427B-BF7B-54D37BA19DE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

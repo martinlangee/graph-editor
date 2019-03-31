@@ -1,5 +1,8 @@
 ﻿using GraphEditor.Commands;
+using GraphEditor.Interfaces.Container;
+using GraphEditor.Interfaces.Nodes;
 using GraphEditor.Tools;
+using GraphEditor.Ui.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,7 +10,7 @@ using System.Linq;
 
 namespace GraphEditor.ViewModel
 {
-    public class AreaViewModel: BaseNotification
+    public class AreaViewModel : BaseNotification
     {
         private struct ConnectingNodeData
         {
@@ -20,12 +23,14 @@ namespace GraphEditor.ViewModel
 
         public AreaViewModel()
         {
+            ToolBar = new ToolBarViewModel();
             NodeVMs = new ObservableCollection<NodeViewModel>();
+
             AddNodeCommand = new RelayCommand(o => AddNodeExec());
 
-            MessageHub.Inst.OnRemoveNode += OnRemoveNode;
-            MessageHub.Inst.OnConnectRequested += OnConnectRequested;
-            MessageHub.Inst.OnCreateConnection += OnCreateConnection;
+            UiMessageHub.OnRemoveNode += OnRemoveNode;
+            UiMessageHub.OnConnectRequested += OnConnectRequested;
+            UiMessageHub.OnCreateConnection += OnCreateConnection;
         }
 
         public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
@@ -38,7 +43,7 @@ namespace GraphEditor.ViewModel
             initNode?.Invoke(newNodeVm);
             NodeVMs.Add(newNodeVm);
 
-            MessageHub.Inst.AddNode(newNodeVm);
+            UiMessageHub.AddNode(newNodeVm);
 
             return newNodeVm;
         }
@@ -114,5 +119,7 @@ namespace GraphEditor.ViewModel
                 nodeVm.IsSelected = false;
             }
         }
+
+        public ToolBarViewModel ToolBar { get; }
     }
 }

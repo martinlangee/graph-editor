@@ -24,14 +24,14 @@ namespace GraphEditor.ViewModel
             {
                 if (value && IsConnectRequested)
                 {
-                    MessageHub.Inst.CreateConnection(_node, Index);
+                    UiMessageHub.CreateConnection(_node, Index);
                 }
                 else
                 {
                     if (!IsConnected || !value)
                     {
                         SetProperty<ConnectorStateViewModel, bool>(ref _isConnecting, value, nameof(IsConnecting),
-                            (n, isConnecting) => MessageHub.Inst.NotifyConnectRequested(isConnecting, _node, Index, IsOutBound));
+                            (n, isConnecting) => UiMessageHub.NotifyConnectRequested(isConnecting, _node, Index, IsOutBound));
                     }
                 }
             }

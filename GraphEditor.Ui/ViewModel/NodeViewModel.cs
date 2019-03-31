@@ -40,7 +40,7 @@ namespace GraphEditor.ViewModel
             OutConnectors[connVm.SourceConnector].IsConnected = false;
             connVm.TargetNode.InConnectors[connVm.TargetConnector].IsConnected = false;
 
-            MessageHub.Inst.RemoveConnection(connVm);
+            UiMessageHub.RemoveConnection(connVm);
         }
 
         internal void ConnectRequested(bool isConnecting, NodeViewModel sourceNode, int connectorIdx, bool isOutBound)
@@ -79,7 +79,7 @@ namespace GraphEditor.ViewModel
             OutConnections.Add(connVm);
             OutConnectors[connVm.SourceConnector].IsConnected = true;
             targetConnVm.InConnectors[connVm.TargetConnector].IsConnected = true;
-            MessageHub.Inst.AddConnection(connVm);
+            UiMessageHub.AddConnection(connVm);
         }
 
         public ObservableCollection<ConnectorStateViewModel> OutConnectors { get; }
@@ -96,7 +96,7 @@ namespace GraphEditor.ViewModel
             set
             {
                 SetProperty<NodeViewModel, Point>(ref _location, value, nameof(Location),
-                    (node, pt) => MessageHub.Inst.NodeLocationChanged(this, pt));
+                    (node, pt) => UiMessageHub.NodeLocationChanged(this, pt));
             }
         }
 
@@ -105,7 +105,7 @@ namespace GraphEditor.ViewModel
         {
             new List<ConnectionViewModel>(OutConnections).ForEach(conn => conn.Remove());
             InConnections.ForEach(ic => ic.Remove());
-            MessageHub.Inst.RemoveNode(this);
+            UiMessageHub.RemoveNode(this);
         }
 
         private List<ConnectionViewModel> InConnections

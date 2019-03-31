@@ -7,16 +7,16 @@ namespace GraphEditor.Interfaces.Container
         private object[] _args;
         private object _instance;
 
-        public RegisteredObject(Type typeToResolve, Type concreteType, params object[] args)
+        public RegisteredObject(Type concreteType, Type typeToResolve, params object[] args)
         {
-            TypeToResolve = typeToResolve;
             ConcreteType = concreteType;
+            TypeToResolve = typeToResolve;
             _args = args;
         }
 
-        public Type TypeToResolve { get; private set; }
-
         public Type ConcreteType { get; private set; }
+
+        public Type TypeToResolve { get; private set; }
 
         public object Instance => _instance = _instance ?? Activator.CreateInstance(ConcreteType, _args);
     }

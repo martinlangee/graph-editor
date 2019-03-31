@@ -8,22 +8,22 @@ namespace GraphEditor.Interfaces.Container
     {
         private static readonly IList<RegisteredObject> _registeredObjects = new List<RegisteredObject>();
 
-        public static void Register<TTypeToResolve, TConcrete>()
+        public static void Register<TConcrete, TTypeToResolve>(params object[] args)
         {
-            _registeredObjects.Add(new RegisteredObject(typeof(TTypeToResolve), typeof(TConcrete)));
+            _registeredObjects.Add(new RegisteredObject(typeof(TConcrete), typeof(TTypeToResolve), args));
         }
 
-        public static void Register<TConcrete>()
+        public static void Register<TConcrete>(params object[] args)
         {
-            _registeredObjects.Add(new RegisteredObject(typeof(TConcrete), typeof(TConcrete)));
+            _registeredObjects.Add(new RegisteredObject(typeof(TConcrete), typeof(TConcrete), args));
         }
 
-        public static TTypeToResolve Resolve<TTypeToResolve>()
+        public static TTypeToResolve Get<TTypeToResolve>()
         {
-            return (TTypeToResolve) ResolveObject(typeof(TTypeToResolve));
+            return (TTypeToResolve) GetObject(typeof(TTypeToResolve));
         }
 
-        private static object ResolveObject(Type typeToResolve)
+        private static object GetObject(Type typeToResolve)
         {
             var registeredObject = _registeredObjects.FirstOrDefault(o => o.TypeToResolve == typeToResolve);
             if (registeredObject == null)

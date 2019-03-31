@@ -57,14 +57,22 @@
     <Compile Include="Converters\ListToPointCollectionConverter.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\BooleanConverter.cs" />
-    <Compile Include="Tools\MessageHub.cs" />
+    <Compile Include="Tools\UiMessageHub.cs" />
     <Compile Include="Tools\VisualTreeHelpers.cs" />
+    <Compile Include="Ui\EditorToolBar.xaml.cs">
+      <DependentUpon>EditorToolBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\AreaViewModel.cs" />
     <Compile Include="ViewModel\BaseNotification.cs" />
     <Compile Include="ViewModel\ConnectionViewModel.cs" />
     <Compile Include="ViewModel\ConnectorStateViewModel.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />
+    <Compile Include="ViewModel\ToolBarViewModel.cs" />
     <Page Include="Ui\EditorArea.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ui\EditorToolBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

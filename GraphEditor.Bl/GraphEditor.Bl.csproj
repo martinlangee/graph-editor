@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BootStrapper.cs" />
+    <Compile Include="DataModel\DataModelRoot.cs" />
     <Compile Include="Persistence\GraphPersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -49,6 +50,10 @@
     <ProjectReference Include="..\GraphEditor.Interfaces\GraphEditor.Interfaces.csproj">
       <Project>{d5307d83-9681-4336-985f-749cc3fc1bb1}</Project>
       <Name>GraphEditor.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GraphEditor.Nodes.Bl\GraphEditor.Nodes.Bl.csproj">
+      <Project>{d2482399-696c-427b-bf7b-54d37ba19de1}</Project>
+      <Name>GraphEditor.Nodes.Bl</Name>
     </ProjectReference>
     <ProjectReference Include="..\GraphEditor.Ui\GraphEditor.Ui.csproj">
       <Project>{2c246bb5-5076-4011-99b3-9b22683a5995}</Project>
