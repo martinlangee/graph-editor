@@ -30,6 +30,12 @@ namespace GraphEditor.Ui.ViewModel
             UiMessageHub.OnCreateConnection += OnCreateConnection;
         }
 
+        // called by IoC container
+        public void ShutDown()
+        {
+            UiMessageHub.Dispose();
+        }
+
         public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
 
         public RelayCommand AddNodeCommand { get; }

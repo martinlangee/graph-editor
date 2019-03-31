@@ -11,9 +11,17 @@ namespace GraphEditor.Bl
     {
         public static void InitServices()
         {
-            ServiceContainer.Register<NodeTypeRepository, INodeTypeRepository>();
-            ServiceContainer.Register<AreaViewModel>();
-            ServiceContainer.Register<GraphPersistence, IGraphPersistence>();
+            using (ServiceContainer.RegisterTransaction())
+            {
+                ServiceContainer.Register<NodeTypeRepository, INodeTypeRepository>();
+                ServiceContainer.Register<AreaViewModel>();
+                ServiceContainer.Register<GraphPersistence, IGraphPersistence>();
+            }
+        }
+
+        public static void FinalizeServices()
+        {
+            ServiceContainer.FinalizeServices();
         }
     }
 }

@@ -6,7 +6,51 @@ namespace GraphEditor.Interfaces.Container
 {
     public class ServiceContainer
     {
+        private class TransactionHelper : IDisposable
+        {
+            Action _onDispose;
+
+            public TransactionHelper(Action onDispose)
+            {
+                _onDispose = onDispose;
+            }
+
+            public void Dispose()
+            {
+                _onDispose?.Invoke();
+            }
+        }
+
+        const string OnBuiltUpMethod = "OnBuiltUp";
+        const string ShutDownMethod = "ShutDown";
+
         private static readonly IList<RegisteredObject> _registeredObjects = new List<RegisteredObject>();
+
+        public static IDisposable RegisterTransaction()
+        {
+            return new TransactionHelper(() => OnFinishedRegisterTransaction());
+        }
+
+        public static IDisposable UnRegisterTransaction()
+        {
+            return new TransactionHelper(() => OnFinishedRegisterTransaction());
+        }
+
+        private static void OnFinishedRegisterTransaction()
+        {
+            _registeredObjects.ToList().ForEach(ro =>
+            {
+                ro.ConcreteType.GetMethod(OnBuiltUpMethod)?.Invoke(ro.Instance, null);
+            });
+        }
+
+        public static void FinalizeServices()
+        {
+            _registeredObjects.ToList().ForEach(ro =>
+            {
+                ro.ConcreteType.GetMethod(ShutDownMethod)?.Invoke(ro.Instance, null);
+            });
+        }
 
         public static void Register<TConcrete, TTypeToResolve>(params object[] args)
         {

@@ -17,5 +17,7 @@ namespace GraphEditor.Interfaces.Nodes
         bool CanConnectToIn(INodeTypeData otherNode, int otherOutIndex, int myInIndex);
 
         bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex);
+
+        INodeData CreateNode();
     }
 }

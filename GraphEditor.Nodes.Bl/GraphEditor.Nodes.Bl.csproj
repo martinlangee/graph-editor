@@ -43,6 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NodeFactory.cs" />
+    <Compile Include="Nodes\LogicalXOR.cs" />
+    <Compile Include="Nodes\LogicalXORType.cs" />
+    <Compile Include="Nodes\LogicalORType.cs" />
+    <Compile Include="Nodes\LogicalOR.cs" />
     <Compile Include="Nodes\LogicalANDType.cs" />
     <Compile Include="Nodes\LogicalAND.cs" />
     <Compile Include="NodeDataBase.cs" />

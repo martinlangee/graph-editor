@@ -18,7 +18,12 @@ namespace DebugApp
         {
             base.OnStartup(e);
             BootStrapper.InitServices();
+        }
 
+        protected override void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            BootStrapper.FinalizeServices();
         }
     }
 }

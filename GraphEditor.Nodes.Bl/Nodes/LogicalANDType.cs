@@ -1,4 +1,6 @@
-﻿namespace GraphEditor.Nodes.Bl.Nodes
+﻿using System;
+
+namespace GraphEditor.Nodes.Bl.Nodes
 {
     public class LogicalANDType: NodeTypeDataBase
     {
@@ -7,5 +9,7 @@
             Name = "Logical AND";
             Description = "Node representing a logical AND operation";
         }
+
+        protected override Type NodeType => typeof(LogicalAND);
     }
 }

@@ -25,5 +25,12 @@ namespace GraphEditor.Nodes.Bl
         public virtual bool CanConnectToIn(INodeTypeData otherNode, int otherOutIndex, int myInIndex) => true;
 
         public virtual bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex) => true;
+
+        protected abstract Type NodeType { get; }
+
+        public INodeData CreateNode()
+        {
+            return Activator.CreateInstance(NodeType) as INodeData;
+        }
     }
 }
