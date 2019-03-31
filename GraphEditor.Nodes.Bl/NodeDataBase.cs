@@ -6,13 +6,18 @@ namespace GraphEditor.Nodes.Bl
 {
     public abstract class NodeDataBase : INodeData
     {
-        public NodeDataBase()
+        public NodeDataBase(INodeTypeData nodeTypeData)
         {
+            TypeData = nodeTypeData;
+
             Id = Guid.NewGuid().ToString();
+            Name = Type;
 
             InConnectors = new List<string>();
             OutConnectors = new List<string>();
         }
+
+        public INodeTypeData TypeData { get; }
 
         public string Id { get; }
 
@@ -21,5 +26,7 @@ namespace GraphEditor.Nodes.Bl
         public IList<string> InConnectors { get; }
 
         public IList<string> OutConnectors { get; }
+
+        public string Name { get; set; }
     }
 }

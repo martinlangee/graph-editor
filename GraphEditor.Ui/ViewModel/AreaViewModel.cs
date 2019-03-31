@@ -1,4 +1,7 @@
-﻿using GraphEditor.Ui.Commands;
+﻿using GraphEditor.Interfaces.Container;
+using GraphEditor.Interfaces.Nodes;
+using GraphEditor.Interfaces.Utils;
+using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
 using System;
 using System.Collections.Generic;
@@ -18,12 +21,21 @@ namespace GraphEditor.Ui.ViewModel
 
         ConnectingNodeData _connNode;
 
-        public AreaViewModel()
+        public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
+
+        public RelayCommand AddNodeCommand { get; private set; }
+
+        public void OnBuiltUp()
         {
             ToolBar = new ToolBarViewModel();
+            AreaContextMenuItems = new ObservableCollection<INodeTypeData>();
             NodeVMs = new ObservableCollection<NodeViewModel>();
 
-            AddNodeCommand = new RelayCommand(o => AddNodeExec());
+            ServiceContainer.Get<INodeTypeRepository>().NodeTypes.ForEach(
+                nt => AreaContextMenuItems.Add(nt)
+            );
+
+            AddNodeCommand = new RelayCommand(o => AddNodeExec((INodeTypeData) o));
 
             UiMessageHub.OnRemoveNode += OnRemoveNode;
             UiMessageHub.OnConnectRequested += OnConnectRequested;
@@ -36,14 +48,13 @@ namespace GraphEditor.Ui.ViewModel
             UiMessageHub.Dispose();
         }
 
-        public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
+        public ToolBarViewModel ToolBar { get; private set; }
 
-        public RelayCommand AddNodeCommand { get; }
+        public ObservableCollection<INodeTypeData> AreaContextMenuItems { get; private set; }
 
-        public NodeViewModel AddNodeExec(Action<NodeViewModel> initNode = null)
+        public NodeViewModel AddNodeExec(INodeTypeData nodeTypeData)
         {
-            var newNodeVm = new NodeViewModel(() => NodeVMs.ToList());
-            initNode?.Invoke(newNodeVm);
+            var newNodeVm = new NodeViewModel(() => NodeVMs.ToList(), nodeTypeData);
             NodeVMs.Add(newNodeVm);
 
             UiMessageHub.AddNode(newNodeVm);
@@ -84,7 +95,7 @@ namespace GraphEditor.Ui.ViewModel
             // first deactivate the connecting status of a former connecting node
             RevokeConnectRequestStatus();
 
-            NodeVMs.Where(node => !node.Equals(sourceNode)).ToList().ForEach(node => node.ConnectRequested(isConnecting, sourceNode, connIdx, isOutBound));
+            NodeVMs.Where(node => !node.Equals(sourceNode)).ForEach(node => node.ConnectRequested(isConnecting, sourceNode, connIdx, isOutBound));
 
             UpdateConnectingNodeData(isConnecting, sourceNode, connIdx, isOutBound);
         }
@@ -122,7 +133,5 @@ namespace GraphEditor.Ui.ViewModel
                 nodeVm.IsSelected = false;
             }
         }
-
-        public ToolBarViewModel ToolBar { get; }
     }
 }

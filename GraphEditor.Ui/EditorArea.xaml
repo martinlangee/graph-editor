@@ -17,11 +17,17 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ui:EditorToolBar DataContext="{Binding ToolBar}"/>
-        <Canvas Grid.Row="1" x:Name="_canvas" Background="LightYellow" 
-                MouseLeftButtonUp="_canvas_OnMouseLeftButtonUp">
+        <Canvas Grid.Row="1" x:Name="_canvas" Background="LightYellow" MouseLeftButtonUp="_canvas_OnMouseLeftButtonUp">
             <Canvas.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Add element" Command="{Binding AddNodeCommand}"/>
+                <ContextMenu ItemsSource="{Binding AreaContextMenuItems}">
+                    <ContextMenu.ItemContainerStyle>
+                        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+                            <Setter Property="Header" Value="{Binding Name}"/>
+                            <Setter Property="Command" Value="{Binding DataContext.AddNodeCommand, RelativeSource={RelativeSource AncestorType={x:Type Canvas}}}"/>
+                            <Setter Property="CommandParameter" Value="{Binding}"/>
+                            <!--<Setter Property="Icon"-->
+                        </Style>
+                    </ContextMenu.ItemContainerStyle>
                 </ContextMenu>
             </Canvas.ContextMenu>
         </Canvas>

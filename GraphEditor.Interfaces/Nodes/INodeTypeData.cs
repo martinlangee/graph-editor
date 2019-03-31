@@ -10,6 +10,8 @@ namespace GraphEditor.Interfaces.Nodes
 
         string Description { get; }
 
+        byte[] Icon { get; }
+
         byte[] Image { get; }
 
         UserControl ConfigUi { get; }

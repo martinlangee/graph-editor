@@ -1,4 +1,6 @@
-﻿using GraphEditor.Ui.Commands;
+﻿using GraphEditor.Interfaces.Nodes;
+using GraphEditor.Interfaces.Utils;
+using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
 using System;
 using System.Collections.Generic;
@@ -14,23 +16,32 @@ namespace GraphEditor.Ui.ViewModel
         private bool _isSelected = false;
         private Point _location;
 
-        public NodeViewModel(Func<List<NodeViewModel>> onGetAllNodeVMs)
+        public NodeViewModel(Func<List<NodeViewModel>> onGetAllNodeVMs, INodeTypeData nodeTypeData)
         {
             _onGetAllNodeVMs = onGetAllNodeVMs;
+            NodeData = nodeTypeData.CreateNode();
 
             InConnectors = new ObservableCollection<ConnectorStateViewModel>();
             OutConnectors = new ObservableCollection<ConnectorStateViewModel>();
 
             OutConnections = new ObservableCollection<ConnectionViewModel>();
 
+            EditConfigCommand = new RelayCommand(o => EditConfigExec());
             RemoveNodeCommand = new RelayCommand(o => RemoveExec());
 
-            // todo: provisorisch
-            for (int i = 0; i < 5; i++)
+            Type = NodeData.TypeData.Name;
+            Name = NodeData.Name;
+
+            for (int i = 0; i < NodeData.InConnectors.Count; i++)
                 InConnectors.Add(new ConnectorStateViewModel(this, i, isOutBound: false));
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < NodeData.OutConnectors.Count; i++)
                 OutConnectors.Add(new ConnectorStateViewModel(this, i, isOutBound: true));
+        }
+
+        private void EditConfigExec()
+        {
+            
         }
 
         internal void RemoveConnection(ConnectionViewModel connVm)
@@ -43,31 +54,31 @@ namespace GraphEditor.Ui.ViewModel
             UiMessageHub.RemoveConnection(connVm);
         }
 
-        internal void ConnectRequested(bool isConnecting, NodeViewModel sourceNode, int connectorIdx, bool isOutBound)
+        internal void ConnectRequested(bool isConnecting, NodeViewModel otherNode, int otherConnIdx, bool isOutBound)
         {
             if (isOutBound)
             {
                 if (isConnecting)
-                    // TODO: provisorisch; welche Connectors als Target erlaubt sind muss in konkreten Node-Klassen bestimmt werden
-                    InConnectors.Where(conn => conn.Index % 2 == connectorIdx % 2).ToList().ForEach(conn => conn.IsConnectRequested = true);
+                    InConnectors.For((conn, idx) => conn.IsConnectRequested = otherNode.NodeData.TypeData.CanConnectToIn(NodeData.TypeData, otherConnIdx, idx));
                 else
-                    InConnectors.ToList().ForEach(conn => conn.IsConnectRequested = false);
+                    InConnectors.ForEach(conn => conn.IsConnectRequested = false);
             }
             else
             {
                 if (isConnecting)
-                    // TODO: provisorisch; welche Connectors als Target erlaubt sind muss in konkreten Node-Klassen bestimmt werden
-                    OutConnectors.Where(conn => conn.Index % 2 == connectorIdx % 2).ToList().ForEach(conn => conn.IsConnectRequested = true);
+                    OutConnectors.For((conn, idx) => conn.IsConnectRequested = otherNode.NodeData.TypeData.CanConnectToOut(NodeData.TypeData, otherConnIdx, idx));
                 else
-                    OutConnectors.ToList().ForEach(conn => conn.IsConnectRequested = false);
+                    OutConnectors.ForEach(conn => conn.IsConnectRequested = false);
             }
         }
 
-        public RelayCommand ConnectToCommand { get; }
+        public RelayCommand EditConfigCommand { get; }
         public RelayCommand RemoveNodeCommand { get; }
 
-        public string Type { get; set; } = "Filter";
-        public string Name { get; set; } = "Neu";
+        public INodeData NodeData { get; }
+
+        public string Type { get; set; }
+        public string Name { get; set; }
 
         public ObservableCollection<ConnectorStateViewModel> InConnectors { get; }
 

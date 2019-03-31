@@ -1,8 +1,10 @@
-﻿namespace GraphEditor.Nodes.Bl.Nodes
+﻿using GraphEditor.Interfaces.Nodes;
+
+namespace GraphEditor.Nodes.Bl.Nodes
 {
     public class LogicalOR: NodeDataBase
     {
-        public LogicalOR(): base()
+        public LogicalOR(INodeTypeData nodeTypeData) : base(nodeTypeData)
         {
             InConnectors.Add("IN 1");
             InConnectors.Add("IN 2");

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GraphEditor.Interfaces.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,7 +39,7 @@ namespace GraphEditor.Interfaces.Container
 
         private static void OnFinishedRegisterTransaction()
         {
-            _registeredObjects.ToList().ForEach(ro =>
+            _registeredObjects.ForEach(ro =>
             {
                 ro.ConcreteType.GetMethod(OnBuiltUpMethod)?.Invoke(ro.Instance, null);
             });
@@ -46,7 +47,7 @@ namespace GraphEditor.Interfaces.Container
 
         public static void FinalizeServices()
         {
-            _registeredObjects.ToList().ForEach(ro =>
+            _registeredObjects.ForEach(ro =>
             {
                 ro.ConcreteType.GetMethod(ShutDownMethod)?.Invoke(ro.Instance, null);
             });

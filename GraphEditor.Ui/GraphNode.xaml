@@ -10,6 +10,7 @@
              GotKeyboardFocus="GraphNode_GotKeyboardFocus">
     <UserControl.Resources>
         <cv:BooleanToVisibilityConverter x:Key="BooleanConverter" TrueValue="Visible" FalseValue="Collapsed"/>
+        <cv:BytesToImageSourceConverter x:Key="BytesToImageConverter"/>
     </UserControl.Resources>
     <UserControl.ContextMenu>
         <ContextMenu>
@@ -35,11 +36,27 @@
         </Rectangle>
         <Border Grid.Row="0" Height="10" Background="CadetBlue" Cursor="SizeAll" Margin="-1,0" 
                 MouseMove="Border_OnMouseMove" MouseLeftButtonUp="Border_OnMouseLeftButtonUp"/>
-        <Grid Grid.Row="4">
-            <TextBlock Text="Comp X" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        </Grid>
+        <Button HorizontalAlignment="Right" Command="{Binding EditConfigCommand}" Cursor="Hand" Margin="0,0,-1,0">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Setters>
+                        <Setter Property="Control.Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Image Source="/GraphEditor.Ui;component/Graphics/Config.png" Stretch="None"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style.Setters>
+                </Style>
+            </Button.Style>
+        </Button>
+        <StackPanel Grid.Row="4" Orientation="Vertical">
+            <!--<TextBlock Text="{Binding NodeData.Name}" VerticalAlignment="Top" HorizontalAlignment="Center"/>-->
+            <Image MinHeight="40" Width="60" Source="{Binding NodeData.TypeData.Image, Converter={StaticResource BytesToImageConverter}}" Margin="0,2,0,5"/>
+        </StackPanel>
         <Border Grid.Row="5" Background="GhostWhite" BorderBrush="LightGray" BorderThickness="0,1,0,0">
-            <TextBlock Text="{Binding Type}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Blue" Margin="0,-1,0,2"/>
+            <TextBlock Text="{Binding NodeData.TypeData.Name}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Blue" Margin="0,-1,0,2"/>
         </Border>
         <ItemsControl Grid.Row="1" Grid.RowSpan="4" x:Name="_icInConn" ItemsSource="{Binding InConnectors}" HorizontalAlignment="Left" Margin="0,5,0,0" Focusable="False">
             <ItemsControl.ItemTemplate>
