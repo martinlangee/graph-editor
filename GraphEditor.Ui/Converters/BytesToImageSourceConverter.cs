@@ -10,6 +10,8 @@ namespace GraphEditor.Ui.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null) return null;
+
             var bytes = (byte[]) value;
             return (BitmapSource) new ImageSourceConverter().ConvertFrom(bytes);
         }
