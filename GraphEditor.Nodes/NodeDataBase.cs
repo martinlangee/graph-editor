@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GraphEditor.Nodes.Bl
+namespace GraphEditor.Nodes
 {
     public abstract class NodeDataBase : INodeData
     {

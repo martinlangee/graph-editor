@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace GraphEditor.Nodes.Ui
 {
     /// <summary>
-    /// Interaktionslogik für LogicalANDConfig.xaml
+    /// Interaktionslogik für LogicalAND_ctrl.xaml
     /// </summary>
-    public partial class LogicalANDConfig : UserControl
+    public partial class LogicalAND_ctrl : UserControl
     {
-        public LogicalANDConfig()
+        public LogicalAND_ctrl()
         {
             InitializeComponent();
         }

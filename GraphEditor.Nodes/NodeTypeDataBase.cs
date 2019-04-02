@@ -5,7 +5,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using System.Reflection;
 
-namespace GraphEditor.Nodes.Bl
+namespace GraphEditor.Nodes
 {
     public abstract class NodeTypeDataBase : INodeTypeData
     {
@@ -14,14 +14,14 @@ namespace GraphEditor.Nodes.Bl
             Name = "<not set>";
             Description = "<not set>";
 
-            Image = LoadGraphic();
-            Icon = LoadGraphic("ico");
+            Image = LoadGraphic(NodeType);
+            Icon = LoadGraphic(NodeType, "ico");
         }
 
-        private byte[] LoadGraphic(string suffix = "")
+        private static byte[] LoadGraphic(Type nodeType, string suffix = "")
         {
             suffix = string.IsNullOrEmpty(suffix) ? "" : $"_{suffix}";
-            var resPath = $"/Nodes/{NodeType.Name}{suffix}.png";
+            var resPath = $"/Ui/{nodeType.Name}{suffix}.png";
 
             var src = new BitmapImage();
             try
@@ -56,11 +56,11 @@ namespace GraphEditor.Nodes.Bl
 
         public byte[] Image { get; protected set; }
 
-        public virtual UserControl ConfigUi => null;
+        public virtual UserControl ConfigUi => null; // Activator.CreateInstance("", "");
 
-        public virtual bool CanConnectToIn(INodeTypeData otherNode, int otherOutIndex, int myInIndex) => myInIndex % 2 == 0;
+        public virtual bool CanConnectToIn(INodeTypeData otherNode, int otherOutIndex, int myInIndex) => myInIndex % 2 == 0;  // TODO zum Testen
 
-        public virtual bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex) => myOutIndex % 2 == 1;
+        public virtual bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex) => myOutIndex % 2 == 1;  // TODO zum Testen
 
         protected abstract Type NodeType { get; }
 

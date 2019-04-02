@@ -1,6 +1,6 @@
 ﻿using GraphEditor.Interfaces.Nodes;
 
-namespace GraphEditor.Nodes.Bl.Nodes
+namespace GraphEditor.Nodes.Bl
 {
     public class LogicalXOR: NodeDataBase
     {

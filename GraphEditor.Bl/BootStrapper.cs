@@ -2,8 +2,8 @@
 using GraphEditor.Interfaces.Container;
 using GraphEditor.Interfaces.Nodes;
 using GraphEditor.Interfaces.Persistence;
-using GraphEditor.Nodes.Bl;
 using GraphEditor.Ui.ViewModel;
+using GraphEditor.Nodes;
 
 namespace GraphEditor.Bl
 {

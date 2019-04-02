@@ -1,9 +1,9 @@
 ﻿using GraphEditor.Interfaces.Nodes;
-using GraphEditor.Nodes.Bl.Nodes;
+using GraphEditor.Nodes.Bl;
 using System;
 using System.Collections.Generic;
 
-namespace GraphEditor.Nodes.Bl
+namespace GraphEditor.Nodes
 {
     public class NodeTypeRepository: INodeTypeRepository
     {
@@ -11,9 +11,9 @@ namespace GraphEditor.Nodes.Bl
         {
             NodeTypes = new List<INodeTypeData>
             {
-                new LogicalANDType(),
-                new LogicalORType(),
-                new LogicalXORType()
+                new LogicalAND_Type(),
+                new LogicalOR_Type(),
+                new LogicalXOR_Type()
             };
         }
 

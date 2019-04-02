@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace GraphEditor.Nodes.Bl.Nodes
+namespace GraphEditor.Nodes.Bl
 {
-    public class LogicalXORType: NodeTypeDataBase
+    public class LogicalXOR_Type: NodeTypeDataBase
     {
-        public LogicalXORType(): base()
+        public LogicalXOR_Type(): base()
         {
             Name = "Logical XOR";
             Description = "Node representing a logical XOR operation";
