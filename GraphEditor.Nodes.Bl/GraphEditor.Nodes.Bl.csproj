@@ -70,5 +70,12 @@
   <ItemGroup>
     <Resource Include="Nodes\LogicalXOR.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Nodes\LogicalAND_ico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Nodes\LogicalOR_ico.png" />
+    <Resource Include="Nodes\LogicalXOR_ico.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

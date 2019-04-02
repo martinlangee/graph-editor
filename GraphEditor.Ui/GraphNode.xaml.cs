@@ -88,5 +88,13 @@ namespace GraphEditor.Ui
             Area.SelectedNodes.ForEach(gn => gn.ViewModel.IsSelected = false);
             ViewModel.IsSelected = true;
         }
+
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount > 1)
+            {
+
+            }
+        }
     }
 }

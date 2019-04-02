@@ -34,9 +34,9 @@
                 <DropShadowEffect BlurRadius="5" Direction="-75" ShadowDepth="2" Color="CadetBlue"/>
             </Rectangle.Effect>
         </Rectangle>
-        <Border Grid.Row="0" Height="10" Background="CadetBlue" Cursor="SizeAll" Margin="-1,0" 
-                MouseMove="Border_OnMouseMove" MouseLeftButtonUp="Border_OnMouseLeftButtonUp"/>
-        <Button HorizontalAlignment="Right" Command="{Binding EditConfigCommand}" Cursor="Hand" Margin="0,0,-1,0">
+        <Border Grid.Row="0" Height="11" Background="CadetBlue" Cursor="SizeAll" Margin="-1,0" 
+                MouseLeftButtonDown="Border_MouseLeftButtonDown" MouseMove="Border_OnMouseMove" MouseLeftButtonUp="Border_OnMouseLeftButtonUp"/>
+        <Button HorizontalAlignment="Right" Command="{Binding EditConfigCommand}" Cursor="Hand">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Style.Setters>

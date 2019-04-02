@@ -14,24 +14,26 @@ namespace GraphEditor.Nodes.Bl
             Name = "<not set>";
             Description = "<not set>";
 
-            Image = LoadResource();
-            Icon = LoadResource("Icon");
+            Image = LoadGraphic();
+            Icon = LoadGraphic("ico");
         }
 
-        private byte[] LoadResource(string suffix = "")
+        private byte[] LoadGraphic(string suffix = "")
         {
             suffix = string.IsNullOrEmpty(suffix) ? "" : $"_{suffix}";
+            var resPath = $"/Nodes/{NodeType.Name}{suffix}.png";
 
-            BitmapImage src = new BitmapImage();
+            var src = new BitmapImage();
             try
             {
                 src.BeginInit();
-                src.UriSource = new Uri($"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName()};component/Nodes/{NodeType.Name}{suffix}.png");
+                src.UriSource = new Uri($"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName()};component{resPath}");
                 src.CacheOption = BitmapCacheOption.OnLoad;
                 src.EndInit();
             }
             catch (IOException)
             {
+                Console.WriteLine($"Resource '{resPath}' not found");
                 return null;
             }
 
@@ -41,23 +43,6 @@ namespace GraphEditor.Nodes.Bl
                 pngEncoder.Frames.Add(BitmapFrame.Create(src));
                 pngEncoder.Save(ms);
                 return ms.GetBuffer();
-            }
-        }
-
-        private void LoadIcon()
-        {
-            BitmapImage src = new BitmapImage();
-            src.BeginInit();
-            src.UriSource = new Uri($"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName()};component/Nodes/{NodeType.Name}_Icon.png");
-            src.CacheOption = BitmapCacheOption.OnLoad;
-            src.EndInit();
-
-            using (var ms = new MemoryStream())
-            {
-                var pngEncoder = new PngBitmapEncoder();
-                pngEncoder.Frames.Add(BitmapFrame.Create(src));
-                pngEncoder.Save(ms);
-                Image = ms.GetBuffer();
             }
         }
 

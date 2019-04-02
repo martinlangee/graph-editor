@@ -4,7 +4,7 @@ namespace GraphEditor.Nodes.Bl.Nodes
 {
     public class LogicalANDType: NodeTypeDataBase
     {
-        public LogicalANDType()
+        public LogicalANDType(): base()
         {
             Name = "Logical AND";
             Description = "Node representing a logical AND operation";
