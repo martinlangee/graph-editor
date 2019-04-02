@@ -34,6 +34,32 @@
                 </ContextMenu>
             </Canvas.ContextMenu>
         </Canvas>
-        <!--<Border Grid.RowSpan="2" Background="LightGray" Opacity="0.5"/>-->
+        <Grid Grid.RowSpan="2" Background="Black" Opacity="0.4">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding NodeConfigUi}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+        </Grid>
+        <StackPanel Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel.Style>
+                <Style TargetType="{x:Type StackPanel}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding NodeConfigUi}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            <Border BorderThickness="1" BorderBrush="DarkGray">
+                <ContentPresenter Content="{Binding NodeConfigUi}"/>
+            </Border>
+        </StackPanel>
     </Grid>
 </UserControl>

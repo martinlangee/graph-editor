@@ -1,4 +1,5 @@
-﻿using GraphEditor.Interfaces.Container;
+﻿using GraphEditor.Interfaces.ConfigUi;
+using GraphEditor.Interfaces.Container;
 using GraphEditor.Interfaces.Nodes;
 using GraphEditor.Interfaces.Utils;
 using GraphEditor.Ui.Commands;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Controls;
 
 namespace GraphEditor.Ui.ViewModel
 {
@@ -20,6 +22,7 @@ namespace GraphEditor.Ui.ViewModel
         }
 
         ConnectingNodeData _connNode;
+        private UserControl _nodeConfigUi;
 
         public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
 
@@ -54,12 +57,24 @@ namespace GraphEditor.Ui.ViewModel
 
         public NodeViewModel AddNodeExec(INodeTypeData nodeTypeData)
         {
-            var newNodeVm = new NodeViewModel(() => NodeVMs.ToList(), nodeTypeData);
+            var newNodeVm = new NodeViewModel(nodeTypeData, () => NodeVMs.ToList(), OnOpenConfigUi);
             NodeVMs.Add(newNodeVm);
 
             UiMessageHub.AddNode(newNodeVm);
 
             return newNodeVm;
+        }
+
+        public UserControl NodeConfigUi
+        {
+            get => _nodeConfigUi;
+            private set => SetProperty<AreaViewModel, UserControl>(ref _nodeConfigUi, value, nameof(NodeConfigUi));
+        }
+
+        private void OnOpenConfigUi(IConfigUi configUi)
+        {
+            configUi.OnClose += (ui => NodeConfigUi = null);
+            NodeConfigUi = configUi as UserControl;
         }
 
         public void OnRemoveNode(NodeViewModel nodeVm)

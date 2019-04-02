@@ -56,8 +56,6 @@ namespace GraphEditor.Nodes
 
         public byte[] Image { get; protected set; }
 
-        public virtual UserControl ConfigUi => null; // Activator.CreateInstance("", "");
-
         public virtual bool CanConnectToIn(INodeTypeData otherNode, int otherOutIndex, int myInIndex) => myInIndex % 2 == 0;  // TODO zum Testen
 
         public virtual bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex) => myOutIndex % 2 == 1;  // TODO zum Testen

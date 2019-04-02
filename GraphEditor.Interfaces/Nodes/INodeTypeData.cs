@@ -14,8 +14,6 @@ namespace GraphEditor.Interfaces.Nodes
 
         byte[] Image { get; }
 
-        UserControl ConfigUi { get; }
-
         bool CanConnectToIn(INodeTypeData otherNode, int otherOutIndex, int myInIndex);
 
         bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex);

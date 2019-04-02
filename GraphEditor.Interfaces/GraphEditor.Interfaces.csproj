@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigUi\IConfigUi.cs" />
     <Compile Include="Container\RegisteredObject.cs" />
     <Compile Include="Container\TypeNotRegisteredException.cs" />
     <Compile Include="Nodes\INodeData.cs" />

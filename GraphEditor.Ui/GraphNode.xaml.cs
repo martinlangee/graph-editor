@@ -93,7 +93,7 @@ namespace GraphEditor.Ui
         {
             if (e.ClickCount > 1)
             {
-
+                ViewModel.EditConfigCommand.Execute(sender);
             }
         }
     }

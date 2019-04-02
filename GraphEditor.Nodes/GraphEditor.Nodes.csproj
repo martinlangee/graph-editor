@@ -57,6 +57,12 @@
     <Compile Include="NodeTypeDataBase.cs" />
     <Compile Include="NodeTypeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ui\LogicalXOR_ctrl.xaml.cs">
+      <DependentUpon>LogicalXOR_ctrl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Ui\LogicalOR_ctrl.xaml.cs">
+      <DependentUpon>LogicalOR_ctrl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Ui\LogicalAND_ctrl.xaml.cs">
       <DependentUpon>LogicalAND_ctrl.xaml</DependentUpon>
     </Compile>
@@ -82,6 +88,14 @@
     <Resource Include="Ui\LogicalXOR_ico.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Ui\LogicalXOR_ctrl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Ui\LogicalOR_ctrl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Ui\LogicalAND_ctrl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

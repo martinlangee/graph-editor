@@ -1,4 +1,6 @@
-﻿using GraphEditor.Interfaces.Nodes;
+﻿using System;
+using GraphEditor.Interfaces.Nodes;
+using GraphEditor.Nodes.Ui;
 
 namespace GraphEditor.Nodes.Bl
 {
@@ -13,5 +15,7 @@ namespace GraphEditor.Nodes.Bl
 
             OutConnectors.Add("OUT (OR)");
         }
+
+        protected override Type ConfigControlType => typeof(LogicalOR_ctrl);
     }
 }

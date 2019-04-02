@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GraphEditor.Interfaces.ConfigUi;
+using System.Collections.Generic;
 
 namespace GraphEditor.Interfaces.Nodes
 {
@@ -15,5 +16,7 @@ namespace GraphEditor.Interfaces.Nodes
         IList<string> InConnectors { get; }
 
         IList<string> OutConnectors { get; }
+
+        IConfigUi CreateConfigUi();
     }
 }

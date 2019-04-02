@@ -1,4 +1,6 @@
-﻿using GraphEditor.Interfaces.Nodes;
+﻿using System;
+using GraphEditor.Interfaces.Nodes;
+using GraphEditor.Nodes.Ui;
 
 namespace GraphEditor.Nodes.Bl
 {
@@ -11,5 +13,7 @@ namespace GraphEditor.Nodes.Bl
 
             OutConnectors.Add("OUT (XOR)");
         }
+
+        protected override Type ConfigControlType => typeof(LogicalXOR_ctrl);
     }
 }

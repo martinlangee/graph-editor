@@ -1,4 +1,5 @@
-﻿using GraphEditor.Interfaces.Nodes;
+﻿using GraphEditor.Interfaces.ConfigUi;
+using GraphEditor.Interfaces.Nodes;
 using GraphEditor.Interfaces.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
@@ -7,18 +8,21 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace GraphEditor.Ui.ViewModel
 {
     public class NodeViewModel : BaseNotification
     {
         private Func<List<NodeViewModel>> _onGetAllNodeVMs;
+        private Action<IConfigUi> _onOpenConfigUi;
         private bool _isSelected = false;
         private Point _location;
 
-        public NodeViewModel(Func<List<NodeViewModel>> onGetAllNodeVMs, INodeTypeData nodeTypeData)
+        public NodeViewModel(INodeTypeData nodeTypeData, Func<List<NodeViewModel>> onGetAllNodeVMs, Action<IConfigUi> onOpenConfigUi)
         {
             _onGetAllNodeVMs = onGetAllNodeVMs;
+            _onOpenConfigUi = onOpenConfigUi;
             NodeData = nodeTypeData.CreateNode();
 
             InConnectors = new ObservableCollection<ConnectorStateViewModel>();
@@ -41,7 +45,7 @@ namespace GraphEditor.Ui.ViewModel
 
         private void EditConfigExec()
         {
-            
+            _onOpenConfigUi(NodeData.CreateConfigUi());
         }
 
         internal void RemoveConnection(ConnectionViewModel connVm)

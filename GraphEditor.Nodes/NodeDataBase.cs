@@ -1,6 +1,8 @@
-﻿using GraphEditor.Interfaces.Nodes;
+﻿using GraphEditor.Interfaces.ConfigUi;
+using GraphEditor.Interfaces.Nodes;
 using System;
 using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace GraphEditor.Nodes
 {
@@ -28,5 +30,12 @@ namespace GraphEditor.Nodes
         public IList<string> OutConnectors { get; }
 
         public string Name { get; set; }
+
+        protected abstract Type ConfigControlType { get; }
+
+        public IConfigUi CreateConfigUi()
+        {
+            return Activator.CreateInstance(ConfigControlType, this) as IConfigUi;
+        }
     }
 }

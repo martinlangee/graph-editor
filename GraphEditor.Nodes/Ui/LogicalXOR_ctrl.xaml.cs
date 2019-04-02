@@ -18,13 +18,13 @@ using System.Windows.Shapes;
 namespace GraphEditor.Nodes.Ui
 {
     /// <summary>
-    /// Interaktionslogik für LogicalAND_ctrl.xaml
+    /// Interaktionslogik für LogicalXOR_ctrl.xaml
     /// </summary>
-    public partial class LogicalAND_ctrl : UserControl, IConfigUi
+    public partial class LogicalXOR_ctrl : UserControl, IConfigUi
     {
         private INodeData _nodeData;
 
-        public LogicalAND_ctrl(INodeData nodeData)
+        public LogicalXOR_ctrl(INodeData nodeData)
         {
             InitializeComponent();
 
