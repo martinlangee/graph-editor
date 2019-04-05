@@ -33,9 +33,9 @@ namespace GraphEditor.Nodes
 
         protected abstract Type ConfigControlType { get; }
 
-        public IConfigUi CreateConfigUi()
+        public INodeConfigUi CreateConfigUi()
         {
-            return Activator.CreateInstance(ConfigControlType, this) as IConfigUi;
+            return Activator.CreateInstance(ConfigControlType, this) as INodeConfigUi;
         }
     }
 }

@@ -20,7 +20,7 @@ namespace GraphEditor.Nodes.Ui
     /// <summary>
     /// Interaktionslogik für LogicalOR_ctrl.xaml
     /// </summary>
-    public partial class LogicalOR_ctrl : UserControl, IConfigUi
+    public partial class LogicalOR_ctrl : UserControl, INodeConfigUi
     {
         private INodeData _nodeData;
 

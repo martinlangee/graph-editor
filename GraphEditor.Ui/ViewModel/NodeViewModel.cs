@@ -15,11 +15,11 @@ namespace GraphEditor.Ui.ViewModel
     public class NodeViewModel : BaseNotification
     {
         private Func<List<NodeViewModel>> _onGetAllNodeVMs;
-        private Action<IConfigUi> _onOpenConfigUi;
+        private Action<INodeConfigUi> _onOpenConfigUi;
         private bool _isSelected = false;
         private Point _location;
 
-        public NodeViewModel(INodeTypeData nodeTypeData, Func<List<NodeViewModel>> onGetAllNodeVMs, Action<IConfigUi> onOpenConfigUi)
+        public NodeViewModel(INodeTypeData nodeTypeData, Func<List<NodeViewModel>> onGetAllNodeVMs, Action<INodeConfigUi> onOpenConfigUi)
         {
             _onGetAllNodeVMs = onGetAllNodeVMs;
             _onOpenConfigUi = onOpenConfigUi;

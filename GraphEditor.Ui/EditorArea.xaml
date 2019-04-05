@@ -57,9 +57,9 @@
                     </Style.Triggers>
                 </Style>
             </StackPanel.Style>
-            <Border BorderThickness="1" BorderBrush="DarkGray">
+            <!--<Border BorderThickness="1" BorderBrush="DarkGray">-->
                 <ContentPresenter Content="{Binding NodeConfigUi}"/>
-            </Border>
+            <!--</Border>-->
         </StackPanel>
     </Grid>
 </UserControl>

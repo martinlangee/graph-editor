@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace GraphEditor.Interfaces.ConfigUi
 {
-    public interface IConfigUi
+    public interface INodeConfigUi
     {
         event Action<UserControl> OnClose;
     }

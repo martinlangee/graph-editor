@@ -71,7 +71,7 @@ namespace GraphEditor.Ui.ViewModel
             private set => SetProperty<AreaViewModel, UserControl>(ref _nodeConfigUi, value, nameof(NodeConfigUi));
         }
 
-        private void OnOpenConfigUi(IConfigUi configUi)
+        private void OnOpenConfigUi(INodeConfigUi configUi)
         {
             configUi.OnClose += (ui => NodeConfigUi = null);
             NodeConfigUi = configUi as UserControl;
