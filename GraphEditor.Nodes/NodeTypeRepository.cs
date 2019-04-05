@@ -1,5 +1,5 @@
 ﻿using GraphEditor.Interfaces.Nodes;
-using GraphEditor.Nodes.Bl;
+using GraphEditor.Nodes.Types;
 using System;
 using System.Collections.Generic;
 

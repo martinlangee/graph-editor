@@ -11,7 +11,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Configuration" Margin="3,0"/>
+        <TextBlock x:Name="_tbHeader" Text="Configuration" Margin="3,0"/>
         <Button Grid.Column="1" Click="CloseButton_Click" Margin="1">
             <Path Stroke="Black" Fill="Black" StrokeThickness="2" Data="M0,0 L7,7 M7,0 L0,7" Margin="2"/>
         </Button>

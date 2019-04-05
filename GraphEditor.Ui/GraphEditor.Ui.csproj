@@ -65,7 +65,6 @@
       <DependentUpon>EditorToolBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AreaViewModel.cs" />
-    <Compile Include="ViewModel\BaseNotification.cs" />
     <Compile Include="ViewModel\ConnectionViewModel.cs" />
     <Compile Include="ViewModel\ConnectorStateViewModel.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />

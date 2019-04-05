@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GraphEditor.Interfaces.Nodes;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,16 +10,22 @@ namespace GraphEditor.Nodes
     /// </summary>
     public partial class ConfigUiHeader : UserControl
     {
+        Action _onClose;
+
         public ConfigUiHeader()
         {
             InitializeComponent();
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        public void Init(Action onClose, INodeData nodeData)
         {
-            OnClose?.Invoke();
+            _onClose = onClose;
+            _tbHeader.Text = $"Configuration {nodeData.Name}";
         }
 
-        public event Action OnClose;
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            _onClose?.Invoke();
+        }
     }
 }

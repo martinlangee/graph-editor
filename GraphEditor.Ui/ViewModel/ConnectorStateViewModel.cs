@@ -1,4 +1,5 @@
-﻿using GraphEditor.Ui.Tools;
+﻿using GraphEditor.Interfaces.ConfigUi;
+using GraphEditor.Ui.Tools;
 
 namespace GraphEditor.Ui.ViewModel
 {

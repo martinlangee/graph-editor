@@ -6,9 +6,9 @@ using GraphEditor.Ui.Tools;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace GraphEditor.Ui.ViewModel
 {
@@ -25,22 +25,60 @@ namespace GraphEditor.Ui.ViewModel
             _onOpenConfigUi = onOpenConfigUi;
             NodeData = nodeTypeData.CreateNode();
 
-            InConnectors = new ObservableCollection<ConnectorStateViewModel>();
-            OutConnectors = new ObservableCollection<ConnectorStateViewModel>();
+            NodeData.OnInConnectorsChanged = e => ReloadInConnectors(e);
+            NodeData.OnOutConnectorsChanged = e => ReloadOutConnectors(e);
 
             OutConnections = new ObservableCollection<ConnectionViewModel>();
 
             EditConfigCommand = new RelayCommand(o => EditConfigExec());
             RemoveNodeCommand = new RelayCommand(o => RemoveExec());
 
-            Type = NodeData.TypeData.Name;
-            Name = NodeData.Name;
+            InConnectors = new ObservableCollection<ConnectorStateViewModel>();
+            OutConnectors = new ObservableCollection<ConnectorStateViewModel>();
+
+            ReloadInConnectors();
+            ReloadOutConnectors();
+        }
+
+        private static bool CanChangeConnectors(ObservableCollection<ConnectorStateViewModel> connectors, NotifyCollectionChangedEventArgs e)
+        {
+            if (e == null) return true;
+
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                if (connectors.Any(c => c.IsConnected)) return false;
+            }
+
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                foreach (var conn in connectors.Reverse())
+                {
+                    if (conn.Index > (e.NewItems.Count - 1) && conn.IsConnected)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool ReloadInConnectors(NotifyCollectionChangedEventArgs e = null)
+        {
+            if (!CanChangeConnectors(InConnectors, e)) return false;
 
             for (int i = 0; i < NodeData.InConnectors.Count; i++)
                 InConnectors.Add(new ConnectorStateViewModel(this, i, isOutBound: false));
 
+            return true;
+        }
+
+        private bool ReloadOutConnectors(NotifyCollectionChangedEventArgs e = null)
+        {
+            if (!CanChangeConnectors(OutConnectors, e)) return false;
+
             for (int i = 0; i < NodeData.OutConnectors.Count; i++)
                 OutConnectors.Add(new ConnectorStateViewModel(this, i, isOutBound: true));
+
+            return true;
         }
 
         private void EditConfigExec()
@@ -80,9 +118,6 @@ namespace GraphEditor.Ui.ViewModel
         public RelayCommand RemoveNodeCommand { get; }
 
         public INodeData NodeData { get; }
-
-        public string Type { get; set; }
-        public string Name { get; set; }
 
         public ObservableCollection<ConnectorStateViewModel> InConnectors { get; }
 

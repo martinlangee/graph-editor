@@ -28,7 +28,7 @@ namespace GraphEditor.Nodes.Ui
         {
             InitializeComponent();
 
-            Header.OnClose += () => OnClose?.Invoke(this);
+            Header.Init(() => OnClose?.Invoke(this), nodeData);
 
             _nodeData = nodeData;
         }

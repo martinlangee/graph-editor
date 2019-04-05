@@ -1,6 +1,7 @@
 ﻿using GraphEditor.Interfaces.ConfigUi;
+using System;
 using System.Collections.Generic;
-using System.Windows.Controls;
+using System.Collections.Specialized;
 
 namespace GraphEditor.Interfaces.Nodes
 {
@@ -19,5 +20,9 @@ namespace GraphEditor.Interfaces.Nodes
         IList<string> OutConnectors { get; }
 
         INodeConfigUi CreateConfigUi();
+
+        Func<NotifyCollectionChangedEventArgs, bool> OnInConnectorsChanged { set; }
+
+        Func<NotifyCollectionChangedEventArgs, bool> OnOutConnectorsChanged { set; }
     }
 }

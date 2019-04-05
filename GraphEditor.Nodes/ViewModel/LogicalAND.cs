@@ -2,9 +2,9 @@
 using GraphEditor.Interfaces.Nodes;
 using GraphEditor.Nodes.Ui;
 
-namespace GraphEditor.Nodes.Bl
+namespace GraphEditor.Nodes.ViewModel
 {
-    public class LogicalAND: NodeDataBase
+    public class LogicalAND : NodeDataBase
     {
         public LogicalAND(INodeTypeData nodeTypeData) : base(nodeTypeData)
         {

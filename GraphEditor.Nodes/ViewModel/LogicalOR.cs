@@ -2,9 +2,9 @@
 using GraphEditor.Interfaces.Nodes;
 using GraphEditor.Nodes.Ui;
 
-namespace GraphEditor.Nodes.Bl
+namespace GraphEditor.Nodes.ViewModel
 {
-    public class LogicalOR: NodeDataBase
+    public class LogicalOR : NodeDataBase
     {
         public LogicalOR(INodeTypeData nodeTypeData) : base(nodeTypeData)
         {

@@ -9,12 +9,12 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace GraphEditor.Ui.ViewModel
+namespace GraphEditor.Interfaces.ConfigUi
 {
     /// <summary>
     /// Base PropertyChanged implementation
     /// </summary>
-    /// <seealso cref="System.ComponentModel.INotifyPropertyChanged" />
+    /// <seealso cref="INotifyPropertyChanged" />
     public class BaseNotification : INotifyPropertyChanged
     {
         protected BaseNotification()
@@ -34,14 +34,14 @@ namespace GraphEditor.Ui.ViewModel
         /// <param name="propertyName">The property name</param>
         /// <param name="onChangedEvent">Extra changed event fired when value is changed</param>
         /// <returns>True if the value was changed</returns>
-        protected bool SetProperty<S,T>(ref T storage, T value, string propertyName, Action<S,T> onChangedEvent = null) where S: BaseNotification
+        protected bool SetProperty<S, T>(ref T storage, T value, string propertyName, Action<S, T> onChangedEvent = null) where S : BaseNotification
         {
             if (Equals(storage, value))
                 return false;
 
             storage = value;
 
-            onChangedEvent?.Invoke((S) this, value);
+            onChangedEvent?.Invoke((S)this, value);
 
             CurrentDispatcher.Invoke(() =>
             {
@@ -63,13 +63,13 @@ namespace GraphEditor.Ui.ViewModel
         /// <param name="onChangedEvent">Extra changed event fired when value is changed</param>
         /// <param name="propertyNames">The property names list the properyt changed event is fired for</param>
         /// <returns>True if the value was changed</returns>
-        protected bool SetProperty<S,T>(Action<T> onStore, T oldValue, T newValue, Action<S,T> onChangedEvent = null, params string[] propertyNames) where S: BaseNotification
+        protected bool SetProperty<S, T>(Action<T> onStore, T oldValue, T newValue, Action<S, T> onChangedEvent = null, params string[] propertyNames) where S : BaseNotification
         {
             if (Equals(oldValue, newValue))
                 return false;
 
             onStore(newValue);
-            onChangedEvent?.Invoke((S) this, newValue);
+            onChangedEvent?.Invoke((S)this, newValue);
 
             CurrentDispatcher.Invoke(() =>
             {
