@@ -28,14 +28,11 @@ namespace GraphEditor.Nodes.Ui
         {
             InitializeComponent();
 
+            Header.OnClose += () => OnClose?.Invoke(this);
+
             _nodeData = nodeData;
         }
 
-        public event Action<UserControl> OnClose;
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            OnClose?.Invoke(this);
-        }
+        public event Action<INodeConfigUi> OnClose;
     }
 }

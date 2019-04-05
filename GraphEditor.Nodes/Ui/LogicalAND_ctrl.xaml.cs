@@ -12,11 +12,6 @@ namespace GraphEditor.Nodes.Ui
     {
         INodeData _nodeData;
 
-        public LogicalAND_ctrl()
-        {
-            InitializeComponent();
-        }
-
         public LogicalAND_ctrl(INodeData nodeData)
         {
             InitializeComponent();
@@ -26,6 +21,6 @@ namespace GraphEditor.Nodes.Ui
             _nodeData = nodeData;
         }
 
-        public event Action<UserControl> OnClose;
+        public event Action<INodeConfigUi> OnClose;
     }
 }

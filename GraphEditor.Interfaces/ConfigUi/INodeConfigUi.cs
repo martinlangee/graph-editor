@@ -5,6 +5,6 @@ namespace GraphEditor.Interfaces.ConfigUi
 {
     public interface INodeConfigUi
     {
-        event Action<UserControl> OnClose;
+        event Action<INodeConfigUi> OnClose;
     }
 }
