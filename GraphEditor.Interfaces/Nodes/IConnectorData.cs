@@ -1,4 +1,6 @@
-﻿namespace GraphEditor.Interfaces.Nodes
+﻿using System;
+
+namespace GraphEditor.Interfaces.Nodes
 {
     public interface IConnectorData
     {

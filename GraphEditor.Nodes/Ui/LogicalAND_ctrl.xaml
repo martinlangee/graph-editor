@@ -14,13 +14,14 @@
         </Grid.RowDefinitions>
         <nodes:ConfigUiHeader x:Name="Header"/>
         <StackPanel Grid.Row="1" Background="White">
-            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <ListBox Margin="15"
+            <TextBlock Text="Name" Margin="15,5"/>
+            <TextBox Text="{Binding Name}" Margin="15,0,15,10"/>
+            <TextBlock Text="Activated Inputs" Margin="15,0"/>
+            <ListBox Margin="15,0"
+                     BorderBrush="Transparent"
                      x:Name="_lbInputs"
                      VerticalAlignment="Stretch"
-                     ItemsSource="{Binding InConnectors}"
-                     SelectionMode="Multiple"
-                     AlternationCount="999">
+                     ItemsSource="{Binding Ins}">
                 <ListBox.Resources>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="OverridesDefaultStyle" Value="true" />

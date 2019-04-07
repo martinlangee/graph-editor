@@ -7,16 +7,20 @@ namespace GraphEditor.Nodes.ViewModel
     public class ConnectorData : BaseNotification, IConnectorData
     {
         private bool _isActive;
-        private Func<IConnectorData, bool> _checkIsConnected;
+        private readonly Action<IConnectorData, bool> _onIsActiveChanged;
+        private readonly Func<IConnectorData, bool> _canBeDeactivated;
 
-        public ConnectorData(string name, int index, bool isOutBound, bool isActive, Func<IConnectorData, bool> checkIsConnected, object type = null)
+        public ConnectorData(string name, int index, bool isOutBound, bool isActive, Action<IConnectorData, bool> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, object type = null)
         {
-            _checkIsConnected = checkIsConnected;
+            _canBeDeactivated = canBeDeactivated;
+
             Name = name;
             Index = index;
             IsOutBound = isOutBound;
             IsActive = isActive;
             Type = type;
+
+            _onIsActiveChanged = onIsActiveChanged;
         }
 
         public string Name { get; }
@@ -30,8 +34,14 @@ namespace GraphEditor.Nodes.ViewModel
             get { return _isActive; }
             set
             {
-                if (!_checkIsConnected(this))
-                    SetProperty<ConnectorData, bool>(ref _isActive, value, nameof(IsActive));
+                if (_canBeDeactivated(this) || value)
+                {
+                    SetProperty<ConnectorData, bool>(ref _isActive, value, nameof(IsActive),
+                        (connData, isActive) =>
+                            {
+                                _onIsActiveChanged?.Invoke(connData, isActive);
+                            });
+                }
             }
         }
 

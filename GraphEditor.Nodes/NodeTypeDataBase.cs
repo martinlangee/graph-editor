@@ -18,6 +18,13 @@ namespace GraphEditor.Nodes
             Icon = LoadGraphic(NodeType, "ico");
         }
 
+        private int _newIndex = 1;
+
+        public string NextNewName
+        {
+            get { return $"{Name} {_newIndex++}"; }
+        }
+
         private static byte[] LoadGraphic(Type nodeType, string suffix = "")
         {
             suffix = string.IsNullOrEmpty(suffix) ? "" : $"_{suffix}";
@@ -62,9 +69,9 @@ namespace GraphEditor.Nodes
 
         protected abstract Type NodeType { get; }
 
-        public INodeData CreateNode(Func<IConnectorData, bool> checkIsConnected)
+        public INodeData CreateNode(Action<IConnectorData, bool> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
         {
-            return Activator.CreateInstance(NodeType, this, checkIsConnected) as INodeData;
+            return Activator.CreateInstance(NodeType, this, onActiveChanged, canBeDeactivated) as INodeData;
         }
     }
 }

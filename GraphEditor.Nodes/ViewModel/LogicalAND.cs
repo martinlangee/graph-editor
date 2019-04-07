@@ -6,14 +6,14 @@ namespace GraphEditor.Nodes.ViewModel
 {
     public class LogicalAND : NodeDataBase
     {
-        public LogicalAND(INodeTypeData nodeTypeData, Func<IConnectorData, bool> checkIsConnected) 
-            : base(nodeTypeData, checkIsConnected)
+        public LogicalAND(INodeTypeData nodeTypeData, Action<IConnectorData, bool> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated) 
+            : base(nodeTypeData, onActiveChanged, canBeDeactivated)
         {
-            InConnectors.Add(new ConnectorData("IN 1", 0, false, true, checkIsConnected));
-            InConnectors.Add(new ConnectorData("IN 2", 1, false, false, checkIsConnected));
-            InConnectors.Add(new ConnectorData("IN 3", 2, false, true, checkIsConnected));
+            Ins.Add(new ConnectorData("IN 1", 0, false, true, onActiveChanged, canBeDeactivated));
+            Ins.Add(new ConnectorData("IN 2", 1, false, false, onActiveChanged, canBeDeactivated));
+            Ins.Add(new ConnectorData("IN 3", 2, false, true, onActiveChanged, canBeDeactivated));
 
-            OutConnectors.Add(new ConnectorData("OUT (AND)", 0, true, true, checkIsConnected));
+            Outs.Add(new ConnectorData("AND", 0, true, true, onActiveChanged, canBeDeactivated));
         }
 
         protected override Type ConfigControlType => typeof(LogicalAND_ctrl);

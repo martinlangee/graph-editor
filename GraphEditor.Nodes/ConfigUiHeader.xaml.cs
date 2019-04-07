@@ -20,7 +20,7 @@ namespace GraphEditor.Nodes
         public void Init(Action onClose, INodeData nodeData)
         {
             _onClose = onClose;
-            _tbHeader.Text = $"Configuration {nodeData.Name}";
+            _tbHeader.Text = $"Configuration {nodeData.TypeData.Name}";
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

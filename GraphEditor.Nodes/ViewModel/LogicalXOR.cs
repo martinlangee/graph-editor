@@ -6,13 +6,13 @@ namespace GraphEditor.Nodes.ViewModel
 {
     public class LogicalXOR : NodeDataBase
     {
-        public LogicalXOR(INodeTypeData nodeTypeData, Func<IConnectorData, bool> checkIsConnected) 
-            : base(nodeTypeData, checkIsConnected)
+        public LogicalXOR(INodeTypeData nodeTypeData, Action<IConnectorData, bool> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated) 
+            : base(nodeTypeData, onActiveChanged, canBeDeactivated)
         {
-            InConnectors.Add(new ConnectorData("IN 1", 0, false, true, checkIsConnected));
-            InConnectors.Add(new ConnectorData("IN 1", 1, false, true, checkIsConnected));
+            Ins.Add(new ConnectorData("IN 1", 0, false, true, onActiveChanged, canBeDeactivated));
+            Ins.Add(new ConnectorData("IN 2", 1, false, true, onActiveChanged, canBeDeactivated));
 
-            OutConnectors.Add(new ConnectorData("OUT (XOR)", 0, true, true, checkIsConnected));
+            Outs.Add(new ConnectorData("XOR", 0, true, true, onActiveChanged, canBeDeactivated));
         }
 
         protected override Type ConfigControlType => typeof(LogicalXOR_ctrl);

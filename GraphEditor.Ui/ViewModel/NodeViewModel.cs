@@ -23,7 +23,7 @@ namespace GraphEditor.Ui.ViewModel
         {
             _onGetAllNodeVMs = onGetAllNodeVMs;
             _onOpenConfigUi = onOpenConfigUi;
-            NodeData = nodeTypeData.CreateNode(IsConnected);
+            NodeData = nodeTypeData.CreateNode(ConnectorOnActiveChanged, ConnectorCanBeDeactivated);
 
             OutConnections = new ObservableCollection<ConnectionViewModel>();
 
@@ -37,15 +37,29 @@ namespace GraphEditor.Ui.ViewModel
             ReloadOutConnectors();
         }
 
-        private bool IsConnected(IConnectorData connData)
+        private void ConnectorOnActiveChanged(IConnectorData connectorData, bool isActive)
+        {
+            if (connectorData.IsOutBound)
+                ReloadOutConnectors();
+            else
+                ReloadInConnectors();
+        }
+
+        private bool ConnectorCanBeDeactivated(IConnectorData connData)
         {
             var connectors = connData.IsOutBound ? OutConnectors : InConnectors;
+
+            if (connectors?.Count <= 1)
+                return false;
+
             var connState = connectors?.FirstOrDefault(ic => ic.Index == connData.Index && ic.IsOutBound == connData.IsOutBound);
-            return connState?.IsConnected == true;
+            return connState?.IsConnected == false;
         }
 
         private void ReloadConnectors(IList<IConnectorData> connectors, ObservableCollection<ConnectorStateViewModel> connStateVMs, bool isOutBound)
         {
+            connStateVMs.Clear();
+
             connectors.
                 For((ic, i) =>
                 {
@@ -54,14 +68,14 @@ namespace GraphEditor.Ui.ViewModel
                 });
         }
 
-        private void ReloadInConnectors(NotifyCollectionChangedEventArgs e = null)
+        private void ReloadInConnectors()
         {
-            ReloadConnectors(NodeData.InConnectors, InConnectors, isOutBound: false);
+            ReloadConnectors(NodeData.Ins, InConnectors, isOutBound: false);
         }
 
-        private void ReloadOutConnectors(NotifyCollectionChangedEventArgs e = null)
+        private void ReloadOutConnectors()
         {
-            ReloadConnectors(NodeData.OutConnectors, OutConnectors, isOutBound: true);
+            ReloadConnectors(NodeData.Outs, OutConnectors, isOutBound: true);
         }
 
         private void EditConfigExec()

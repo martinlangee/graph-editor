@@ -9,20 +9,17 @@ namespace GraphEditor.Nodes.ViewModel
 {
     public abstract class NodeDataBase : BaseNotification, INodeData
     {
-        Func<IConnectorData, bool> _checkIsConnected;
-        bool _changing;
         private string _name;
 
-        public NodeDataBase(INodeTypeData nodeTypeData, Func<IConnectorData, bool> getIsConnected)
+        public NodeDataBase(INodeTypeData nodeTypeData, Action<IConnectorData, bool> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
         {
             TypeData = nodeTypeData;
-            _checkIsConnected = getIsConnected;
 
             Id = Guid.NewGuid().ToString();
-            Name = Type;
+            Name = TypeData.NextNewName;
 
-            InConnectors = new ObservableCollection<IConnectorData>();
-            OutConnectors = new ObservableCollection<IConnectorData>();
+            Ins = new ObservableCollection<IConnectorData>();
+            Outs = new ObservableCollection<IConnectorData>();
         }
 
         public INodeTypeData TypeData { get; }
@@ -31,9 +28,9 @@ namespace GraphEditor.Nodes.ViewModel
 
         public string Type => GetType().Name;
 
-        public IList<IConnectorData> InConnectors { get; private set; }
+        public IList<IConnectorData> Ins { get; private set; }
 
-        public IList<IConnectorData> OutConnectors { get; private set; }
+        public IList<IConnectorData> Outs { get; private set; }
 
         public string Name { get => _name; set => SetProperty<NodeDataBase, string>(ref _name, value, nameof(Name)); }
 

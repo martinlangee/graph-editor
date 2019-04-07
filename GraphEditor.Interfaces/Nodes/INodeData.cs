@@ -15,9 +15,9 @@ namespace GraphEditor.Interfaces.Nodes
 
         string Name { get; set; }
 
-        IList<IConnectorData> InConnectors { get; }
+        IList<IConnectorData> Ins { get; }
 
-        IList<IConnectorData> OutConnectors { get; }
+        IList<IConnectorData> Outs { get; }
 
         INodeConfigUi CreateConfigUi();
     }

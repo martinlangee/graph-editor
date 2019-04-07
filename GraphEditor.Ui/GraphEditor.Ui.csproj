@@ -125,7 +125,9 @@
       <Name>GraphEditor.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Graphics\Delete.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Graphics\Config.png" />
   </ItemGroup>

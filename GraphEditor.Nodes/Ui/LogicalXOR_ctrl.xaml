@@ -13,7 +13,28 @@
         </Grid.RowDefinitions>
         <nodes:ConfigUiHeader x:Name="Header"/>
         <StackPanel Grid.Row="1" Background="White">
-            <TextBlock Text=">> Logical XOR config >>" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50"/>
+            <TextBlock Text="Name" Margin="15,5"/>
+            <TextBox Text="{Binding Name}" Margin="15,0,15,10"/>
+            <TextBlock Text="activated Inputs" Margin="15,0"/>
+            <ListBox Margin="15,0"
+                     BorderBrush="Transparent"
+                     x:Name="_lbInputs"
+                     VerticalAlignment="Stretch"
+                     ItemsSource="{Binding Ins}">
+                <ListBox.Resources>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="OverridesDefaultStyle" Value="true" />
+                        <Setter Property="SnapsToDevicePixels" Value="true" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <CheckBox Margin="5,2" IsChecked="{Binding IsActive}" Content="{Binding Name}"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.Resources>
+            </ListBox>
         </StackPanel>
     </Grid>
 </UserControl>

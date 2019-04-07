@@ -10,8 +10,6 @@ namespace GraphEditor.Nodes.Ui
     /// </summary>
     public partial class LogicalAND_ctrl : UserControl, INodeConfigUi
     {
-        INodeData _nodeData;
-
         public LogicalAND_ctrl(INodeData nodeData)
         {
             InitializeComponent();
@@ -19,14 +17,8 @@ namespace GraphEditor.Nodes.Ui
             Header.Init(() => OnClose?.Invoke(this), nodeData);
 
             DataContext = nodeData;
-            _nodeData = nodeData;
         }
 
         public event Action<INodeConfigUi> OnClose;
-
-        private void CheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
-        {
-            var a = ItemsControl.GetAlternationIndex(((CheckBox) sender).TemplatedParent);
-        }
     }
 }
