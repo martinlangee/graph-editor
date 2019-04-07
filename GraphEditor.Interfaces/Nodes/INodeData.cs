@@ -15,14 +15,10 @@ namespace GraphEditor.Interfaces.Nodes
 
         string Name { get; set; }
 
-        IList<string> InConnectors { get; }
+        IList<IConnectorData> InConnectors { get; }
 
-        IList<string> OutConnectors { get; }
+        IList<IConnectorData> OutConnectors { get; }
 
         INodeConfigUi CreateConfigUi();
-
-        Func<NotifyCollectionChangedEventArgs, bool> OnInConnectorsChanged { set; }
-
-        Func<NotifyCollectionChangedEventArgs, bool> OnOutConnectorsChanged { set; }
     }
 }

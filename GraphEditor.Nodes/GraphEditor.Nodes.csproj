@@ -49,13 +49,14 @@
   <ItemGroup>
     <Compile Include="Types\LogicalAND_Type.cs" />
     <Compile Include="Types\LogicalOR_Type.cs" />
+    <Compile Include="ViewModel\ConnectorData.cs" />
     <Compile Include="ViewModel\LogicalXOR.cs" />
     <Compile Include="ViewModel\LogicalOR.cs" />
     <Compile Include="ViewModel\LogicalAND.cs" />
     <Compile Include="ConfigUiHeader.xaml.cs">
       <DependentUpon>ConfigUiHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NodeDataBase.cs" />
+    <Compile Include="ViewModel\NodeDataBase.cs" />
     <Compile Include="Types\LogicalXOR_Type.cs" />
     <Compile Include="NodeTypeDataBase.cs" />
     <Compile Include="NodeTypeRepository.cs" />

@@ -6,14 +6,15 @@ namespace GraphEditor.Nodes.ViewModel
 {
     public class LogicalOR : NodeDataBase
     {
-        public LogicalOR(INodeTypeData nodeTypeData) : base(nodeTypeData)
+        public LogicalOR(INodeTypeData nodeTypeData, Func<IConnectorData, bool> checkIsConnected) 
+            : base(nodeTypeData, checkIsConnected)
         {
-            InConnectors.Add("IN 1");
-            InConnectors.Add("IN 2");
-            InConnectors.Add("IN 3");
-            InConnectors.Add("IN 4");
+            InConnectors.Add(new ConnectorData("IN 1", 0, false, true, checkIsConnected));
+            InConnectors.Add(new ConnectorData("IN 2", 1, false, true, checkIsConnected));
+            InConnectors.Add(new ConnectorData("IN 3", 2, false, true, checkIsConnected));
+            InConnectors.Add(new ConnectorData("IN 4", 3, false, true, checkIsConnected));
 
-            OutConnectors.Add("OUT (OR)");
+            OutConnectors.Add(new ConnectorData("OUT (OR)", 0, true, true, checkIsConnected));
         }
 
         protected override Type ConfigControlType => typeof(LogicalOR_ctrl);

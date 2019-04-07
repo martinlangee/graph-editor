@@ -56,15 +56,15 @@ namespace GraphEditor.Nodes
 
         public byte[] Image { get; protected set; }
 
-        public virtual bool CanConnectToIn(INodeTypeData otherNode, int otherOutIndex, int myInIndex) => myInIndex % 2 == 0;  // TODO zum Testen
+        public virtual bool CanConnectToIn(INodeTypeData otherNode, int otherOutIndex, int myInIndex) => myInIndex % 2 == 0;  // TODO: CanConnectToIn zum Testen
 
-        public virtual bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex) => myOutIndex % 2 == 1;  // TODO zum Testen
+        public virtual bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex) => myOutIndex % 2 == 1;  // TODO: CanConnectToOut zum Testen
 
         protected abstract Type NodeType { get; }
 
-        public INodeData CreateNode()
+        public INodeData CreateNode(Func<IConnectorData, bool> checkIsConnected)
         {
-            return Activator.CreateInstance(NodeType, this) as INodeData;
+            return Activator.CreateInstance(NodeType, this, checkIsConnected) as INodeData;
         }
     }
 }

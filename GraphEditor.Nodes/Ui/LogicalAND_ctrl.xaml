@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:nodes="clr-namespace:GraphEditor.Nodes"
-             mc:Ignorable="d"
+             xmlns:vm="clr-namespace:GraphEditor.Nodes.ViewModel"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:LogicalAND}"
              MinWidth="300" MinHeight="200">
     <Grid>
         <Grid.RowDefinitions>
@@ -13,7 +14,27 @@
         </Grid.RowDefinitions>
         <nodes:ConfigUiHeader x:Name="Header"/>
         <StackPanel Grid.Row="1" Background="White">
-            <TextBlock Text=">> Logical AND config >>" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="50"/>
+            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ListBox Margin="15"
+                     x:Name="_lbInputs"
+                     VerticalAlignment="Stretch"
+                     ItemsSource="{Binding InConnectors}"
+                     SelectionMode="Multiple"
+                     AlternationCount="999">
+                <ListBox.Resources>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="OverridesDefaultStyle" Value="true" />
+                        <Setter Property="SnapsToDevicePixels" Value="true" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <CheckBox Margin="5,2" IsChecked="{Binding IsActive}" Content="{Binding Name}"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.Resources>
+            </ListBox>
         </StackPanel>
     </Grid>
 </UserControl>

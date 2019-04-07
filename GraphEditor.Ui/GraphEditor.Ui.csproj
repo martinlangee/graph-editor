@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\ArrowPolyline.cs" />
+    <Compile Include="Converters\CalculationConverter.cs" />
     <Compile Include="Converters\BytesToImageConverter.cs" />
     <Compile Include="Converters\BytesToImageSourceConverter.cs" />
     <Compile Include="Converters\ListToPointCollectionConverter.cs" />

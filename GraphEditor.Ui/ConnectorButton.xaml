@@ -3,34 +3,55 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d">
-    <Border>
-        <Border.Style>
-            <Style TargetType="{x:Type Border}">
-                <EventSetter Event="PreviewMouseLeftButtonUp" Handler="Border_PreviewMouseLeftButtonUp"/>
-                <Setter Property="Tag" Value="In"/>
-                <Setter Property="Height" Value="10"/>
-                <Setter Property="Width" Value="10"/>
-                <Setter Property="Margin" Value="-5,0,0,5"/>
-                <Setter Property="Background" Value="CornflowerBlue"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Height" Value="12"/>
-                        <Setter Property="Width" Value="12"/>
-                        <Setter Property="Margin" Value="-6,-1,-1,4"/>
-                        <Setter Property="Background" Value="DeepSkyBlue"/>
-                    </Trigger>
-                    <DataTrigger Binding="{Binding IsConnecting}" Value="True">
-                        <Setter Property="Background" Value="Coral"/>
-                        <Setter Property="BorderBrush" Value="Red"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding IsConnectRequested}" Value="True">
-                        <Setter Property="Background" Value="Coral"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Border.Style>
-    </Border>
+             xmlns:vm="clr-namespace:GraphEditor.Ui.ViewModel"
+             xmlns:cv="clr-namespace:GraphEditor.Ui.Converters"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ConnectorStateViewModel}">
+    <UserControl.Resources>
+        <cv:CalculationConverter x:Key="CalcConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Canvas>
+            <TextBlock x:Name="_tbName" Text="{Binding Name}" Canvas.Top="{Binding ActualHeight, ElementName=_tbName, Converter={StaticResource CalcConverter}, ConverterParameter=*-0.5}" FontSize="8" Foreground="Gray">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Canvas.Left" Value="6"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsOutBound}" Value="false">
+                                <Setter Property="Canvas.Left" Value="{Binding ActualWidth, ElementName=_tbName, Converter={StaticResource CalcConverter}, ConverterParameter=*-1|-7}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </Canvas>
+        <Border>
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <EventSetter Event="PreviewMouseLeftButtonUp" Handler="Border_PreviewMouseLeftButtonUp"/>
+                    <Setter Property="Tag" Value="In"/>
+                    <Setter Property="Height" Value="10"/>
+                    <Setter Property="Width" Value="10"/>
+                    <Setter Property="Margin" Value="-5,0,0,5"/>
+                    <Setter Property="Background" Value="CornflowerBlue"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Height" Value="12"/>
+                            <Setter Property="Width" Value="12"/>
+                            <Setter Property="Margin" Value="-6,-1,-1,4"/>
+                            <Setter Property="Background" Value="DeepSkyBlue"/>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding IsConnecting}" Value="True">
+                            <Setter Property="Background" Value="Coral"/>
+                            <Setter Property="BorderBrush" Value="Red"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsConnectRequested}" Value="True">
+                            <Setter Property="Background" Value="Coral"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+    </Grid>
 </UserControl>

@@ -11,9 +11,10 @@ namespace GraphEditor.Ui.ViewModel
 
         public int Index { get; set; }
 
-        public ConnectorStateViewModel(NodeViewModel node, int index, bool isOutBound)
+        public ConnectorStateViewModel(NodeViewModel node, string name, int index, bool isOutBound)
         {
             _node = node;
+            Name = name;
             Index = index;
             IsOutBound = isOutBound;
         }
@@ -53,5 +54,7 @@ namespace GraphEditor.Ui.ViewModel
         public bool IsConnected { get; set; }
 
         public bool IsOutBound { get; set; }
+
+        public string Name { get; }
     }
 }

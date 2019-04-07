@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 
 namespace GraphEditor.Interfaces.Nodes
 {
@@ -18,6 +19,6 @@ namespace GraphEditor.Interfaces.Nodes
 
         bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex);
 
-        INodeData CreateNode();
+        INodeData CreateNode(Func<IConnectorData, bool> checkIsConnected);
     }
 }

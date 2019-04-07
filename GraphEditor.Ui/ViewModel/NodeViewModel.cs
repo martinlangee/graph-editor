@@ -23,10 +23,7 @@ namespace GraphEditor.Ui.ViewModel
         {
             _onGetAllNodeVMs = onGetAllNodeVMs;
             _onOpenConfigUi = onOpenConfigUi;
-            NodeData = nodeTypeData.CreateNode();
-
-            NodeData.OnInConnectorsChanged = e => ReloadInConnectors(e);
-            NodeData.OnOutConnectorsChanged = e => ReloadOutConnectors(e);
+            NodeData = nodeTypeData.CreateNode(IsConnected);
 
             OutConnections = new ObservableCollection<ConnectionViewModel>();
 
@@ -40,45 +37,31 @@ namespace GraphEditor.Ui.ViewModel
             ReloadOutConnectors();
         }
 
-        private static bool CanChangeConnectors(ObservableCollection<ConnectorStateViewModel> connectors, NotifyCollectionChangedEventArgs e)
+        private bool IsConnected(IConnectorData connData)
         {
-            if (e == null) return true;
+            var connectors = connData.IsOutBound ? OutConnectors : InConnectors;
+            var connState = connectors?.FirstOrDefault(ic => ic.Index == connData.Index && ic.IsOutBound == connData.IsOutBound);
+            return connState?.IsConnected == true;
+        }
 
-            if (e.Action == NotifyCollectionChangedAction.Reset)
-            {
-                if (connectors.Any(c => c.IsConnected)) return false;
-            }
-
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                foreach (var conn in connectors.Reverse())
+        private void ReloadConnectors(IList<IConnectorData> connectors, ObservableCollection<ConnectorStateViewModel> connStateVMs, bool isOutBound)
+        {
+            connectors.
+                For((ic, i) =>
                 {
-                    if (conn.Index > (e.NewItems.Count - 1) && conn.IsConnected)
-                        return false;
-                }
-            }
-
-            return true;
+                    if (ic.IsActive)
+                        connStateVMs.Add(new ConnectorStateViewModel(this, ic.Name, i, isOutBound));
+                });
         }
 
-        private bool ReloadInConnectors(NotifyCollectionChangedEventArgs e = null)
+        private void ReloadInConnectors(NotifyCollectionChangedEventArgs e = null)
         {
-            if (!CanChangeConnectors(InConnectors, e)) return false;
-
-            for (int i = 0; i < NodeData.InConnectors.Count; i++)
-                InConnectors.Add(new ConnectorStateViewModel(this, i, isOutBound: false));
-
-            return true;
+            ReloadConnectors(NodeData.InConnectors, InConnectors, isOutBound: false);
         }
 
-        private bool ReloadOutConnectors(NotifyCollectionChangedEventArgs e = null)
+        private void ReloadOutConnectors(NotifyCollectionChangedEventArgs e = null)
         {
-            if (!CanChangeConnectors(OutConnectors, e)) return false;
-
-            for (int i = 0; i < NodeData.OutConnectors.Count; i++)
-                OutConnectors.Add(new ConnectorStateViewModel(this, i, isOutBound: true));
-
-            return true;
+            ReloadConnectors(NodeData.OutConnectors, OutConnectors, isOutBound: true);
         }
 
         private void EditConfigExec()

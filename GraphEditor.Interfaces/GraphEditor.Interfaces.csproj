@@ -48,6 +48,7 @@
     <Compile Include="ConfigUi\INodeConfigUi.cs" />
     <Compile Include="Container\RegisteredObject.cs" />
     <Compile Include="Container\TypeNotRegisteredException.cs" />
+    <Compile Include="Nodes\IConnectorData.cs" />
     <Compile Include="Nodes\INodeData.cs" />
     <Compile Include="Nodes\INodeTypeRepository.cs" />
     <Compile Include="Nodes\INodeTypeData.cs" />

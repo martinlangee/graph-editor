@@ -23,5 +23,10 @@ namespace GraphEditor.Nodes.Ui
         }
 
         public event Action<INodeConfigUi> OnClose;
+
+        private void CheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var a = ItemsControl.GetAlternationIndex(((CheckBox) sender).TemplatedParent);
+        }
     }
 }

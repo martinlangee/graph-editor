@@ -28,7 +28,7 @@ namespace GraphEditor.Interfaces.ConfigUi
         /// Sets the storage (of a property) to the value and fires property changed event only if the storage value is changed
         /// </summary>
         /// <typeparam name="S">Value type of the view model class</typeparam>
-        /// <typeparam name="T">Value type of the storage</typeparam>
+        /// <typeparam name="T">Value type of the storage variable</typeparam>
         /// <param name="storage">The storage reference</param>
         /// <param name="value">The new value</param>
         /// <param name="propertyName">The property name</param>
@@ -41,7 +41,7 @@ namespace GraphEditor.Interfaces.ConfigUi
 
             storage = value;
 
-            onChangedEvent?.Invoke((S)this, value);
+            onChangedEvent?.Invoke((S) this, value);
 
             CurrentDispatcher.Invoke(() =>
             {
@@ -56,7 +56,7 @@ namespace GraphEditor.Interfaces.ConfigUi
         /// Sets the storage (of a property) to the value and fires property changed event only if the storage value is changed
         /// </summary>
         /// <typeparam name="S">Value type of the view model class</typeparam>
-        /// <typeparam name="T">Value type of the storage</typeparam>
+        /// <typeparam name="T">Value type of the storage variable</typeparam>
         /// <param name="onStore">The storage action</param>
         /// <param name="oldValue">The old value</param>
         /// <param name="newValue">The new value</param>
@@ -69,7 +69,7 @@ namespace GraphEditor.Interfaces.ConfigUi
                 return false;
 
             onStore(newValue);
-            onChangedEvent?.Invoke((S)this, newValue);
+            onChangedEvent?.Invoke((S) this, newValue);
 
             CurrentDispatcher.Invoke(() =>
             {
