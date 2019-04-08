@@ -77,8 +77,8 @@ namespace GraphEditor.Ui
 
         private void OnRemoveNode(NodeViewModel nodeVm)
         {
-            var toRemove = GraphNodes.FirstOrDefault(gn => gn.DataContext.Equals(nodeVm));
-            _canvas.Children.Remove(toRemove);
+            var nodeToRemove = GraphNodes.FirstOrDefault(gn => gn.DataContext.Equals(nodeVm));
+            _canvas.Children.Remove(nodeToRemove);
         }
 
         private void OnNodeLocationChanged(NodeViewModel nodeVm, Point location)

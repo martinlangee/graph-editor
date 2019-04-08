@@ -2,6 +2,7 @@
 using GraphEditor.Nodes.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GraphEditor.Nodes
 {
@@ -19,6 +20,11 @@ namespace GraphEditor.Nodes
 
         public IList<INodeTypeData> NodeTypes { get; }
 
+        public INodeTypeData Find(string type)
+        {
+            return NodeTypes.FirstOrDefault(nt => nt.Type.Equals(type));
+        }
+
         // called by IoC container
         public void OnBuiltUp()
         {
@@ -26,7 +32,7 @@ namespace GraphEditor.Nodes
         }
 
         // called by IoC container
-        public void ShutDown()
+        public void TearDown()
         {
             Console.Write("NodeTypeRepository is shut down");
         }

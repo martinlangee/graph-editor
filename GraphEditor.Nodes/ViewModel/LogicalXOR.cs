@@ -18,7 +18,12 @@ namespace GraphEditor.Nodes.ViewModel
 
         protected override Type ConfigControlType => typeof(LogicalXOR_ctrl);
 
-        protected override void SaveNodeSpecificData(XElement parent)
+        protected override void LoadTypeSpecificData(XElement parentXml)
+        {
+
+        }
+
+        protected override void SaveTypeSpecificData(XElement parent)
         {
             
         }

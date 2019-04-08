@@ -22,8 +22,8 @@ namespace GraphEditor.Interfaces.Nodes
 
         INodeConfigUi CreateConfigUi();
 
-        void SaveToXml(XElement parent);
+        void SaveToXml(XElement parentXml);
 
-        void LoadFromXml(XElement parent);
+        void LoadFromXml(XElement nodeXml);
     }
 }

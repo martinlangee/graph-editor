@@ -53,7 +53,7 @@ namespace GraphEditor.Nodes
             }
         }
 
-        public string Type => GetType().Name;
+        public string Type => NodeType.Name;
 
         public string Name { get; protected set; }
 

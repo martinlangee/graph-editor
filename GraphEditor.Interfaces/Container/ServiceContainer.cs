@@ -23,7 +23,7 @@ namespace GraphEditor.Interfaces.Container
         }
 
         const string OnBuiltUpMethod = "OnBuiltUp";
-        const string ShutDownMethod = "ShutDown";
+        const string TearDownMethod = "TearDown";
 
         private static readonly IList<RegisteredObject> _registeredObjects = new List<RegisteredObject>();
 
@@ -49,7 +49,7 @@ namespace GraphEditor.Interfaces.Container
         {
             _registeredObjects.ForEach(ro =>
             {
-                ro.ConcreteType.GetMethod(ShutDownMethod)?.Invoke(ro.Instance, null);
+                ro.ConcreteType.GetMethod(TearDownMethod)?.Invoke(ro.Instance, null);
             });
         }
 

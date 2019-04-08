@@ -116,23 +116,20 @@ namespace GraphEditor.Ui.ViewModel
 
         public INodeData Data { get; }
 
-        public void LoadNodeFromXml(XElement parentXml)
+        public void LoadNodeFromXml(XElement nodeXml)
         {
+            Data.LoadFromXml(nodeXml);
         }
 
         public void SaveNodeToXml(XElement parentXml)
         {
             var nodeVmXml = new XElement("Node");
-
             nodeVmXml.SetAttributeValue("Location", Location);
-
             Data.SaveToXml(nodeVmXml);
-
             parentXml.Add(nodeVmXml);
-
         }
 
-        public void LoadConnectionsFromXml(XElement parentXml)
+        public void LoadConnectionsFromXml(XElement connectionsXml)
         {
         }
 

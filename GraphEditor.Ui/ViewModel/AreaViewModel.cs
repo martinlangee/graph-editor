@@ -4,7 +4,6 @@ using GraphEditor.Interfaces.Nodes;
 using GraphEditor.Interfaces.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
-using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -53,13 +52,36 @@ namespace GraphEditor.Ui.ViewModel
             UiMessageHub.OnCreateConnection += OnCreateConnection;
         }
 
+        public void OnTearDown()
+        {
+            ClearConfig();
+        }
+
+        private void ClearConfig()
+        {
+            NodeVMs.InverseFor((node, i) => UiMessageHub.RemoveNode(node));
+        }
+        
         private void LoadExec()
         {
-            var dlg = new OpenFileDialog();
-            if (dlg.ShowDialog() == true)
-            {
+            //var dlg = new OpenFileDialog();
+            //if (dlg.ShowDialog() == true)
+            //{
+            ClearConfig();
 
-            }
+            var docXml = XDocument.Load("c:\\gn.xml");
+            var configXml = docXml.Element("Configuration");
+            var nodesXml = configXml.Element("Nodes");
+            nodesXml.Elements().ForEach(el =>
+            {
+                var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(el.Attribute("Type").Value));
+                var pts = el.Attribute("Location").Value.Split(';');
+                nodeVm.Location = Point.Parse(string.Join(",", pts));
+
+                nodeVm.LoadNodeFromXml(el);
+            });
+
+            //}
         }
 
         private void SaveExec()
@@ -116,7 +138,7 @@ namespace GraphEditor.Ui.ViewModel
 
         private void OnOpenConfigUi(INodeConfigUi configUi)
         {
-            configUi.OnClose += (ui => NodeConfigUi = null);
+            configUi.OnClose += ui => NodeConfigUi = null;
             NodeConfigUi = configUi as UserControl;
         }
 
