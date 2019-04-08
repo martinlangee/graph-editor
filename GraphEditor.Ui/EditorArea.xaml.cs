@@ -66,8 +66,9 @@ namespace GraphEditor.Ui
 
             if (ViewModel.ToolBar.IsGridShown)
             {
-                location.X = Math.Round(location.X / 10) * 10;
-                location.Y = Math.Round(location.Y / 10) * 10;
+                var gridWidth = ViewModel.GridRect.Width;
+                location.X = Math.Round(location.X / gridWidth) * gridWidth;
+                location.Y = Math.Round(location.Y / gridWidth) * gridWidth;
             }
 
             Canvas.SetLeft(graphNode, location.X);
@@ -269,8 +270,9 @@ namespace GraphEditor.Ui
 
                 if (ViewModel.ToolBar.IsGridShown)
                 {
-                    location.X = Math.Round(location.X / 10) * 10;
-                    location.Y = Math.Round(location.Y / 10) * 10;
+                    var gridWidth = ViewModel.GridRect.Width;
+                    location.X = Math.Round(location.X / gridWidth) * gridWidth;
+                    location.Y = Math.Round(location.Y / gridWidth) * gridWidth;
                 }
                 
                 nodeVMs[idx].Location = location;
