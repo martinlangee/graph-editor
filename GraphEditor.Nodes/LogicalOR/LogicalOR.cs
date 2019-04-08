@@ -18,7 +18,7 @@ namespace GraphEditor.Nodes.LogicalOR
             Outs.Add(new ConnectorData("OR", 0, true, true, onActiveChanged, canBeDeactivated));
         }
 
-        protected override Type ConfigControlType => typeof(LogicalOR_ctrl);
+        protected override Type ConfigControlType => typeof(LogicalORControl);
 
         protected override void LoadTypeSpecificData(XElement parentXml)
         {

@@ -16,7 +16,7 @@ namespace GraphEditor.Nodes.LogicalXOR
             Outs.Add(new ConnectorData("XOR", 0, true, true, onActiveChanged, canBeDeactivated));
         }
 
-        protected override Type ConfigControlType => typeof(LogicalXOR_ctrl);
+        protected override Type ConfigControlType => typeof(LogicalXORControl);
 
         protected override void LoadTypeSpecificData(XElement parentXml)
         {

@@ -6,11 +6,11 @@ using System.Windows.Controls;
 namespace GraphEditor.Nodes.LogicalOR
 {
     /// <summary>
-    /// Interaktionslogik für LogicalOR_ctrl.xaml
+    /// Interaktionslogik für LogicalORControl.xaml
     /// </summary>
-    public partial class LogicalOR_ctrl : UserControl, INodeConfigUi
+    public partial class LogicalORControl : UserControl, INodeConfigUi
     {
-        public LogicalOR_ctrl(INodeData nodeData)
+        public LogicalORControl(INodeData nodeData)
         {
             InitializeComponent();
 

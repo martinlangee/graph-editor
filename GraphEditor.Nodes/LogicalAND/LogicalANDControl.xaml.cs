@@ -3,14 +3,14 @@ using GraphEditor.Interfaces.Nodes;
 using System;
 using System.Windows.Controls;
 
-namespace GraphEditor.Nodes.LogicalXOR
+namespace GraphEditor.Nodes.LogicalAND
 {
     /// <summary>
-    /// Interaktionslogik für LogicalXOR_ctrl.xaml
+    /// Interaktionslogik für LogicalANDControl.xaml
     /// </summary>
-    public partial class LogicalXOR_ctrl : UserControl, INodeConfigUi
+    public partial class LogicalANDControl : UserControl, INodeConfigUi
     {
-        public LogicalXOR_ctrl(INodeData nodeData)
+        public LogicalANDControl(INodeData nodeData)
         {
             InitializeComponent();
 

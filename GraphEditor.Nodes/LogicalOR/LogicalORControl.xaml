@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="GraphEditor.Nodes.LogicalXOR.LogicalXOR_ctrl"
+﻿<UserControl x:Class="GraphEditor.Nodes.LogicalOR.LogicalORControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -15,7 +15,7 @@
         <StackPanel Grid.Row="1" Background="White">
             <TextBlock Text="Name" Margin="15,5"/>
             <TextBox Text="{Binding Name}" Margin="15,0,15,10"/>
-            <TextBlock Text="activated Inputs" Margin="15,0"/>
+            <TextBlock Text="Activated Inputs" Margin="15,0"/>
             <ListBox Margin="15,0"
                      BorderBrush="Transparent"
                      x:Name="_lbInputs"

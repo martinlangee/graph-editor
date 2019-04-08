@@ -61,14 +61,14 @@
     <Compile Include="Types\NodeTypeDataBase.cs" />
     <Compile Include="Types\NodeTypeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LogicalXOR\LogicalXOR_ctrl.xaml.cs">
-      <DependentUpon>LogicalXOR_ctrl.xaml</DependentUpon>
+    <Compile Include="LogicalXOR\LogicalXORControl.xaml.cs">
+      <DependentUpon>LogicalXORControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LogicalOR\LogicalOR_ctrl.xaml.cs">
-      <DependentUpon>LogicalOR_ctrl.xaml</DependentUpon>
+    <Compile Include="LogicalOR\LogicalORControl.xaml.cs">
+      <DependentUpon>LogicalORControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LogicalAND\LogicalAND_ctrl.xaml.cs">
-      <DependentUpon>LogicalAND_ctrl.xaml</DependentUpon>
+    <Compile Include="LogicalAND\LogicalANDControl.xaml.cs">
+      <DependentUpon>LogicalANDControl.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -96,15 +96,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LogicalXOR\LogicalXOR_ctrl.xaml">
+    <Page Include="LogicalXOR\LogicalXORControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="LogicalOR\LogicalOR_ctrl.xaml">
+    <Page Include="LogicalOR\LogicalORControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="LogicalAND\LogicalAND_ctrl.xaml">
+    <Page Include="LogicalAND\LogicalANDControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -17,7 +17,7 @@ namespace GraphEditor.Nodes.LogicalAND
             Outs.Add(new ConnectorData("AND", 0, true, true, onActiveChanged, canBeDeactivated));
         }
 
-        protected override Type ConfigControlType => typeof(LogicalAND_ctrl);
+        protected override Type ConfigControlType => typeof(LogicalANDControl);
 
         protected override void LoadTypeSpecificData(XElement parentXml)
         {
