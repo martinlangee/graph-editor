@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Reflection;
+using GraphEditor.Nodes.Base;
 
 namespace GraphEditor.Nodes.Types
 {
@@ -29,27 +30,7 @@ namespace GraphEditor.Nodes.Types
             suffix = string.IsNullOrEmpty(suffix) ? "" : $"_{suffix}";
             var resPath = $"/{nodeType.Name}/{nodeType.Name}{suffix}.png";
 
-            var src = new BitmapImage();
-            try
-            {
-                src.BeginInit();
-                src.UriSource = new Uri($"pack://application:,,,/{Assembly.GetExecutingAssembly().GetName()};component{resPath}");
-                src.CacheOption = BitmapCacheOption.OnLoad;
-                src.EndInit();
-            }
-            catch (IOException)
-            {
-                Console.WriteLine($"Resource '{resPath}' not found");
-                return null;
-            }
-
-            using (var ms = new MemoryStream())
-            {
-                var pngEncoder = new PngBitmapEncoder();
-                pngEncoder.Frames.Add(BitmapFrame.Create(src));
-                pngEncoder.Save(ms);
-                return ms.GetBuffer();
-            }
+            return Helper.LoadGraphicFromResource(resPath);
         }
 
         public string Type => NodeType.Name;

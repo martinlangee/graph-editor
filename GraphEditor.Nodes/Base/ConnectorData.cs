@@ -10,7 +10,7 @@ namespace GraphEditor.Nodes.Base
         private readonly Action<IConnectorData, bool> _onIsActiveChanged;
         private readonly Func<IConnectorData, bool> _canBeDeactivated;
 
-        public ConnectorData(string name, int index, bool isOutBound, bool isActive, Action<IConnectorData, bool> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, object type = null)
+        public ConnectorData(string name, int index, bool isOutBound, bool isActive, Action<IConnectorData, bool> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, byte[] icon = null, object type = null)
         {
             _canBeDeactivated = canBeDeactivated;
 
@@ -19,7 +19,7 @@ namespace GraphEditor.Nodes.Base
             IsOutBound = isOutBound;
             IsActive = isActive;
             Type = type;
-            Icon = new byte[0];
+            Icon = icon;
 
             _onIsActiveChanged = onIsActiveChanged;
         }

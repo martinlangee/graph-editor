@@ -24,7 +24,18 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
-            <!--<Image Source="{Binding Icon, Converter={StaticResource BytesToImageConverter}}"/>  --><!-- TODO -->
+            <Image Source="{Binding Icon, Converter={StaticResource BytesToImageConverter}}">
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Setter Property="Canvas.Left" Value="-16"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsOutBound}" Value="false">
+                                <Setter Property="Canvas.Left" Value="4"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
         </Canvas>
         <Border>
             <Border.Style>
