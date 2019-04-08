@@ -12,6 +12,8 @@
     </UserControl.Resources>
     <Grid Height="25" Background="LightBlue">
         <StackPanel Orientation="Horizontal">
+            <Button Content="Load" Command="{Binding LoadCommand}" Margin="0,0,2,0"/>
+            <Button Content="Save" Command="{Binding SaveCommand}" Margin="0,0,10,0"/>
             <ItemsControl x:Name="_icToolBar" ItemsSource="{Binding NodeTypes}" HorizontalAlignment="Stretch">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

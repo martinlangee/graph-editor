@@ -127,7 +127,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Graphics\Delete.png" />
+    <Resource Include="Graphics\Remove.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Graphics\Config.png" />

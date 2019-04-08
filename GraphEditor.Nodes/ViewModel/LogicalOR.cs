@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Linq;
 using GraphEditor.Interfaces.Nodes;
 using GraphEditor.Nodes.Ui;
 
@@ -18,5 +19,10 @@ namespace GraphEditor.Nodes.ViewModel
         }
 
         protected override Type ConfigControlType => typeof(LogicalOR_ctrl);
+
+        protected override void SaveNodeSpecificData(XElement parent)
+        {
+            
+        }
     }
 }

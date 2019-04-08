@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace GraphEditor.Ui.ViewModel
 {
@@ -22,7 +23,7 @@ namespace GraphEditor.Ui.ViewModel
         {
             _onGetAllNodeVMs = onGetAllNodeVMs;
             _onOpenConfigUi = onOpenConfigUi;
-            NodeData = nodeTypeData.CreateNode(ConnectorOnActiveChanged, ConnectorCanBeDeactivated);
+            Data = nodeTypeData.CreateNode(ConnectorOnActiveChanged, ConnectorCanBeDeactivated);
 
             OutConnections = new ObservableCollection<ConnectionViewModel>();
 
@@ -69,17 +70,17 @@ namespace GraphEditor.Ui.ViewModel
 
         private void ReloadInConnectors()
         {
-            ReloadConnectors(NodeData.Ins, InConnectors, isOutBound: false);
+            ReloadConnectors(Data.Ins, InConnectors, isOutBound: false);
         }
 
         private void ReloadOutConnectors()
         {
-            ReloadConnectors(NodeData.Outs, OutConnectors, isOutBound: true);
+            ReloadConnectors(Data.Outs, OutConnectors, isOutBound: true);
         }
 
         private void EditConfigExec()
         {
-            _onOpenConfigUi(NodeData.CreateConfigUi());
+            _onOpenConfigUi(Data.CreateConfigUi());
         }
 
         internal void RemoveConnection(ConnectionViewModel connVm)
@@ -97,14 +98,14 @@ namespace GraphEditor.Ui.ViewModel
             if (isOutBound)
             {
                 if (isConnecting)
-                    InConnectors.For((conn, idx) => conn.IsConnectRequested = otherNode.NodeData.TypeData.CanConnectToIn(NodeData.TypeData, otherConnIdx, idx));
+                    InConnectors.For((conn, idx) => conn.IsConnectRequested = otherNode.Data.TypeData.CanConnectToIn(Data.TypeData, otherConnIdx, idx));
                 else
                     InConnectors.ForEach(conn => conn.IsConnectRequested = false);
             }
             else
             {
                 if (isConnecting)
-                    OutConnectors.For((conn, idx) => conn.IsConnectRequested = otherNode.NodeData.TypeData.CanConnectToOut(NodeData.TypeData, otherConnIdx, idx));
+                    OutConnectors.For((conn, idx) => conn.IsConnectRequested = otherNode.Data.TypeData.CanConnectToOut(Data.TypeData, otherConnIdx, idx));
                 else
                     OutConnectors.ForEach(conn => conn.IsConnectRequested = false);
             }
@@ -113,7 +114,32 @@ namespace GraphEditor.Ui.ViewModel
         public RelayCommand EditConfigCommand { get; }
         public RelayCommand RemoveNodeCommand { get; }
 
-        public INodeData NodeData { get; }
+        public INodeData Data { get; }
+
+        public void LoadNodeFromXml(XElement parentXml)
+        {
+        }
+
+        public void SaveNodeToXml(XElement parentXml)
+        {
+            var nodeVmXml = new XElement("Node");
+
+            nodeVmXml.SetAttributeValue("Location", Location);
+
+            Data.SaveToXml(nodeVmXml);
+
+            parentXml.Add(nodeVmXml);
+
+        }
+
+        public void LoadConnectionsFromXml(XElement parentXml)
+        {
+        }
+
+        public void SaveConnectionsToXml(XElement parentXml)
+        {
+            OutConnections.For((conn, i) => conn.SaveToXml(parentXml));
+        }
 
         public ObservableCollection<ConnectorStateViewModel> InConnectors { get; }
 

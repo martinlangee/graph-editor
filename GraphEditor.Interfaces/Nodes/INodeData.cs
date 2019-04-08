@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Xml.Linq;
 
 namespace GraphEditor.Interfaces.Nodes
 {
@@ -20,5 +21,9 @@ namespace GraphEditor.Interfaces.Nodes
         IList<IConnectorData> Outs { get; }
 
         INodeConfigUi CreateConfigUi();
+
+        void SaveToXml(XElement parent);
+
+        void LoadFromXml(XElement parent);
     }
 }

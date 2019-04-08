@@ -1,9 +1,10 @@
 ﻿using GraphEditor.Interfaces.ConfigUi;
 using GraphEditor.Interfaces.Nodes;
+using GraphEditor.Interfaces.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using System.Xml.Linq;
 
 namespace GraphEditor.Nodes.ViewModel
 {
@@ -39,6 +40,48 @@ namespace GraphEditor.Nodes.ViewModel
         public INodeConfigUi CreateConfigUi()
         {
             return Activator.CreateInstance(ConfigControlType, this) as INodeConfigUi;
+        }
+
+        public void LoadFromXml(XElement parent)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected abstract void SaveNodeSpecificData(XElement parentXml);
+
+        public void SaveToXml(XElement parentXml)
+        {
+            parentXml.SetAttributeValue("Id", Id);
+            parentXml.SetAttributeValue("Type", Type);
+
+            var connXml = new XElement("Inputs");
+
+            Ins.For((connData, i) =>
+            {
+                var inpXml = new XElement("In");
+                inpXml.SetAttributeValue("Name", connData.Name);
+                inpXml.SetAttributeValue("Index", i);
+                inpXml.SetAttributeValue("Active", connData.IsActive);
+                connXml.Add(inpXml);
+            });
+            parentXml.Add(connXml);
+
+            connXml = new XElement("Outputs");
+
+            Outs.For((connData, i) =>
+            {
+                var outpXml = new XElement("Out");
+                outpXml.SetAttributeValue("Name", connData.Name);
+                outpXml.SetAttributeValue("Index", i);
+                outpXml.SetAttributeValue("Active", connData.IsActive);
+                connXml.Add(outpXml);
+            });
+            parentXml.Add(connXml);
+
+            var specXml = new XElement("Spec");
+            SaveNodeSpecificData(specXml);
+
+            parentXml.Add(specXml);
         }
     }
 }

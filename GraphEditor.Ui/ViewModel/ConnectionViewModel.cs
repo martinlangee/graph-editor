@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace GraphEditor.Ui.ViewModel
 {
@@ -130,6 +131,22 @@ namespace GraphEditor.Ui.ViewModel
         public void Remove()
         {
             SourceNode.RemoveConnection(this);
+        }
+
+        public void LoadFromToXml(XElement parentXml)
+        {
+        }
+
+        public void SaveToXml(XElement parentXml)
+        {
+            var connXml = new XElement("Connection");
+
+            connXml.SetAttributeValue("Source", SourceNode.Data.Id);
+            connXml.SetAttributeValue("SourceConn", SourceConnector);
+            connXml.SetAttributeValue("Target", TargetNode.Data.Id);
+            connXml.SetAttributeValue("TargetConn", TargetConnector);
+
+            parentXml.Add(connXml);
         }
     }
 }

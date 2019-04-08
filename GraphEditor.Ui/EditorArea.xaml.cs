@@ -17,6 +17,7 @@ using System;
  * TODO:
  *  Serialisierung/Deserialisierung
  *  Erzeugung über DragNDrop aus der Toolbar
+ *  z-Order der Nodes editierbar machen
  * 
  * 
  * ------------------------------------------------------------------------------- */
@@ -71,8 +72,7 @@ namespace GraphEditor.Ui
                 location.Y = Math.Round(location.Y / gridWidth) * gridWidth;
             }
 
-            Canvas.SetLeft(graphNode, location.X);
-            Canvas.SetTop(graphNode, location.Y);
+            nodeVm.Location = location;
         }
 
         private void OnRemoveNode(NodeViewModel nodeVm)
@@ -291,7 +291,7 @@ namespace GraphEditor.Ui
             Mouse.Capture(null);
         }
 
-        private void _canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        private void Canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Application.Current.MainWindow.Cursor = Cursors.Arrow;
 

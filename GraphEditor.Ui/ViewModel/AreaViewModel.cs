@@ -4,13 +4,13 @@ using GraphEditor.Interfaces.Nodes;
 using GraphEditor.Interfaces.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
-using System;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace GraphEditor.Ui.ViewModel
 {
@@ -28,11 +28,19 @@ namespace GraphEditor.Ui.ViewModel
 
         public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
 
+        public RelayCommand LoadCommand { get; private set; }
+
+        public RelayCommand SaveCommand { get; private set; }
+
         public RelayCommand AddNodeCommand { get; private set; }
 
         public void OnBuiltUp()
         {
-            ToolBar = new ToolBarViewModel();
+            LoadCommand = new RelayCommand(o => LoadExec());
+            SaveCommand = new RelayCommand(o => SaveExec());
+            AddNodeCommand = new RelayCommand(o => AddNodeExec((INodeTypeData) o));
+
+            ToolBar = new ToolBarViewModel(LoadCommand, SaveCommand);
             AreaContextMenuItems = new ObservableCollection<INodeTypeData>();
             NodeVMs = new ObservableCollection<NodeViewModel>();
 
@@ -40,11 +48,41 @@ namespace GraphEditor.Ui.ViewModel
                 nt => AreaContextMenuItems.Add(nt)
             );
 
-            AddNodeCommand = new RelayCommand(o => AddNodeExec((INodeTypeData) o));
-
             UiMessageHub.OnRemoveNode += OnRemoveNode;
             UiMessageHub.OnConnectRequested += OnConnectRequested;
             UiMessageHub.OnCreateConnection += OnCreateConnection;
+        }
+
+        private void LoadExec()
+        {
+            var dlg = new OpenFileDialog();
+            if (dlg.ShowDialog() == true)
+            {
+
+            }
+        }
+
+        private void SaveExec()
+        {
+            //var dlg = new SaveFileDialog();
+            //if (dlg.ShowDialog() == true)
+            //{
+            var docXml = new XDocument();
+
+            var configXml = new XElement("Configuration");
+
+            var nodesXml = new XElement("Nodes");
+            NodeVMs.ForEach(node => node.SaveNodeToXml(nodesXml));
+            configXml.Add(nodesXml);
+
+            var connXml = new XElement("Connections");
+            NodeVMs.ForEach(node => node.SaveConnectionsToXml(connXml));
+            configXml.Add(connXml);
+
+            docXml.Add(configXml);
+
+            docXml.Save("c:\\gn.xml");
+            //}
         }
 
         // called by IoC container

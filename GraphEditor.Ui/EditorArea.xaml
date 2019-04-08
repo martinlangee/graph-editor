@@ -21,7 +21,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ui:EditorToolBar DataContext="{Binding ToolBar}"/>
-        <Canvas Grid.Row="1" x:Name="_canvas" MouseLeftButtonUp="_canvas_OnMouseLeftButtonUp">
+        <Canvas Grid.Row="1" x:Name="_canvas" MouseLeftButtonUp="Canvas_OnMouseLeftButtonUp">
             <Canvas.Style>
                 <Style TargetType="{x:Type Canvas}">
                     <Setter Property="Background">
@@ -76,9 +76,7 @@
                     </Style.Triggers>
                 </Style>
             </StackPanel.Style>
-            <!--<Border BorderThickness="1" BorderBrush="DarkGray">-->
-                <ContentPresenter Content="{Binding NodeConfigUi}"/>
-            <!--</Border>-->
+            <ContentPresenter Content="{Binding NodeConfigUi}"/>
         </StackPanel>
     </Grid>
 </UserControl>
