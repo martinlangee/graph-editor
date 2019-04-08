@@ -6,7 +6,6 @@ using GraphEditor.Ui.Tools;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 
@@ -118,17 +117,6 @@ namespace GraphEditor.Ui.ViewModel
 
         public ObservableCollection<ConnectorStateViewModel> InConnectors { get; }
 
-        public ObservableCollection<ConnectionViewModel> OutConnections { get; }
-
-        public void AddOutConnection(int sourceConn, NodeViewModel targetConnVm, int targetConn)
-        {
-            var connVm = new ConnectionViewModel(this, targetConnVm, sourceConn, targetConn);
-            OutConnections.Add(connVm);
-            OutConnectors[connVm.SourceConnector].IsConnected = true;
-            targetConnVm.InConnectors[connVm.TargetConnector].IsConnected = true;
-            UiMessageHub.AddConnection(connVm);
-        }
-
         public ObservableCollection<ConnectorStateViewModel> OutConnectors { get; }
 
         public bool IsSelected
@@ -153,6 +141,17 @@ namespace GraphEditor.Ui.ViewModel
             new List<ConnectionViewModel>(OutConnections).ForEach(conn => conn.Remove());
             InConnections.ForEach(ic => ic.Remove());
             UiMessageHub.RemoveNode(this);
+        }
+
+        public ObservableCollection<ConnectionViewModel> OutConnections { get; }
+
+        public void AddOutConnection(int sourceConn, NodeViewModel targetConnVm, int targetConn)
+        {
+            var connVm = new ConnectionViewModel(this, targetConnVm, sourceConn, targetConn);
+            OutConnections.Add(connVm);
+            OutConnectors[connVm.SourceConnector].IsConnected = true;
+            targetConnVm.InConnectors[connVm.TargetConnector].IsConnected = true;
+            UiMessageHub.AddConnection(connVm);
         }
 
         private List<ConnectionViewModel> InConnections

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,15 +10,13 @@ using GraphEditor.Ui.Converters;
 using GraphEditor.Interfaces.Container;
 using GraphEditor.Ui.Tools;
 using GraphEditor.Ui.ViewModel;
+using System;
 
 
 /* ----------------------------------------------------------------------------------
  * TODO:
- *  Konkrete Node-Klassen
- *  Visualisierung der konkreten Node auf der "Kachel"
- *  Konfigurationsdialoge für konkrete Nodeklassen
  *  Serialisierung/Deserialisierung
- *  Gitter-Rastung: Rastung auf Gitterkoordinaten, Gitterpunkte darstellen
+ *  Erzeugung über DragNDrop aus der Toolbar
  * 
  * 
  * ------------------------------------------------------------------------------- */
@@ -65,9 +62,16 @@ namespace GraphEditor.Ui
 
             _canvas.Children.Add(graphNode);
 
-            var mousePos = Mouse.GetPosition(_canvas);
-            Canvas.SetLeft(graphNode, mousePos.X);
-            Canvas.SetTop(graphNode, mousePos.Y);
+            var location = Mouse.GetPosition(_canvas);
+
+            if (ViewModel.ToolBar.IsGridShown)
+            {
+                location.X = Math.Round(location.X / 10) * 10;
+                location.Y = Math.Round(location.Y / 10) * 10;
+            }
+
+            Canvas.SetLeft(graphNode, location.X);
+            Canvas.SetTop(graphNode, location.Y);
         }
 
         private void OnRemoveNode(NodeViewModel nodeVm)
@@ -110,8 +114,8 @@ namespace GraphEditor.Ui
                 StrokeThickness = 1.2,
                 HoverStrokeThickness = 2.0,
                 HoverStroke = Brushes.DarkBlue,
-                HeadWidth = 10,
-                HeadHeight = 2,
+                HeadWidth = 9,
+                HeadHeight = 1.5,
                 BendPointSize = 8,
                 DataContext = connectionVm,
             };
@@ -260,8 +264,16 @@ namespace GraphEditor.Ui
 
             for (var idx = 0; idx < nodeVMs.Count; idx++)
             {
-                var point = e.GetPosition(_canvas) - points[idx];
-                nodeVMs[idx].Location = new Point(point.X, point.Y);
+                var locVector = e.GetPosition(_canvas) - points[idx];
+                var location = new Point(locVector.X, locVector.Y);
+
+                if (ViewModel.ToolBar.IsGridShown)
+                {
+                    location.X = Math.Round(location.X / 10) * 10;
+                    location.Y = Math.Round(location.Y / 10) * 10;
+                }
+                
+                nodeVMs[idx].Location = location;
             }
         }
 
@@ -274,8 +286,6 @@ namespace GraphEditor.Ui
         protected override void OnDrop(DragEventArgs e)
         {
             SetDragObjectPosition(e);
-
-            Console.WriteLine("Capture OFF (OnDrop)");
             Mouse.Capture(null);
         }
 

@@ -11,24 +11,27 @@
         <cv:BytesToImageSourceConverter x:Key="BytesToImageConverter"/>
     </UserControl.Resources>
     <Grid Height="25" Background="LightBlue">
-        <ItemsControl x:Name="_icToolBar" ItemsSource="{Binding NodeTypes}" HorizontalAlignment="Stretch">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button>
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="{Binding Icon, Converter={StaticResource BytesToImageConverter}}" Margin="5,0"/>
-                                <TextBlock Text="{Binding Name}"/>
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <StackPanel Orientation="Horizontal">
+            <ItemsControl x:Name="_icToolBar" ItemsSource="{Binding NodeTypes}" HorizontalAlignment="Stretch">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button>
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Icon, Converter={StaticResource BytesToImageConverter}}" Margin="5,0"/>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <CheckBox Content="Show grid" IsChecked="{Binding IsGridShown}" VerticalAlignment="Center" Margin="5,0"/>
+        </StackPanel>
     </Grid>
 </UserControl>

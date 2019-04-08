@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Shapes;
 
 namespace GraphEditor.Ui.ViewModel
 {
@@ -54,6 +56,9 @@ namespace GraphEditor.Ui.ViewModel
         public ToolBarViewModel ToolBar { get; private set; }
 
         public ObservableCollection<INodeTypeData> AreaContextMenuItems { get; private set; }
+
+        // TODO: Raster-Breite in UI editierbar machen
+        public Rect GridRect { get; } = new Rect { X = 0, Y = 0, Width = 10, Height = 10 };
 
         public NodeViewModel AddNodeExec(INodeTypeData nodeTypeData)
         {
