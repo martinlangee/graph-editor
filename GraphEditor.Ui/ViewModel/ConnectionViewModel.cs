@@ -88,7 +88,7 @@ namespace GraphEditor.Ui.ViewModel
 
         public void SetPoint(int index, Point point)
         {
-            _points[index] = point;
+            _points[index] = new Point(Math.Round(point.X), Math.Round(point.Y));
             NotifyPointsChanged();
         }
 
@@ -146,6 +146,15 @@ namespace GraphEditor.Ui.ViewModel
             connXml.SetAttributeValue("Target", TargetNode.Data.Id);
             connXml.SetAttributeValue("TargetConn", TargetConnector);
 
+            var pointsXml = new XElement("Points");
+            _points.ForEach(pt =>
+            {
+                var pointXml = new XElement("Point");
+                pointXml.SetAttributeValue("Location", pt);
+                pointsXml.Add(pointXml);
+            });
+
+            connXml.Add(pointsXml);
             parentXml.Add(connXml);
         }
     }
