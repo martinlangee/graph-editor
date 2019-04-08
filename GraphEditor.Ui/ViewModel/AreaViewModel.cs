@@ -106,6 +106,8 @@ namespace GraphEditor.Ui.ViewModel
 
                     CurrentDispatcher.Invoke(() => OnCreateConnection(targetNode, targetConn));
                 });
+
+                _connNodeData.SourceNode = null;
             });
             //}
         }

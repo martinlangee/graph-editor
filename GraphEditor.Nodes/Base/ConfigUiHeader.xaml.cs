@@ -3,7 +3,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace GraphEditor.Nodes
+namespace GraphEditor.Nodes.Base
 {
     /// <summary>
     /// Interaction logic for ConfigUiHeader.xaml

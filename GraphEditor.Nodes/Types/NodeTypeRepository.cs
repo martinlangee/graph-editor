@@ -1,20 +1,22 @@
 ﻿using GraphEditor.Interfaces.Nodes;
-using GraphEditor.Nodes.Types;
+using GraphEditor.Nodes.LogicalAND;
+using GraphEditor.Nodes.LogicalOR;
+using GraphEditor.Nodes.LogicalXOR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GraphEditor.Nodes
+namespace GraphEditor.Nodes.Types
 {
-    public class NodeTypeRepository: INodeTypeRepository
+    public class NodeTypeRepository : INodeTypeRepository
     {
         public NodeTypeRepository()
         {
             NodeTypes = new List<INodeTypeData>
             {
-                new LogicalAND_Type(),
-                new LogicalOR_Type(),
-                new LogicalXOR_Type()
+                new LogicalANDType(),
+                new LogicalORType(),
+                new LogicalXORType()
             };
         }
 

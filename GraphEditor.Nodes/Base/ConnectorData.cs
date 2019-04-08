@@ -2,7 +2,7 @@
 using GraphEditor.Interfaces.Nodes;
 using System;
 
-namespace GraphEditor.Nodes.ViewModel
+namespace GraphEditor.Nodes.Base
 {
     public class ConnectorData : BaseNotification, IConnectorData
     {

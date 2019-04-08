@@ -1,11 +1,11 @@
-﻿using GraphEditor.Nodes.ViewModel;
+﻿using GraphEditor.Nodes.Types;
 using System;
 
-namespace GraphEditor.Nodes.Types
+namespace GraphEditor.Nodes.LogicalAND
 {
-    public class LogicalAND_Type : NodeTypeDataBase
+    public class LogicalANDType : NodeTypeDataBase
     {
-        public LogicalAND_Type() : base()
+        public LogicalANDType() : base()
         {
             Name = "Logical AND";
             Description = "Node representing a logical AND operation";

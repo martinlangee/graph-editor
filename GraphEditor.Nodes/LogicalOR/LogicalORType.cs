@@ -1,11 +1,11 @@
-﻿using GraphEditor.Nodes.ViewModel;
+﻿using GraphEditor.Nodes.Types;
 using System;
 
-namespace GraphEditor.Nodes.Types
+namespace GraphEditor.Nodes.LogicalOR
 {
-    public class LogicalOR_Type : NodeTypeDataBase
+    public class LogicalORType : NodeTypeDataBase
     {
-        public LogicalOR_Type() : base()
+        public LogicalORType() : base()
         {
             Name = "Logical OR";
             Description = "Node representing a logical OR operation";

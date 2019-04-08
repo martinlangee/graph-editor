@@ -131,7 +131,7 @@ namespace GraphEditor.Ui.ViewModel
 
         public void SaveConnectionsToXml(XElement parentXml)
         {
-            OutConnections.For((conn, i) => conn.SaveToXml(parentXml));
+            OutConnections.ForEach(conn => conn.SaveToXml(parentXml));
         }
 
         public ObservableCollection<ConnectorStateViewModel> InConnectors { get; }

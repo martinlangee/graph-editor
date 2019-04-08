@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Xml.Linq;
 using GraphEditor.Interfaces.Nodes;
-using GraphEditor.Nodes.Ui;
+using GraphEditor.Nodes.Base;
 
-namespace GraphEditor.Nodes.ViewModel
+namespace GraphEditor.Nodes.LogicalOR
 {
     public class LogicalOR : NodeDataBase
     {
-        public LogicalOR(INodeTypeData nodeTypeData, Action<IConnectorData, bool> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated) 
+        public LogicalOR(INodeTypeData nodeTypeData, Action<IConnectorData, bool> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
             : base(nodeTypeData, onActiveChanged, canBeDeactivated)
         {
             Ins.Add(new ConnectorData("IN 1", 0, false, true, onActiveChanged, canBeDeactivated));
@@ -22,12 +22,12 @@ namespace GraphEditor.Nodes.ViewModel
 
         protected override void LoadTypeSpecificData(XElement parentXml)
         {
-            
+
         }
 
         protected override void SaveTypeSpecificData(XElement parent)
         {
-            
+
         }
     }
 }

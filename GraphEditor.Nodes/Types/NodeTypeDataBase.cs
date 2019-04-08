@@ -1,11 +1,10 @@
 ﻿using GraphEditor.Interfaces.Nodes;
 using System;
-using System.Windows.Controls;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Reflection;
 
-namespace GraphEditor.Nodes
+namespace GraphEditor.Nodes.Types
 {
     public abstract class NodeTypeDataBase : INodeTypeData
     {
@@ -28,7 +27,7 @@ namespace GraphEditor.Nodes
         private static byte[] LoadGraphic(Type nodeType, string suffix = "")
         {
             suffix = string.IsNullOrEmpty(suffix) ? "" : $"_{suffix}";
-            var resPath = $"/Ui/{nodeType.Name}{suffix}.png";
+            var resPath = $"/{nodeType.Name}/{nodeType.Name}{suffix}.png";
 
             var src = new BitmapImage();
             try

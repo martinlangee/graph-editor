@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace GraphEditor.Nodes.ViewModel
+namespace GraphEditor.Nodes.Base
 {
     public abstract class NodeDataBase : BaseNotification, INodeData
     {
