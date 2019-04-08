@@ -14,70 +14,34 @@
     </UserControl.Resources>
     <UserControl.ContextMenu>
         <ContextMenu>
+            <MenuItem Header="Edit..." Command="{Binding EditConfigCommand}"/>
+            <Separator/>
             <MenuItem Header="Remove" Command="{Binding RemoveNodeCommand}"/>
         </ContextMenu>
     </UserControl.ContextMenu>
-    <Grid MinHeight="70" Width="80">
+    <Grid Width="80">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <!--StrokeThickness="1.5" Stroke="Blue" StrokeDashArray="1.5,1.5" RadiusX="2" RadiusY="2"-->
-        <Rectangle Grid.RowSpan="6" Fill="Transparent" Margin="-4,-3,-4,-5" StrokeThickness="1.5" Stroke="Gray" StrokeDashArray="1.5,1.5" RadiusX="2" RadiusY="2"
+        <Rectangle Grid.RowSpan="2" Fill="Transparent" Margin="-3,-2,-4,-5" StrokeThickness="2" Stroke="CornflowerBlue"
                    Visibility="{Binding IsSelected, Converter={StaticResource BooleanConverter}}"/>
-        <Rectangle Grid.Row="0" Grid.RowSpan="6" Fill="AliceBlue">
+        <Rectangle Grid.RowSpan="2" Fill="AliceBlue">
             <Rectangle.Effect>
                 <DropShadowEffect BlurRadius="5" Direction="-75" ShadowDepth="2" Color="CadetBlue"/>
             </Rectangle.Effect>
         </Rectangle>
-        <Border Grid.Row="0" Height="11" Background="CadetBlue" Cursor="Hand" Margin="-1,0" 
-                MouseLeftButtonDown="Border_MouseLeftButtonDown" MouseMove="Border_OnMouseMove" MouseLeftButtonUp="Border_OnMouseLeftButtonUp"/>
-        <Button HorizontalAlignment="Left" Command="{Binding RemoveNodeCommand}" ToolTip="Remove">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Style.Setters>
-                        <Setter Property="Control.Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Image Source="/GraphEditor.Ui;component/Graphics/Remove.png" Stretch="None"/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style.Setters>
-                </Style>
-            </Button.Style>
-        </Button>
-        <Button HorizontalAlignment="Right" Command="{Binding EditConfigCommand}" ToolTip="Edit configuration">
-            <Button.Style>
-                <Style TargetType="{x:Type Button}">
-                    <Style.Setters>
-                        <Setter Property="Control.Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Image Source="/GraphEditor.Ui;component/Graphics/Config.png" Stretch="None"/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style.Setters>
-                </Style>
-            </Button.Style>
-        </Button>
-        <Image Grid.Row="4" MinHeight="40" Width="60" Source="{Binding Data.TypeData.Image, Converter={StaticResource BytesToImageConverter}}" Margin="0,2,0,5"/>
-        <Border Grid.Row="5" Background="GhostWhite" BorderBrush="LightGray" BorderThickness="0,1,0,0">
-            <TextBlock Text="{Binding Data.Name}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Blue" FontSize="8" Margin="0,-1,0,2"/>
-        </Border>
-        <ItemsControl Grid.Row="1" Grid.RowSpan="4" x:Name="_icInConn" ItemsSource="{Binding InConnectors}" HorizontalAlignment="Left" Margin="0,5,0,0" Focusable="False">
+        <Image Source="{Binding Data.TypeData.Image, Converter={StaticResource BytesToImageConverter}}" VerticalAlignment="Top" Margin="10,5"/>
+        <TextBlock Grid.Row="1" Text="{Binding Data.Name}" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="9" Margin="5,0,5,5"/>
+        <Border Grid.RowSpan="4" Background="#01FFFFFF" MouseLeftButtonDown="Border_MouseLeftButtonDown" MouseMove="Border_OnMouseMove" MouseLeftButtonUp="Border_OnMouseLeftButtonUp"/>
+        <ItemsControl Grid.Row="0" Grid.RowSpan="2" x:Name="_icInConn" ItemsSource="{Binding InConnectors}" HorizontalAlignment="Left" Margin="0,5,0,0" Focusable="False">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <ge:ConnectorButton/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <ItemsControl Grid.Row="1" Grid.RowSpan="4" x:Name="_icOutConn" ItemsSource="{Binding OutConnectors}" HorizontalAlignment="Right" Margin="0,5,-5,0" Focusable="False">
+        <ItemsControl Grid.Row="0" Grid.RowSpan="2" x:Name="_icOutConn" ItemsSource="{Binding OutConnectors}" HorizontalAlignment="Right" Margin="0,5,-5,0" Focusable="False">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <ge:ConnectorButton/>

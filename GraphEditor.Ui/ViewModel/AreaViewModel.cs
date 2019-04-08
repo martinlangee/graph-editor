@@ -22,7 +22,7 @@ namespace GraphEditor.Ui.ViewModel
             internal bool IsOutBound;
         }
 
-        ConnectingNodeData _connNode;
+        ConnectingNodeData _connectingNode;
         private UserControl _nodeConfigUi;
 
         public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
@@ -149,12 +149,12 @@ namespace GraphEditor.Ui.ViewModel
 
         public void RevokeConnectRequestStatus()
         {
-            if (_connNode.SourceNode != null)
+            if (_connectingNode.SourceNode != null)
             {
-                if (_connNode.IsOutBound)
-                    _connNode.SourceNode.OutConnectors[_connNode.ConnIdx].IsConnecting = false;
+                if (_connectingNode.IsOutBound)
+                    _connectingNode.SourceNode.OutConnectors[_connectingNode.ConnIdx].IsConnecting = false;
                 else
-                    _connNode.SourceNode.InConnectors[_connNode.ConnIdx].IsConnecting = false;
+                    _connectingNode.SourceNode.InConnectors[_connectingNode.ConnIdx].IsConnecting = false;
             }
         }
 
@@ -162,12 +162,12 @@ namespace GraphEditor.Ui.ViewModel
         {
             if (isConnecting)
             {
-                _connNode.SourceNode = sourceNode;
-                _connNode.ConnIdx = connIdx;
-                _connNode.IsOutBound = isOutBound;
+                _connectingNode.SourceNode = sourceNode;
+                _connectingNode.ConnIdx = connIdx;
+                _connectingNode.IsOutBound = isOutBound;
             }
             else
-                _connNode.SourceNode = null;
+                _connectingNode.SourceNode = null;
         }
 
         private void OnConnectRequested(bool isConnecting, NodeViewModel sourceNode, int connIdx, bool isOutBound)
@@ -182,15 +182,15 @@ namespace GraphEditor.Ui.ViewModel
 
         private void OnCreateConnection(NodeViewModel targetNode, int connIdx)
         {
-            if (_connNode.SourceNode != null)
+            if (_connectingNode.SourceNode != null)
             {
-                if (_connNode.IsOutBound)
+                if (_connectingNode.IsOutBound)
                 {
-                    _connNode.SourceNode.AddOutConnection(_connNode.ConnIdx, targetNode, connIdx);
+                    _connectingNode.SourceNode.AddOutConnection(_connectingNode.ConnIdx, targetNode, connIdx);
                 }
                 else
                 {
-                    targetNode.AddOutConnection(connIdx, _connNode.SourceNode, _connNode.ConnIdx);
+                    targetNode.AddOutConnection(connIdx, _connectingNode.SourceNode, _connectingNode.ConnIdx);
                 }
                 RevokeConnectRequestStatus();
             }
