@@ -56,5 +56,7 @@ namespace GraphEditor.Ui.ViewModel
         public bool IsOutBound { get; set; }
 
         public string Name { get; }
+
+        public byte[] Icon => IsOutBound ? _node.Data.Outs[Index].Icon : _node.Data.Ins[Index].Icon;
     }
 }

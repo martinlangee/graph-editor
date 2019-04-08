@@ -8,6 +8,7 @@
              mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ConnectorStateViewModel}">
     <UserControl.Resources>
         <cv:CalculationConverter x:Key="CalcConverter"/>
+        <cv:BytesToImageSourceConverter x:Key="BytesToImageConverter"/>
     </UserControl.Resources>
     <Grid>
         <Canvas>
@@ -23,6 +24,7 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
+            <!--<Image Source="{Binding Icon, Converter={StaticResource BytesToImageConverter}}"/>  --><!-- TODO -->
         </Canvas>
         <Border>
             <Border.Style>

@@ -19,6 +19,7 @@ namespace GraphEditor.Nodes.ViewModel
             IsOutBound = isOutBound;
             IsActive = isActive;
             Type = type;
+            Icon = new byte[0];
 
             _onIsActiveChanged = onIsActiveChanged;
         }
@@ -46,6 +47,8 @@ namespace GraphEditor.Nodes.ViewModel
         }
 
         public object Type { get; }  // TDOD: später semantischen Typ einführen für Prüfung: wer kann mit wem verbunden werden?
+
+        public byte[] Icon { get; }
     }
 
 }

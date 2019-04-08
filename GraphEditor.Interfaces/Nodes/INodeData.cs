@@ -1,7 +1,6 @@
 ﻿using GraphEditor.Interfaces.ConfigUi;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Xml.Linq;
 
 namespace GraphEditor.Interfaces.Nodes
