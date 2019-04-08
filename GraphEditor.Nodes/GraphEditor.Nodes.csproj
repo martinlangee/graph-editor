@@ -58,6 +58,11 @@
     </Compile>
     <Compile Include="Base\NodeDataBase.cs" />
     <Compile Include="LogicalXOR\LogicalXORType.cs" />
+    <Compile Include="StartUpWarning\StartUpWarningControl.xaml.cs">
+      <DependentUpon>StartUpWarningControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StartUpWarning\StartUpWarning.cs" />
+    <Compile Include="StartUpWarning\StartUpWarningType.cs" />
     <Compile Include="Types\NodeTypeDataBase.cs" />
     <Compile Include="Types\NodeTypeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,7 +113,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="StartUpWarning\StartUpWarningControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="StartUpWarning\StartUpWarning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="StartUpWarning\StartUpWarning_ico.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

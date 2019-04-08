@@ -32,7 +32,7 @@
             </Rectangle.Effect>
         </Rectangle>
         <Image Source="{Binding Data.TypeData.Image, Converter={StaticResource BytesToImageConverter}}" VerticalAlignment="Top" Margin="10,5"/>
-        <TextBlock Grid.Row="1" Text="{Binding Data.Name}" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="9" Margin="5,0,5,5"/>
+        <TextBlock Grid.Row="1" Text="{Binding Data.Name}" HorizontalAlignment="Center" VerticalAlignment="Top" TextAlignment="Center" FontSize="9" Margin="5,0,5,5" TextWrapping="Wrap"/>
         <Border Grid.RowSpan="4" Background="#01FFFFFF" MouseLeftButtonDown="Border_MouseLeftButtonDown" MouseMove="Border_OnMouseMove" MouseLeftButtonUp="Border_OnMouseLeftButtonUp"/>
         <ItemsControl Grid.Row="0" Grid.RowSpan="2" x:Name="_icInConn" ItemsSource="{Binding InConnectors}" HorizontalAlignment="Left" Margin="0,5,0,0" Focusable="False">
             <ItemsControl.ItemTemplate>

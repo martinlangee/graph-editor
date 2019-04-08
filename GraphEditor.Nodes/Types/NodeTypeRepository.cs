@@ -2,6 +2,7 @@
 using GraphEditor.Nodes.LogicalAND;
 using GraphEditor.Nodes.LogicalOR;
 using GraphEditor.Nodes.LogicalXOR;
+using GraphEditor.Nodes.StartUpWarning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,8 @@ namespace GraphEditor.Nodes.Types
             {
                 new LogicalANDType(),
                 new LogicalORType(),
-                new LogicalXORType()
+                new LogicalXORType(),
+                new StartUpWarningType()
             };
         }
 
