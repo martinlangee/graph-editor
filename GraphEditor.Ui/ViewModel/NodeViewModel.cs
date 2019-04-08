@@ -129,10 +129,6 @@ namespace GraphEditor.Ui.ViewModel
             parentXml.Add(nodeVmXml);
         }
 
-        public void LoadConnectionsFromXml(XElement connectionsXml)
-        {
-        }
-
         public void SaveConnectionsToXml(XElement parentXml)
         {
             OutConnections.For((conn, i) => conn.SaveToXml(parentXml));

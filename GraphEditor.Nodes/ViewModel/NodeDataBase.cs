@@ -53,7 +53,6 @@ namespace GraphEditor.Nodes.ViewModel
 
             var outpsXml = nodeXml.Element("Outputs").Elements().ToList();
             Outs.For((outp, i) => outp.IsActive = bool.Parse(outpsXml[i].Attribute("Active").Value));
-            outpsXml.For((outXml, i) => Outs[i].IsActive = bool.Parse(outXml.Attribute("Active").Value));
 
             LoadTypeSpecificData(nodeXml.Element("Specific"));
         }

@@ -4,9 +4,12 @@ using GraphEditor.Interfaces.Nodes;
 using GraphEditor.Interfaces.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -22,7 +25,7 @@ namespace GraphEditor.Ui.ViewModel
             internal bool IsOutBound;
         }
 
-        ConnectingNodeData _connectingNode;
+        ConnectingNodeData _connNodeData;
         private UserControl _nodeConfigUi;
 
         public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
@@ -59,9 +62,9 @@ namespace GraphEditor.Ui.ViewModel
 
         private void ClearConfig()
         {
-            NodeVMs.InverseFor((node, i) => UiMessageHub.RemoveNode(node));
+            NodeVMs.InverseFor((node, i) => node.RemoveExec());
         }
-        
+
         private void LoadExec()
         {
             //var dlg = new OpenFileDialog();
@@ -72,18 +75,40 @@ namespace GraphEditor.Ui.ViewModel
             var docXml = XDocument.Load("c:\\gn.xml");
             var configXml = docXml.Element("Configuration");
             var nodesXml = configXml.Element("Nodes");
-            nodesXml.Elements().ForEach(el =>
+            nodesXml.Elements().ForEach(node =>
             {
-                var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(el.Attribute("Type").Value));
-                var pts = el.Attribute("Location").Value.Split(';');
+                var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(node.Attribute("Type").Value));
+                var pts = node.Attribute("Location").Value.Split(';');
                 nodeVm.Location = Point.Parse(string.Join(",", pts));
 
-                nodeVm.LoadNodeFromXml(el);
+                nodeVm.LoadNodeFromXml(node);
             });
 
+
+            // this is a workaround to ensure that the nodes are loaded and all bound item collections initialized before the connections are loaded
+            Task.Run(() =>
+            {
+                Thread.Sleep(20);  // important!
+
+                var connectionsXml = configXml.Element("Connections");
+                connectionsXml.Elements().ForEach(conn =>
+                {
+                    var sourceId = conn.Attribute("Source").Value;
+                    var sourceConn = int.Parse(conn.Attribute("SourceConn").Value);
+                    var targetId = conn.Attribute("Target").Value;
+                    var targetConn = int.Parse(conn.Attribute("TargetConn").Value);
+
+                    _connNodeData.SourceNode = NodeVMs.First(node => node.Data.Id == sourceId);
+                    _connNodeData.ConnIdx = sourceConn;
+                    _connNodeData.IsOutBound = true;
+
+                    var targetNode = NodeVMs.First(node => node.Data.Id == targetId);
+
+                    CurrentDispatcher.Invoke(() => OnCreateConnection(targetNode, targetConn));
+                });
+            });
             //}
         }
-
         private void SaveExec()
         {
             //var dlg = new SaveFileDialog();
@@ -149,12 +174,12 @@ namespace GraphEditor.Ui.ViewModel
 
         public void RevokeConnectRequestStatus()
         {
-            if (_connectingNode.SourceNode != null)
+            if (_connNodeData.SourceNode != null)
             {
-                if (_connectingNode.IsOutBound)
-                    _connectingNode.SourceNode.OutConnectors[_connectingNode.ConnIdx].IsConnecting = false;
+                if (_connNodeData.IsOutBound)
+                    _connNodeData.SourceNode.OutConnectors[_connNodeData.ConnIdx].IsConnecting = false;
                 else
-                    _connectingNode.SourceNode.InConnectors[_connectingNode.ConnIdx].IsConnecting = false;
+                    _connNodeData.SourceNode.InConnectors[_connNodeData.ConnIdx].IsConnecting = false;
             }
         }
 
@@ -162,12 +187,12 @@ namespace GraphEditor.Ui.ViewModel
         {
             if (isConnecting)
             {
-                _connectingNode.SourceNode = sourceNode;
-                _connectingNode.ConnIdx = connIdx;
-                _connectingNode.IsOutBound = isOutBound;
+                _connNodeData.SourceNode = sourceNode;
+                _connNodeData.ConnIdx = connIdx;
+                _connNodeData.IsOutBound = isOutBound;
             }
             else
-                _connectingNode.SourceNode = null;
+                _connNodeData.SourceNode = null;
         }
 
         private void OnConnectRequested(bool isConnecting, NodeViewModel sourceNode, int connIdx, bool isOutBound)
@@ -182,15 +207,15 @@ namespace GraphEditor.Ui.ViewModel
 
         private void OnCreateConnection(NodeViewModel targetNode, int connIdx)
         {
-            if (_connectingNode.SourceNode != null)
+            if (_connNodeData.SourceNode != null)
             {
-                if (_connectingNode.IsOutBound)
+                if (_connNodeData.IsOutBound)
                 {
-                    _connectingNode.SourceNode.AddOutConnection(_connectingNode.ConnIdx, targetNode, connIdx);
+                    _connNodeData.SourceNode.AddOutConnection(_connNodeData.ConnIdx, targetNode, connIdx);
                 }
                 else
                 {
-                    targetNode.AddOutConnection(connIdx, _connectingNode.SourceNode, _connectingNode.ConnIdx);
+                    targetNode.AddOutConnection(connIdx, _connNodeData.SourceNode, _connNodeData.ConnIdx);
                 }
                 RevokeConnectRequestStatus();
             }
