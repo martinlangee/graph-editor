@@ -60,6 +60,7 @@
     <Compile Include="Converters\ListToPointCollectionConverter.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\BooleanConverter.cs" />
+    <Compile Include="Tools\UiConst.cs" />
     <Compile Include="Tools\UiMessageHub.cs" />
     <Compile Include="Tools\VisualTreeHelpers.cs" />
     <Compile Include="EditorToolBar.xaml.cs">

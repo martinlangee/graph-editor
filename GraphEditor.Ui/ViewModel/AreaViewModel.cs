@@ -58,7 +58,7 @@ namespace GraphEditor.Ui.ViewModel
         public ObservableCollection<INodeTypeData> AreaContextMenuItems { get; private set; }
 
         // TODO: Raster-Breite in UI editierbar machen
-        public Rect GridRect { get; } = new Rect { X = 0, Y = 0, Width = 10, Height = 10 };
+        public Rect GridRect { get; } = new Rect { X = 0, Y = 0, Width = UiConst.GridWidth, Height = UiConst.GridWidth };
 
         public NodeViewModel AddNodeExec(INodeTypeData nodeTypeData)
         {

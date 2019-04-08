@@ -260,8 +260,8 @@ namespace GraphEditor.Ui
         private void SetDragObjectPosition(DragEventArgs e)
         {
             // Position von allen Nodes setzen, die beim Draggen selektiert sind
-            var nodeVMs = (List<NodeViewModel>) e.Data.GetData("Objects");
-            var points = (List<Point>) e.Data.GetData("Points");
+            var nodeVMs = (List<NodeViewModel>) e.Data.GetData(UiConst.DragDropObjects);
+            var points = (List<Point>) e.Data.GetData(UiConst.DragDropPoints);
 
             for (var idx = 0; idx < nodeVMs.Count; idx++)
             {
