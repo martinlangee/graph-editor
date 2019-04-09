@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.Bl", "GraphEdit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugApp", "DebugApp\DebugApp.csproj", "{0BA11BF6-007F-4F11-AA3A-7B01949AE122}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.Interface", "GraphEditor.Interfaces\GraphEditor.Interface.csproj", "{D5307D83-9681-4336-985F-749CC3FC1BB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.Interface", "GraphEditor.Interface\GraphEditor.Interface.csproj", "{D5307D83-9681-4336-985F-749CC3FC1BB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.MyNodes", "GraphEditor.Nodes\GraphEditor.MyNodes.csproj", "{D2482399-696C-427B-BF7B-54D37BA19DE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.MyNodes", "GraphEditor.MyNodes\GraphEditor.MyNodes.csproj", "{D2482399-696C-427B-BF7B-54D37BA19DE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
