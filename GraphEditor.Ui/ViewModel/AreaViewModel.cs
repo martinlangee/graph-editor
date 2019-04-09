@@ -4,7 +4,6 @@ using GraphEditor.Interface.Nodes;
 using GraphEditor.Interface.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;

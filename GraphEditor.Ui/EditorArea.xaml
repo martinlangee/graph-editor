@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:GraphEditor.Ui.ViewModel"
-             xmlns:ui="clr-namespace:GraphEditor.Ui"
              xmlns:cv="clr-namespace:GraphEditor.Ui.Converters"
              mc:Ignorable="d" 
              AllowDrop="True"
@@ -20,7 +19,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ui:EditorToolBar DataContext="{Binding ToolBar}"/>
         <Canvas Grid.Row="1" x:Name="_canvas" MouseLeftButtonUp="Canvas_OnMouseLeftButtonUp">
             <Canvas.Style>
                 <Style TargetType="{x:Type Canvas}">

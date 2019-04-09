@@ -99,6 +99,10 @@
       <Project>{056ae3a8-8e09-4e9e-b6e1-c5e12e7eeba9}</Project>
       <Name>GraphEditor.Bl</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GraphEditor.Interface\GraphEditor.Interface.csproj">
+      <Project>{D5307D83-9681-4336-985F-749CC3FC1BB1}</Project>
+      <Name>GraphEditor.Interface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GraphEditor.Ui\GraphEditor.Ui.csproj">
       <Project>{2c246bb5-5076-4011-99b3-9b22683a5995}</Project>
       <Name>GraphEditor.Ui</Name>
