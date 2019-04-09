@@ -12,13 +12,13 @@
     </UserControl.Resources>
     <Grid>
         <Canvas>
-            <TextBlock x:Name="_tbName" Text="{Binding Name}" Canvas.Top="{Binding ActualHeight, ElementName=_tbName, Converter={StaticResource CalcConverter}, ConverterParameter=*-0.6}" FontSize="8" Foreground="Gray">
+            <TextBlock x:Name="_tbName" Text="{Binding Name}" Canvas.Top="{Binding ActualHeight, ElementName=_tbName, Converter={StaticResource CalcConverter}, ConverterParameter=*-0.7}" FontSize="8" Foreground="Gray">
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Canvas.Left" Value="6"/>
+                        <Setter Property="Canvas.Left" Value="5"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsOutBound}" Value="false">
-                                <Setter Property="Canvas.Left" Value="{Binding ActualWidth, ElementName=_tbName, Converter={StaticResource CalcConverter}, ConverterParameter=*-1|-7}"/>
+                                <Setter Property="Canvas.Left" Value="{Binding ActualWidth, ElementName=_tbName, Converter={StaticResource CalcConverter}, ConverterParameter=*-1|-10}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -27,31 +27,32 @@
             <Image Source="{Binding Icon, Converter={StaticResource BytesToImageConverter}}">
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">
-                        <Setter Property="Canvas.Left" Value="-16"/>
+                        <Setter Property="Canvas.Left" Value="-20"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsOutBound}" Value="false">
-                                <Setter Property="Canvas.Left" Value="4"/>
+                                <Setter Property="Canvas.Left" Value="3"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Image.Style>
             </Image>
         </Canvas>
-        <Border BorderThickness="1">
+        <Border BorderThickness="1" SnapsToDevicePixels="True">
             <Border.Style>
                 <Style TargetType="{x:Type Border}">
                     <EventSetter Event="PreviewMouseLeftButtonUp" Handler="Border_PreviewMouseLeftButtonUp"/>
-                    <Setter Property="Height" Value="12"/>
-                    <Setter Property="Width" Value="12"/>
-                    <Setter Property="Margin" Value="-7,0,0,8"/>
+                    <Setter Property="Height" Value="9"/>
+                    <Setter Property="Width" Value="9"/>
+                    <Setter Property="Margin" Value="-7,0,0,11"/>
                     <Setter Property="Background" Value="CornflowerBlue"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="CornflowerBlue"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Height" Value="14"/>
-                            <Setter Property="Width" Value="14"/>
-                            <Setter Property="Margin" Value="-8,-1,-1,7"/>
+                            <Setter Property="Height" Value="11"/>
+                            <Setter Property="Width" Value="11"/>
+                            <Setter Property="Margin" Value="-9,-1,-1,10"/>
                             <Setter Property="Background" Value="DeepSkyBlue"/>
+                            <Setter Property="BorderBrush" Value="DeepSkyBlue"/>
                         </Trigger>
                         <DataTrigger Binding="{Binding IsConnecting}" Value="True">
                             <Setter Property="Background" Value="Coral"/>
@@ -59,6 +60,7 @@
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsConnectRequested}" Value="True">
                             <Setter Property="Background" Value="Coral"/>
+                            <Setter Property="BorderBrush" Value="Coral"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

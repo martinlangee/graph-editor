@@ -97,11 +97,11 @@ namespace GraphEditor.Ui
                 var connVm = (ConnectionViewModel) line.DataContext;
                 if (nodeVm.Equals(connVm.SourceNode))
                 {
-                    connVm.SetPoint(0, node.OutConnectorLocation(_canvas, connVm.SourceConnector));
+                    connVm.MovePoint(0, node.OutConnectorLocation(_canvas, connVm.SourceConnector));
                 }
                 if (nodeVm.Equals(connVm.TargetNode))
                 {
-                    connVm.SetPoint(connVm.Points.Count - 1, node.InConnectorLocation(_canvas, connVm.TargetConnector));
+                    connVm.MovePoint(connVm.Points.Count - 1, node.InConnectorLocation(_canvas, connVm.TargetConnector));
                 }
             }
         }
@@ -168,7 +168,7 @@ namespace GraphEditor.Ui
                     location.Y = Math.Round(location.Y / gridWidth) * gridWidth;
                 }
 
-                ConnectionVmFromLine(sender).SetPoint(_draggingBendPoint, location);
+                ConnectionVmFromLine(sender).MovePoint(_draggingBendPoint, location);
             }
         }
 

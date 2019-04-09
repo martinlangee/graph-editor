@@ -25,24 +25,24 @@ namespace GraphEditor.Ui
 
         internal AreaViewModel AreaVm => (AreaViewModel) Area.DataContext;
 
-        private Point GetConnectorLocation(ItemsControl itemsCtrl, Visual container, int index, bool isInput)
+        private Point GetConnectorLocation(ItemsControl itemsCtrl, Visual container, int index, bool isOutBound)
         {
             if (itemsCtrl.Items.Count == 0) return new Point(0, 0);
 
             var item = itemsCtrl.Items[index];
             var conn = itemsCtrl.ItemContainerGenerator.ContainerFromItem(item).FindChild<Border>().FindChild<Border>();
             return conn.TransformToVisual(container).Transform(
-                new Point(isInput ? 0 : conn.ActualWidth - 2, conn.ActualHeight / 2));
+                new Point(isOutBound ? conn.ActualWidth: -1, conn.ActualHeight / 2));
         }
 
         public Point InConnectorLocation(Visual container, int index)
         {
-            return GetConnectorLocation(_icInConn, container, index, isInput: true);
+            return GetConnectorLocation(_icInConn, container, index, isOutBound: false);
         }
 
         public Point OutConnectorLocation(Visual container, int index)
         {
-            return GetConnectorLocation(_icOutConn, container, index, isInput: false);
+            return GetConnectorLocation(_icOutConn, container, index, isOutBound: true);
         }
 
         protected override void OnGiveFeedback(GiveFeedbackEventArgs e)

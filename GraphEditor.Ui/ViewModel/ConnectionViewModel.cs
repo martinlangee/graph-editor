@@ -88,9 +88,9 @@ namespace GraphEditor.Ui.ViewModel
             return _points.IndexOf(nearest.Item1);
         }
 
-        public void SetPoint(int index, Point point)
+        public void MovePoint(int index, Point point)
         {
-            _points[index] = new Point(Math.Round(point.X), Math.Round(point.Y));
+            _points[index] = new Point(point.X, point.Y);
             NotifyPointsChanged();
         }
 
