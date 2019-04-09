@@ -110,12 +110,11 @@ namespace GraphEditor.Ui
         {
             var line = new ArrowPolyline
             {
-                SnapsToDevicePixels = true,
                 Stroke = Brushes.DimGray,
                 StrokeThickness = 1.2,
                 HoverStrokeThickness = 2.0,
                 HoverStroke = Brushes.DarkBlue,
-                HeadWidth = 9,
+                HeadWidth = 7,
                 HeadHeight = 1.5,
                 BendPointSize = 8,
                 DataContext = connectionVm,
@@ -160,7 +159,16 @@ namespace GraphEditor.Ui
         {
             if (_draggingBendPoint >= 0)
             {
-                ConnectionVmFromLine(sender).SetPoint(_draggingBendPoint, Mouse.GetPosition(_canvas));
+                var location = Mouse.GetPosition(_canvas);
+
+                if (ViewModel.ToolBar.IsGridShown)
+                {
+                    var gridWidth = ViewModel.GridRect.Width;
+                    location.X = Math.Round(location.X / gridWidth) * gridWidth;
+                    location.Y = Math.Round(location.Y / gridWidth) * gridWidth;
+                }
+
+                ConnectionVmFromLine(sender).SetPoint(_draggingBendPoint, location);
             }
         }
 

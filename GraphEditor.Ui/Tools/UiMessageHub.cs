@@ -14,16 +14,18 @@ namespace GraphEditor.Ui.Tools
 
         private static void UpdateLocation(object state)
         {
-            if (_actNodePos == null) return;
+            if (LocationUpdateMuted || _actNodePos == null) return;
 
             Dispatcher?.Invoke(() =>
+            {
+                foreach (var item in _actNodePos)
                 {
-                    foreach (var item in _actNodePos)
-                    {
-                        OnNodeLocationChanged?.Invoke(item.Key, item.Value);
-                    }
-                });
+                    OnNodeLocationChanged?.Invoke(item.Key, item.Value);
+                }
+            });
         }
+
+        public static bool LocationUpdateMuted { private get; set; }
 
         public static Dispatcher Dispatcher { get; set; }
 
@@ -39,10 +41,13 @@ namespace GraphEditor.Ui.Tools
 
         public static void NodeLocationChanged(NodeViewModel node, Point location)
         {
-            if (!_actNodePos.ContainsKey(node))
-                _actNodePos.Add(node, location);
+            Dispatcher?.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                if (!_actNodePos.ContainsKey(node))
+                    _actNodePos.Add(node, location);
 
-            _actNodePos[node] = location;
+                _actNodePos[node] = location;
+            }));
         }
 
         public static void AddConnection(ConnectionViewModel connection)
@@ -79,6 +84,6 @@ namespace GraphEditor.Ui.Tools
         public static event Action<ConnectionViewModel> OnAddConnection;
         public static event Action<ConnectionViewModel> OnRemoveConnection;
         public static event Action<bool, NodeViewModel, int, bool> OnConnectRequested;
-        public static event Action<NodeViewModel, int> OnCreateConnection;
+        public static event Func<NodeViewModel, int, ConnectionViewModel> OnCreateConnection;
     }
 }

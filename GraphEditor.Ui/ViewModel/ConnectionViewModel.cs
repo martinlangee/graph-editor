@@ -1,4 +1,5 @@
 ﻿using GraphEditor.Interfaces.ConfigUi;
+using GraphEditor.Interfaces.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace GraphEditor.Ui.ViewModel
     public class ConnectionViewModel: BaseNotification
     {
         const double MaxBendPointDragHitDist = 100;
+        const char PointsSeperator = ' ';
 
         bool _isSelected;
         List<Point> _points;
@@ -48,14 +50,14 @@ namespace GraphEditor.Ui.ViewModel
             double length = (start - end).LengthSquared;
             if (length.Equals(0.0)) return start;
 
-            Vector v = end - start;
-            double param = (p - start) * v / length;
+            Vector vect = end - start;
+            double param = (p - start) * vect / length;
 
             return (param < 0.0)
                 ? start
                 : (param > 1.0)
                     ? end
-                    : (start + param * v);
+                    : (start + param * vect);
         }
 
         private Tuple<int, Point> GetClosestPointOnPolyline(Point p)
@@ -133,8 +135,12 @@ namespace GraphEditor.Ui.ViewModel
             SourceNode.RemoveConnection(this);
         }
 
-        public void LoadFromToXml(XElement parentXml)
+        public void LoadFromToXml(XElement connectionXml)
         {
+            var points = connectionXml.Attribute("Points").Value;
+            var pointList = points.Split(PointsSeperator).Select(pt => pt.ToPoint());
+
+            pointList.For((pt, i) => InsertPoint(i + 1, pt));
         }
 
         public void SaveToXml(XElement parentXml)
@@ -146,15 +152,18 @@ namespace GraphEditor.Ui.ViewModel
             connXml.SetAttributeValue("Target", TargetNode.Data.Id);
             connXml.SetAttributeValue("TargetConn", TargetConnector);
 
-            var pointsXml = new XElement("Points");
-            _points.ForEach(pt =>
+            var pointsAttr = "";
+            _points.For((pt, i) =>
             {
-                var pointXml = new XElement("Point");
-                pointXml.SetAttributeValue("Location", pt);
-                pointsXml.Add(pointXml);
+                // Start and end point not needed
+                if (i == 0 || i == (_points.Count - 1)) return;
+
+                pointsAttr += $"{pt}{PointsSeperator}";
             });
 
-            connXml.Add(pointsXml);
+            if (!string.IsNullOrEmpty(pointsAttr))
+                connXml.SetAttributeValue("Points", pointsAttr.Trim());
+
             parentXml.Add(connXml);
         }
     }

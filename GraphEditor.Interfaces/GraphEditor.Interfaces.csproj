@@ -54,6 +54,7 @@
     <Compile Include="Nodes\INodeTypeData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Container\ServiceContainer.cs" />
+    <Compile Include="Utils\Helper.cs" />
     <Compile Include="Utils\ListExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -28,8 +28,7 @@ namespace GraphEditor.Nodes.StartUpWarning
 
         private static byte[] LoadConnIcon(string nodeType, int index, bool isOutBound)
         {
-            var resPath = string.Concat($"/{nodeType}/{nodeType}_", isOutBound ? "out" : "in", $"{index}.png");
-            return Helper.LoadGraphicFromResource(resPath);
+            return LoadGraphic(string.Concat($"/{nodeType}/{nodeType}_", isOutBound ? "out" : "in", $"{index}.png"));
         }
 
         protected override Type ConfigControlType => typeof(LogicalXORControl);

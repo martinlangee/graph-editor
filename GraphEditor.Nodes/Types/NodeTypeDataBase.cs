@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Reflection;
-using GraphEditor.Nodes.Base;
+using GraphEditor.Interfaces.Utils;
 
 namespace GraphEditor.Nodes.Types
 {
@@ -30,7 +30,7 @@ namespace GraphEditor.Nodes.Types
             suffix = string.IsNullOrEmpty(suffix) ? "" : $"_{suffix}";
             var resPath = $"/{nodeType.Name}/{nodeType.Name}{suffix}.png";
 
-            return Helper.LoadGraphicFromResource(resPath);
+            return Helper.LoadGraphicFromResource(resPath, Assembly.GetExecutingAssembly());
         }
 
         public string Type => NodeType.Name;

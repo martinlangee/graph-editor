@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 
 namespace GraphEditor.Nodes.Base
@@ -22,6 +23,11 @@ namespace GraphEditor.Nodes.Base
 
             Ins = new ObservableCollection<IConnectorData>();
             Outs = new ObservableCollection<IConnectorData>();
+        }
+
+        protected static byte[] LoadGraphic(string resourcePath)
+        {
+            return Helper.LoadGraphicFromResource(resourcePath, Assembly.GetExecutingAssembly());
         }
 
         public INodeTypeData TypeData { get; }
@@ -68,7 +74,7 @@ namespace GraphEditor.Nodes.Base
 
             Ins.For((connData, i) =>
             {
-                var inpXml = new XElement("In");
+                var inpXml = new XElement("Slot");
                 inpXml.SetAttributeValue("Name", connData.Name);
                 inpXml.SetAttributeValue("Index", i);
                 inpXml.SetAttributeValue("Active", connData.IsActive);
@@ -80,7 +86,7 @@ namespace GraphEditor.Nodes.Base
 
             Outs.For((connData, i) =>
             {
-                var outpXml = new XElement("Out");
+                var outpXml = new XElement("Slot");
                 outpXml.SetAttributeValue("Name", connData.Name);
                 outpXml.SetAttributeValue("Index", i);
                 outpXml.SetAttributeValue("Active", connData.IsActive);

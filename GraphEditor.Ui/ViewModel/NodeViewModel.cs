@@ -116,12 +116,13 @@ namespace GraphEditor.Ui.ViewModel
 
         public INodeData Data { get; }
 
-        public void LoadNodeFromXml(XElement nodeXml)
+        public void LoadFromXml(XElement nodeXml)
         {
+            Location = nodeXml.Attribute("Location").Value.ToPoint();
             Data.LoadFromXml(nodeXml);
         }
 
-        public void SaveNodeToXml(XElement parentXml)
+        public void SaveToXml(XElement parentXml)
         {
             var nodeVmXml = new XElement("Node");
             nodeVmXml.SetAttributeValue("Location", Location);
@@ -164,13 +165,15 @@ namespace GraphEditor.Ui.ViewModel
 
         public ObservableCollection<ConnectionViewModel> OutConnections { get; }
 
-        public void AddOutConnection(int sourceConn, NodeViewModel targetConnVm, int targetConn)
+        public ConnectionViewModel AddOutConnection(int sourceConn, NodeViewModel targetConnVm, int targetConn)
         {
             var connVm = new ConnectionViewModel(this, targetConnVm, sourceConn, targetConn);
             OutConnections.Add(connVm);
             OutConnectors[connVm.SourceConnector].IsConnected = true;
             targetConnVm.InConnectors[connVm.TargetConnector].IsConnected = true;
             UiMessageHub.AddConnection(connVm);
+
+            return connVm;
         }
 
         private List<ConnectionViewModel> InConnections

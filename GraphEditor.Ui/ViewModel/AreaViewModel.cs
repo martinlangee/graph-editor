@@ -78,10 +78,7 @@ namespace GraphEditor.Ui.ViewModel
             nodesXml.Elements().ForEach(node =>
             {
                 var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(node.Attribute("Type").Value));
-                var pts = node.Attribute("Location").Value.Split(';');
-                nodeVm.Location = Point.Parse(string.Join(",", pts));
-
-                nodeVm.LoadNodeFromXml(node);
+                nodeVm.LoadFromXml(node);
             });
 
 
@@ -104,7 +101,8 @@ namespace GraphEditor.Ui.ViewModel
 
                     var targetNode = NodeVMs.First(node => node.Data.Id == targetId);
 
-                    CurrentDispatcher.Invoke(() => OnCreateConnection(targetNode, targetConn));
+                    var connVm = CurrentDispatcher.Invoke(() => OnCreateConnection(targetNode, targetConn));
+                    connVm.LoadFromToXml(conn);
                 });
 
                 _connNodeData.SourceNode = null;
@@ -121,7 +119,7 @@ namespace GraphEditor.Ui.ViewModel
             var configXml = new XElement("Configuration");
 
             var nodesXml = new XElement("Nodes");
-            NodeVMs.ForEach(node => node.SaveNodeToXml(nodesXml));
+            NodeVMs.ForEach(node => node.SaveToXml(nodesXml));
             configXml.Add(nodesXml);
 
             var connXml = new XElement("Connections");
@@ -207,20 +205,24 @@ namespace GraphEditor.Ui.ViewModel
             UpdateConnectingNodeData(isConnecting, sourceNode, connIdx, isOutBound);
         }
 
-        private void OnCreateConnection(NodeViewModel targetNode, int connIdx)
+        private ConnectionViewModel OnCreateConnection(NodeViewModel targetNode, int connIdx)
         {
+            ConnectionViewModel connVm = null;
+
             if (_connNodeData.SourceNode != null)
             {
                 if (_connNodeData.IsOutBound)
                 {
-                    _connNodeData.SourceNode.AddOutConnection(_connNodeData.ConnIdx, targetNode, connIdx);
+                     connVm = _connNodeData.SourceNode.AddOutConnection(_connNodeData.ConnIdx, targetNode, connIdx);
                 }
                 else
                 {
-                    targetNode.AddOutConnection(connIdx, _connNodeData.SourceNode, _connNodeData.ConnIdx);
+                    connVm = targetNode.AddOutConnection(connIdx, _connNodeData.SourceNode, _connNodeData.ConnIdx);
                 }
                 RevokeConnectRequestStatus();
             }
+
+            return connVm;
         }
 
         public List<NodeViewModel> Selected
