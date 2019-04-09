@@ -20,7 +20,7 @@ namespace GraphEditor.Interface.Nodes
             Type = type;
             Icon = icon;
 
-            _onIsActiveChanged = onIsActiveChanged;
+            _onIsActiveChanged = onIsActiveChanged;  // ! must be assigned only after IsActive is set
         }
 
         public string Name { get; }
@@ -37,10 +37,7 @@ namespace GraphEditor.Interface.Nodes
                 if (_canBeDeactivated(this) || value)
                 {
                     SetProperty<ConnectorData, bool>(ref _isActive, value, nameof(IsActive),
-                        (connData, isActive) =>
-                            {
-                                _onIsActiveChanged?.Invoke(this);
-                            });
+                        (connData, isActive) => _onIsActiveChanged?.Invoke(connData));
                 }
             }
         }

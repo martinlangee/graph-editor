@@ -51,7 +51,7 @@ namespace GraphEditor.Ui.ViewModel
 
             UiMessageHub.OnRemoveNode += OnRemoveNode;
             UiMessageHub.OnConnectRequested += OnConnectRequested;
-            UiMessageHub.OnCreateConnection += OnCreateConnection;
+            UiMessageHub.OnCreateConnection = OnCreateConnection;
         }
 
         public void OnTearDown()
@@ -100,8 +100,10 @@ namespace GraphEditor.Ui.ViewModel
 
                     var targetNode = NodeVMs.First(node => node.Data.Id == targetId);
 
-                    var connVm = CurrentDispatcher.Invoke(() => OnCreateConnection(targetNode, targetConn));
-                    connVm.LoadFromToXml(conn);
+                    CurrentDispatcher.Invoke(() =>
+                    {
+                        OnCreateConnection(targetNode, targetConn).LoadFromToXml(conn);
+                    });
                 });
 
                 _connNodeData.SourceNode = null;

@@ -15,10 +15,14 @@ namespace GraphEditor.Interface.Utils
             }
         }
 
-        public static void For<T>(this IEnumerable<T> enumerable, Action<T,int> action)
+        public static void For<T>(this IEnumerable<T> enumerable, Action<T,int> action, int from = -1, int to = -1)
         {
             var list = enumerable.ToList();
-            for (var index = 0; index < list.Count; index++)
+
+            var firstIdx = from < 0 ? 0 : from;
+            var lastidx = to < 0 ? list.Count - 1 : to;
+
+            for (var index = firstIdx; index <= lastidx; index++)
             {
                 action?.Invoke(list[index], index);
             }
@@ -41,10 +45,14 @@ namespace GraphEditor.Interface.Utils
             }
         }
 
-        public static void For<T>(this ObservableCollection<T> collection, Action<T, int> action)
+        public static void For<T>(this ObservableCollection<T> collection, Action<T, int> action, int from = -1, int to = -1)
         {
             var list = collection.ToList();
-            for (var index = 0; index < list.Count; index++)
+
+            var firstIdx = from < 0 ? 0 : from;
+            var lastIdx = to < 0 ? list.Count - 1 : to;
+
+            for (var index = firstIdx; index <= lastIdx; index++)
             {
                 action?.Invoke(list[index], index);
             }

@@ -84,6 +84,6 @@ namespace GraphEditor.Ui.Tools
         public static event Action<ConnectionViewModel> OnAddConnection;
         public static event Action<ConnectionViewModel> OnRemoveConnection;
         public static event Action<bool, NodeViewModel, int, bool> OnConnectRequested;
-        public static event Func<NodeViewModel, int, ConnectionViewModel> OnCreateConnection;
+        public static Func<NodeViewModel, int, ConnectionViewModel> OnCreateConnection;
     }
 }

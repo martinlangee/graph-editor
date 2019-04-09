@@ -40,11 +40,17 @@ namespace GraphEditor.Ui.ViewModel
         private void ConnectorOnActiveChanged(IConnectorData connectorData)
         {
             var connectorStates = connectorData.IsOutBound ? OutConnectorStates : InConnectorStates;
+            var connections = connectorData.IsOutBound ? OutConnections.ToList() : InConnections;
 
             if (connectorData.IsActive)
+            {
                 connectorStates.Insert(connectorData.Index, new ConnectorStateViewModel(this, connectorData.Name, connectorData.Index, connectorData.IsOutBound));
+                // todo connections.
+            }
             else
+            {
                 connectorStates.RemoveAt(connectorData.Index);
+            }
         }
 
         private bool ConnectorCanBeDeactivated(IConnectorData connData)

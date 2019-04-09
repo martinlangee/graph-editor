@@ -14,7 +14,7 @@ namespace GraphEditor.Ui.ViewModel
         const char PointsSeperator = ' ';
 
         bool _isSelected;
-        List<Point> _points;
+        readonly List<Point> _points;
 
         public ConnectionViewModel(NodeViewModel sourceNode, NodeViewModel targetNode, int sourceConn, int targetConn)
         {
@@ -90,7 +90,7 @@ namespace GraphEditor.Ui.ViewModel
 
         public void MovePoint(int index, Point point)
         {
-            _points[index] = new Point(point.X, point.Y);
+            _points[index] = new Point(Math.Round(point.X), Math.Round(point.Y));
             NotifyPointsChanged();
         }
 
@@ -155,11 +155,8 @@ namespace GraphEditor.Ui.ViewModel
             var pointsAttr = "";
             _points.For((pt, i) =>
             {
-                // Start and end point not needed
-                if (i == 0 || i == (_points.Count - 1)) return;
-
                 pointsAttr += $"{pt}{PointsSeperator}";
-            });
+            }, 1, _points.Count - 1);  // Start and end point not needed
 
             if (!string.IsNullOrEmpty(pointsAttr))
                 connXml.SetAttributeValue("Points", pointsAttr.Trim());
