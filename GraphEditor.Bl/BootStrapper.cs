@@ -1,7 +1,7 @@
 ﻿using GraphEditor.Interface.Container;
 using GraphEditor.Interface.Nodes;
 using GraphEditor.Ui.ViewModel;
-using GraphEditor.Nodes.Types;
+using GraphEditor.MyNodes.Types;
 
 namespace GraphEditor.Bl
 {

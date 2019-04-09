@@ -7,8 +7,8 @@
     <ProjectGuid>{D2482399-696C-427B-BF7B-54D37BA19DE1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GraphEditor.Nodes</RootNamespace>
-    <AssemblyName>GraphEditor.Nodes</AssemblyName>
+    <RootNamespace>GraphEditor.MyNodes</RootNamespace>
+    <AssemblyName>GraphEditor.MyNodes</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

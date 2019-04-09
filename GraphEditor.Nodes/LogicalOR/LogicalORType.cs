@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace GraphEditor.Nodes.LogicalOR
+namespace GraphEditor.MyNodes.LogicalOR
 {
     public class LogicalORType : NodeTypeDataBase
     {

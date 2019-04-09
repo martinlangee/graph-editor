@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using GraphEditor.Interface.Nodes;
 
-namespace GraphEditor.Nodes.LogicalOR
+namespace GraphEditor.MyNodes.LogicalOR
 {
     public class LogicalOR : NodeDataBase
     {

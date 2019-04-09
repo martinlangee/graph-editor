@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace GraphEditor.Nodes.LogicalXOR
+namespace GraphEditor.MyNodes.LogicalXOR
 {
     public class LogicalXORType : NodeTypeDataBase
     {

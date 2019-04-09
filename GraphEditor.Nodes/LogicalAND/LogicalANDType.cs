@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace GraphEditor.Nodes.LogicalAND
+namespace GraphEditor.MyNodes.LogicalAND
 {
     public class LogicalANDType : NodeTypeDataBase
     {

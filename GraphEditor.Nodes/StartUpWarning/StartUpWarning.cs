@@ -2,9 +2,8 @@
 using System.Reflection;
 using System.Xml.Linq;
 using GraphEditor.Interface.Nodes;
-using GraphEditor.Nodes.LogicalXOR;
 
-namespace GraphEditor.Nodes.StartUpWarning
+namespace GraphEditor.MyNodes.StartUpWarning
 {
     public class StartUpWarning : NodeDataBase
     {
@@ -31,7 +30,7 @@ namespace GraphEditor.Nodes.StartUpWarning
             return LoadGraphic(string.Concat($"/{nodeType}/{nodeType}_", isOutBound ? "out" : "in", $"{index}.png"));
         }
 
-        protected override Type ConfigControlType => typeof(LogicalXORControl);
+        protected override Type ConfigControlType => typeof(StartUpWarningControl);
 
         protected override void LoadTypeSpecificData(XElement parentXml)
         {

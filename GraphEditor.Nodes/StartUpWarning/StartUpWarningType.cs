@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace GraphEditor.Nodes.StartUpWarning
+namespace GraphEditor.MyNodes.StartUpWarning
 {
     public class StartUpWarningType : NodeTypeDataBase
     {

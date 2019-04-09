@@ -3,7 +3,7 @@ using GraphEditor.Interface.Nodes;
 using System;
 using System.Windows.Controls;
 
-namespace GraphEditor.Nodes.LogicalOR
+namespace GraphEditor.MyNodes.LogicalOR
 {
     /// <summary>
     /// Interaktionslogik für LogicalORControl.xaml

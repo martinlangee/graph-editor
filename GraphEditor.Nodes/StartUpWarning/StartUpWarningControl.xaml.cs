@@ -3,7 +3,7 @@ using GraphEditor.Interface.Nodes;
 using System;
 using System.Windows.Controls;
 
-namespace GraphEditor.Nodes.StartUpWarning
+namespace GraphEditor.MyNodes.StartUpWarning
 {
     /// <summary>
     /// Interaktionslogik für StartUpWarningControl.xaml

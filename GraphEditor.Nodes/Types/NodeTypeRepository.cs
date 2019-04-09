@@ -1,13 +1,13 @@
 ﻿using GraphEditor.Interface.Nodes;
-using GraphEditor.Nodes.LogicalAND;
-using GraphEditor.Nodes.LogicalOR;
-using GraphEditor.Nodes.LogicalXOR;
-using GraphEditor.Nodes.StartUpWarning;
+using GraphEditor.MyNodes.LogicalAND;
+using GraphEditor.MyNodes.LogicalXOR;
+using GraphEditor.MyNodes.StartUpWarning;
+using GraphEditor.MyNodes.LogicalOR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GraphEditor.Nodes.Types
+namespace GraphEditor.MyNodes.Types
 {
     public class NodeTypeRepository : INodeTypeRepository
     {

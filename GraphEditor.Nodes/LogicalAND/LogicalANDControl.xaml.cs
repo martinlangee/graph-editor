@@ -3,7 +3,7 @@ using GraphEditor.Interface.Nodes;
 using System;
 using System.Windows.Controls;
 
-namespace GraphEditor.Nodes.LogicalAND
+namespace GraphEditor.MyNodes.LogicalAND
 {
     /// <summary>
     /// Interaktionslogik für LogicalANDControl.xaml

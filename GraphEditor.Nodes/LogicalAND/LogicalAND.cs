@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using GraphEditor.Interface.Nodes;
 
-namespace GraphEditor.Nodes.LogicalAND
+namespace GraphEditor.MyNodes.LogicalAND
 {
     public class LogicalAND : NodeDataBase
     {

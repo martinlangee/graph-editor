@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using GraphEditor.Interface.Nodes;
 
-namespace GraphEditor.Nodes.LogicalXOR
+namespace GraphEditor.MyNodes.LogicalXOR
 {
     public class LogicalXOR : NodeDataBase
     {
