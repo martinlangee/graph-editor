@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GraphEditor.Interfaces.Nodes
+namespace GraphEditor.Interface.Nodes
 {
     public interface INodeTypeData
     {
@@ -20,6 +20,6 @@ namespace GraphEditor.Interfaces.Nodes
 
         bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex);
 
-        INodeData CreateNode(Action<IConnectorData, bool> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated);
+        INodeData CreateNode(Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated);
     }
 }

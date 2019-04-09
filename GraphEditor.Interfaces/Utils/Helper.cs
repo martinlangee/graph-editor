@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace GraphEditor.Interfaces.Utils
+namespace GraphEditor.Interface.Utils
 {
     public static class Helper
     {

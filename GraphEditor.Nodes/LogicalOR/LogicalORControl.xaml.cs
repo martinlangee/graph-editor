@@ -1,5 +1,5 @@
-﻿using GraphEditor.Interfaces.ConfigUi;
-using GraphEditor.Interfaces.Nodes;
+﻿using GraphEditor.Interface.ConfigUi;
+using GraphEditor.Interface.Nodes;
 using System;
 using System.Windows.Controls;
 

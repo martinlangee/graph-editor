@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace GraphEditor.Interfaces.Utils
+namespace GraphEditor.Interface.Utils
 {
     public static class ListExtensions
     {

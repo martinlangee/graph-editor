@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.329
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.Ui", "GraphEditor.Ui\GraphEditor.Ui.csproj", "{2C246BB5-5076-4011-99B3-9B22683A5995}"
 EndProject
@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.Bl", "GraphEdit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebugApp", "DebugApp\DebugApp.csproj", "{0BA11BF6-007F-4F11-AA3A-7B01949AE122}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.Interfaces", "GraphEditor.Interfaces\GraphEditor.Interfaces.csproj", "{D5307D83-9681-4336-985F-749CC3FC1BB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.Interface", "GraphEditor.Interfaces\GraphEditor.Interface.csproj", "{D5307D83-9681-4336-985F-749CC3FC1BB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphEditor.Nodes", "GraphEditor.Nodes\GraphEditor.Nodes.csproj", "{D2482399-696C-427B-BF7B-54D37BA19DE1}"
 EndProject

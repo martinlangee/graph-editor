@@ -1,16 +1,15 @@
-﻿using GraphEditor.Interfaces.ConfigUi;
-using GraphEditor.Interfaces.Nodes;
+﻿using GraphEditor.Interface.ConfigUi;
 using System;
 
-namespace GraphEditor.Nodes.Base
+namespace GraphEditor.Interface.Nodes
 {
     public class ConnectorData : BaseNotification, IConnectorData
     {
         private bool _isActive;
-        private readonly Action<IConnectorData, bool> _onIsActiveChanged;
+        private readonly Action<IConnectorData> _onIsActiveChanged;
         private readonly Func<IConnectorData, bool> _canBeDeactivated;
 
-        public ConnectorData(string name, int index, bool isOutBound, bool isActive, Action<IConnectorData, bool> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, byte[] icon = null, object type = null)
+        public ConnectorData(string name, int index, bool isOutBound, bool isActive, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, byte[] icon = null, object type = null)
         {
             _canBeDeactivated = canBeDeactivated;
 
@@ -40,7 +39,7 @@ namespace GraphEditor.Nodes.Base
                     SetProperty<ConnectorData, bool>(ref _isActive, value, nameof(IsActive),
                         (connData, isActive) =>
                             {
-                                _onIsActiveChanged?.Invoke(connData, isActive);
+                                _onIsActiveChanged?.Invoke(this);
                             });
                 }
             }

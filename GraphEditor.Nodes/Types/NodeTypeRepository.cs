@@ -1,4 +1,4 @@
-﻿using GraphEditor.Interfaces.Nodes;
+﻿using GraphEditor.Interface.Nodes;
 using GraphEditor.Nodes.LogicalAND;
 using GraphEditor.Nodes.LogicalOR;
 using GraphEditor.Nodes.LogicalXOR;

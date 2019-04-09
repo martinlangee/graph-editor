@@ -1,4 +1,4 @@
-﻿using GraphEditor.Interfaces.Nodes;
+﻿using GraphEditor.Interface.Nodes;
 using System;
 using System.Windows;
 using System.Windows.Controls;

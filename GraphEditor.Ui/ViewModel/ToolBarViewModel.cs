@@ -1,6 +1,6 @@
-﻿using GraphEditor.Interfaces.ConfigUi;
-using GraphEditor.Interfaces.Container;
-using GraphEditor.Interfaces.Nodes;
+﻿using GraphEditor.Interface.ConfigUi;
+using GraphEditor.Interface.Container;
+using GraphEditor.Interface.Nodes;
 using GraphEditor.Ui.Commands;
 using System.Collections.ObjectModel;
 

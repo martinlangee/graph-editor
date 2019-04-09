@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Controls;
 
-namespace GraphEditor.Interfaces.ConfigUi
+namespace GraphEditor.Interface.ConfigUi
 {
     public interface INodeConfigUi
     {

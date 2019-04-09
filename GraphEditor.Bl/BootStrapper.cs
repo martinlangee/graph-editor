@@ -1,5 +1,5 @@
-﻿using GraphEditor.Interfaces.Container;
-using GraphEditor.Interfaces.Nodes;
+﻿using GraphEditor.Interface.Container;
+using GraphEditor.Interface.Nodes;
 using GraphEditor.Ui.ViewModel;
 using GraphEditor.Nodes.Types;
 

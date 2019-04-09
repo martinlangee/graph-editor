@@ -1,9 +1,9 @@
-﻿using GraphEditor.Interfaces.ConfigUi;
+﻿using GraphEditor.Interface.ConfigUi;
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace GraphEditor.Interfaces.Nodes
+namespace GraphEditor.Interface.Nodes
 {
     public interface INodeData
     {

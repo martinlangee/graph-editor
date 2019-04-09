@@ -1,11 +1,12 @@
-﻿using GraphEditor.Nodes.Types;
+﻿using GraphEditor.Interface.Nodes;
 using System;
+using System.Reflection;
 
 namespace GraphEditor.Nodes.LogicalXOR
 {
     public class LogicalXORType : NodeTypeDataBase
     {
-        public LogicalXORType() : base()
+        public LogicalXORType() : base(Assembly.GetExecutingAssembly())
         {
             Name = "Logical XOR";
             Description = "Node representing a logical XOR operation";

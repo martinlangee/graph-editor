@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraphEditor.Interfaces.Nodes
+namespace GraphEditor.Interface.Nodes
 {
     public interface INodeTypeRepository
     {

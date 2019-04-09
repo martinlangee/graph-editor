@@ -27,6 +27,8 @@ namespace GraphEditor.Ui
 
         private Point GetConnectorLocation(ItemsControl itemsCtrl, Visual container, int index, bool isInput)
         {
+            if (itemsCtrl.Items.Count == 0) return new Point(0, 0);
+
             var item = itemsCtrl.Items[index];
             var conn = itemsCtrl.ItemContainerGenerator.ContainerFromItem(item).FindChild<Border>().FindChild<Border>();
             return conn.TransformToVisual(container).Transform(

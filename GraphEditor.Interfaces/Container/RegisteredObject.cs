@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GraphEditor.Interfaces.Container
+namespace GraphEditor.Interface.Container
 {
     public class RegisteredObject
     {

@@ -1,6 +1,6 @@
-﻿using GraphEditor.Interfaces.ConfigUi;
-using GraphEditor.Interfaces.Nodes;
-using GraphEditor.Interfaces.Utils;
+﻿using GraphEditor.Interface.ConfigUi;
+using GraphEditor.Interface.Nodes;
+using GraphEditor.Interface.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,15 +8,17 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 
-namespace GraphEditor.Nodes.Base
+namespace GraphEditor.Interface.Nodes
 {
     public abstract class NodeDataBase : BaseNotification, INodeData
     {
+        private readonly Assembly _executingAssembly;
         private string _name;
-
-        public NodeDataBase(INodeTypeData nodeTypeData, Action<IConnectorData, bool> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
+        
+        protected NodeDataBase(INodeTypeData nodeTypeData, Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated, Assembly executingAssembly)
         {
             TypeData = nodeTypeData;
+            _executingAssembly = executingAssembly;
 
             Id = Guid.NewGuid().ToString();
             Name = TypeData.NextNewName;
@@ -25,9 +27,9 @@ namespace GraphEditor.Nodes.Base
             Outs = new ObservableCollection<IConnectorData>();
         }
 
-        protected static byte[] LoadGraphic(string resourcePath)
+        protected byte[] LoadGraphic(string resourcePath)
         {
-            return Helper.LoadGraphicFromResource(resourcePath, Assembly.GetExecutingAssembly());
+            return Helper.LoadGraphicFromResource(resourcePath, _executingAssembly);
         }
 
         public INodeTypeData TypeData { get; }

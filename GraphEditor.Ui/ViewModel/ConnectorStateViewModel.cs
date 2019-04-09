@@ -1,11 +1,11 @@
-﻿using GraphEditor.Interfaces.ConfigUi;
+﻿using GraphEditor.Interface.ConfigUi;
 using GraphEditor.Ui.Tools;
 
 namespace GraphEditor.Ui.ViewModel
 {
     public class ConnectorStateViewModel : BaseNotification
     {
-        private NodeViewModel _node;
+        private readonly NodeViewModel _node;
         private bool _isConnecting;
         private bool _isConnectRequested;
 

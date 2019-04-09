@@ -1,6 +1,6 @@
-﻿using GraphEditor.Interfaces.ConfigUi;
-using GraphEditor.Interfaces.Nodes;
-using GraphEditor.Interfaces.Utils;
+﻿using GraphEditor.Interface.ConfigUi;
+using GraphEditor.Interface.Nodes;
+using GraphEditor.Interface.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
 using System;
@@ -14,8 +14,8 @@ namespace GraphEditor.Ui.ViewModel
 {
     public class NodeViewModel : BaseNotification
     {
-        private Func<List<NodeViewModel>> _onGetAllNodeVMs;
-        private Action<INodeConfigUi> _onOpenConfigUi;
+        private readonly Func<List<NodeViewModel>> _onGetAllNodeVMs;
+        private readonly Action<INodeConfigUi> _onOpenConfigUi;
         private bool _isSelected = false;
         private Point _location;
 
@@ -30,24 +30,26 @@ namespace GraphEditor.Ui.ViewModel
             EditConfigCommand = new RelayCommand(o => EditConfigExec());
             RemoveNodeCommand = new RelayCommand(o => RemoveExec());
 
-            InConnectors = new ObservableCollection<ConnectorStateViewModel>();
-            OutConnectors = new ObservableCollection<ConnectorStateViewModel>();
+            InConnectorStates = new ObservableCollection<ConnectorStateViewModel>();
+            OutConnectorStates = new ObservableCollection<ConnectorStateViewModel>();
 
-            ReloadInConnectors();
-            ReloadOutConnectors();
+            LoadInConnectorStates();
+            LoadOutConnectorStates();
         }
 
-        private void ConnectorOnActiveChanged(IConnectorData connectorData, bool isActive)
+        private void ConnectorOnActiveChanged(IConnectorData connectorData)
         {
-            if (connectorData.IsOutBound)
-                ReloadOutConnectors();
+            var connectorStates = connectorData.IsOutBound ? OutConnectorStates : InConnectorStates;
+
+            if (connectorData.IsActive)
+                connectorStates.Insert(connectorData.Index, new ConnectorStateViewModel(this, connectorData.Name, connectorData.Index, connectorData.IsOutBound));
             else
-                ReloadInConnectors();
+                connectorStates.RemoveAt(connectorData.Index);
         }
 
         private bool ConnectorCanBeDeactivated(IConnectorData connData)
         {
-            var connectors = connData.IsOutBound ? OutConnectors : InConnectors;
+            var connectors = connData.IsOutBound ? OutConnectorStates : InConnectorStates;
 
             if (connectors?.Count <= 1)
                 return false;
@@ -56,26 +58,25 @@ namespace GraphEditor.Ui.ViewModel
             return connState?.IsConnected == false;
         }
 
-        private void ReloadConnectors(IList<IConnectorData> connectors, ObservableCollection<ConnectorStateViewModel> connStateVMs, bool isOutBound)
+        private void ReloadConnectorStates(IList<IConnectorData> connectors, ObservableCollection<ConnectorStateViewModel> connStateVMs, bool isOutBound)
         {
             connStateVMs.Clear();
 
-            connectors.
-                For((ic, i) =>
+            connectors.For((ic, i) =>
                 {
                     if (ic.IsActive)
                         connStateVMs.Add(new ConnectorStateViewModel(this, ic.Name, i, isOutBound));
                 });
         }
 
-        private void ReloadInConnectors()
+        private void LoadInConnectorStates()
         {
-            ReloadConnectors(Data.Ins, InConnectors, isOutBound: false);
+            ReloadConnectorStates(Data.Ins, InConnectorStates, isOutBound: false);
         }
 
-        private void ReloadOutConnectors()
+        private void LoadOutConnectorStates()
         {
-            ReloadConnectors(Data.Outs, OutConnectors, isOutBound: true);
+            ReloadConnectorStates(Data.Outs, OutConnectorStates, isOutBound: true);
         }
 
         private void EditConfigExec()
@@ -87,8 +88,8 @@ namespace GraphEditor.Ui.ViewModel
         {
             OutConnections.Remove(connVm);
 
-            OutConnectors[connVm.SourceConnector].IsConnected = false;
-            connVm.TargetNode.InConnectors[connVm.TargetConnector].IsConnected = false;
+            OutConnectorStates[connVm.SourceConnector].IsConnected = false;
+            connVm.TargetNode.InConnectorStates[connVm.TargetConnector].IsConnected = false;
 
             UiMessageHub.RemoveConnection(connVm);
         }
@@ -98,16 +99,16 @@ namespace GraphEditor.Ui.ViewModel
             if (isOutBound)
             {
                 if (isConnecting)
-                    InConnectors.For((conn, idx) => conn.IsConnectRequested = otherNode.Data.TypeData.CanConnectToIn(Data.TypeData, otherConnIdx, idx));
+                    InConnectorStates.For((conn, idx) => conn.IsConnectRequested = otherNode.Data.TypeData.CanConnectToIn(Data.TypeData, otherConnIdx, idx));
                 else
-                    InConnectors.ForEach(conn => conn.IsConnectRequested = false);
+                    InConnectorStates.ForEach(conn => conn.IsConnectRequested = false);
             }
             else
             {
                 if (isConnecting)
-                    OutConnectors.For((conn, idx) => conn.IsConnectRequested = otherNode.Data.TypeData.CanConnectToOut(Data.TypeData, otherConnIdx, idx));
+                    OutConnectorStates.For((conn, idx) => conn.IsConnectRequested = otherNode.Data.TypeData.CanConnectToOut(Data.TypeData, otherConnIdx, idx));
                 else
-                    OutConnectors.ForEach(conn => conn.IsConnectRequested = false);
+                    OutConnectorStates.ForEach(conn => conn.IsConnectRequested = false);
             }
         }
 
@@ -135,9 +136,9 @@ namespace GraphEditor.Ui.ViewModel
             OutConnections.ForEach(conn => conn.SaveToXml(parentXml));
         }
 
-        public ObservableCollection<ConnectorStateViewModel> InConnectors { get; }
+        public ObservableCollection<ConnectorStateViewModel> InConnectorStates { get; }
 
-        public ObservableCollection<ConnectorStateViewModel> OutConnectors { get; }
+        public ObservableCollection<ConnectorStateViewModel> OutConnectorStates { get; }
 
         public bool IsSelected
         {
@@ -169,8 +170,8 @@ namespace GraphEditor.Ui.ViewModel
         {
             var connVm = new ConnectionViewModel(this, targetConnVm, sourceConn, targetConn);
             OutConnections.Add(connVm);
-            OutConnectors[connVm.SourceConnector].IsConnected = true;
-            targetConnVm.InConnectors[connVm.TargetConnector].IsConnected = true;
+            OutConnectorStates[connVm.SourceConnector].IsConnected = true;
+            targetConnVm.InConnectorStates[connVm.TargetConnector].IsConnected = true;
             UiMessageHub.AddConnection(connVm);
 
             return connVm;

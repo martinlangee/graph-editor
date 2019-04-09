@@ -1,9 +1,9 @@
-﻿using GraphEditor.Interfaces.Utils;
+﻿using GraphEditor.Interface.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GraphEditor.Interfaces.Container
+namespace GraphEditor.Interface.Container
 {
     public class ServiceContainer
     {

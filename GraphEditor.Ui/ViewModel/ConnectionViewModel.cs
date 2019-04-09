@@ -1,5 +1,5 @@
-﻿using GraphEditor.Interfaces.ConfigUi;
-using GraphEditor.Interfaces.Utils;
+﻿using GraphEditor.Interface.ConfigUi;
+using GraphEditor.Interface.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -7,7 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using GraphEditor.Ui.Components;
 using GraphEditor.Ui.Converters;
-using GraphEditor.Interfaces.Container;
+using GraphEditor.Interface.Container;
 using GraphEditor.Ui.Tools;
 using GraphEditor.Ui.ViewModel;
 using System;
@@ -15,10 +15,10 @@ using System;
 
 /* ----------------------------------------------------------------------------------
  * TODO:
- *  Serialisierung/Deserialisierung
- *  Erzeugung über DragNDrop aus der Toolbar
+ *  Erzeugung über Drag-n-Drop aus der Toolbar
  *  z-Order der Nodes editierbar machen
- * 
+ *  wer-kann-an-wen beispielhaft implementieren
+ *  Connectoren können "State" haben (z.B. durch Farbe visualisiert)
  * 
  * ------------------------------------------------------------------------------- */
 

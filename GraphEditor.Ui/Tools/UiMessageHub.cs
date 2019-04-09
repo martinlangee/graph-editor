@@ -9,7 +9,7 @@ namespace GraphEditor.Ui.Tools
 {
     public class UiMessageHub
     {
-        private static Timer _updateTimer = new Timer(UpdateLocation, null, 500, 10);
+        private static readonly Timer _updateTimer = new Timer(UpdateLocation, null, 500, 10);
         private static Dictionary<NodeViewModel, Point> _actNodePos = new Dictionary<NodeViewModel, Point>();
 
         private static void UpdateLocation(object state)

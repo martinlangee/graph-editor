@@ -1,11 +1,12 @@
-﻿using GraphEditor.Nodes.Types;
+﻿using GraphEditor.Interface.Nodes;
 using System;
+using System.Reflection;
 
 namespace GraphEditor.Nodes.StartUpWarning
 {
     public class StartUpWarningType : NodeTypeDataBase
     {
-        public StartUpWarningType() : base()
+        public StartUpWarningType() : base(Assembly.GetExecutingAssembly())
         {
             Name = "Start-Up Warning";
             Description = "Node representing a start-up warning element";

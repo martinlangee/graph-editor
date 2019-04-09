@@ -1,7 +1,7 @@
-﻿using GraphEditor.Interfaces.ConfigUi;
-using GraphEditor.Interfaces.Container;
-using GraphEditor.Interfaces.Nodes;
-using GraphEditor.Interfaces.Utils;
+﻿using GraphEditor.Interface.ConfigUi;
+using GraphEditor.Interface.Container;
+using GraphEditor.Interface.Nodes;
+using GraphEditor.Interface.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
 using System;
@@ -163,8 +163,13 @@ namespace GraphEditor.Ui.ViewModel
 
         private void OnOpenConfigUi(INodeConfigUi configUi)
         {
-            configUi.OnClose += ui => NodeConfigUi = null;
+            configUi.OnClose += ui => 
+            {
+                NodeConfigUi = null;
+                UiMessageHub.LocationUpdateMuted = false;
+            };
             NodeConfigUi = configUi as UserControl;
+            UiMessageHub.LocationUpdateMuted = true;
         }
 
         public void OnRemoveNode(NodeViewModel nodeVm)
@@ -177,9 +182,9 @@ namespace GraphEditor.Ui.ViewModel
             if (_connNodeData.SourceNode != null)
             {
                 if (_connNodeData.IsOutBound)
-                    _connNodeData.SourceNode.OutConnectors[_connNodeData.ConnIdx].IsConnecting = false;
+                    _connNodeData.SourceNode.OutConnectorStates[_connNodeData.ConnIdx].IsConnecting = false;
                 else
-                    _connNodeData.SourceNode.InConnectors[_connNodeData.ConnIdx].IsConnecting = false;
+                    _connNodeData.SourceNode.InConnectorStates[_connNodeData.ConnIdx].IsConnecting = false;
             }
         }
 

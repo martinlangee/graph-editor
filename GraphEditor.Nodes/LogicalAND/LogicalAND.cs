@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Reflection;
 using System.Xml.Linq;
-using GraphEditor.Interfaces.Nodes;
-using GraphEditor.Nodes.Base;
+using GraphEditor.Interface.Nodes;
 
 namespace GraphEditor.Nodes.LogicalAND
 {
     public class LogicalAND : NodeDataBase
     {
-        public LogicalAND(INodeTypeData nodeTypeData, Action<IConnectorData, bool> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
-            : base(nodeTypeData, onActiveChanged, canBeDeactivated)
+        public LogicalAND(INodeTypeData nodeTypeData, Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
+            : base(nodeTypeData, onActiveChanged, canBeDeactivated, Assembly.GetExecutingAssembly())
         {
             Ins.Add(new ConnectorData("IN 1", 0, false, true, onActiveChanged, canBeDeactivated));
             Ins.Add(new ConnectorData("IN 2", 1, false, false, onActiveChanged, canBeDeactivated));

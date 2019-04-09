@@ -1,16 +1,17 @@
-﻿using GraphEditor.Interfaces.Nodes;
+﻿using GraphEditor.Interface.Nodes;
 using System;
-using System.IO;
-using System.Windows.Media.Imaging;
 using System.Reflection;
-using GraphEditor.Interfaces.Utils;
+using GraphEditor.Interface.Utils;
 
-namespace GraphEditor.Nodes.Types
+namespace GraphEditor.Interface.Nodes
 {
     public abstract class NodeTypeDataBase : INodeTypeData
     {
-        public NodeTypeDataBase()
+        private readonly Assembly _executingAssembly;
+        protected NodeTypeDataBase(Assembly executingAssembly)
         {
+            _executingAssembly = executingAssembly;
+
             Name = "<not set>";
             Description = "<not set>";
 
@@ -25,12 +26,12 @@ namespace GraphEditor.Nodes.Types
             get { return $"{Name} {_newIndex++}"; }
         }
 
-        private static byte[] LoadGraphic(Type nodeType, string suffix = "")
+        private byte[] LoadGraphic(Type nodeType, string suffix = "")
         {
             suffix = string.IsNullOrEmpty(suffix) ? "" : $"_{suffix}";
             var resPath = $"/{nodeType.Name}/{nodeType.Name}{suffix}.png";
 
-            return Helper.LoadGraphicFromResource(resPath, Assembly.GetExecutingAssembly());
+            return Helper.LoadGraphicFromResource(resPath, _executingAssembly);
         }
 
         public string Type => NodeType.Name;
@@ -49,7 +50,7 @@ namespace GraphEditor.Nodes.Types
 
         protected abstract Type NodeType { get; }
 
-        public INodeData CreateNode(Action<IConnectorData, bool> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
+        public INodeData CreateNode(Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
         {
             return Activator.CreateInstance(NodeType, this, onActiveChanged, canBeDeactivated) as INodeData;
         }

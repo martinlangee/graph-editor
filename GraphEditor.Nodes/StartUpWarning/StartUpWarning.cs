@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Reflection;
 using System.Xml.Linq;
-using GraphEditor.Interfaces.Nodes;
-using GraphEditor.Nodes.Base;
+using GraphEditor.Interface.Nodes;
 using GraphEditor.Nodes.LogicalXOR;
 
 namespace GraphEditor.Nodes.StartUpWarning
 {
     public class StartUpWarning : NodeDataBase
     {
-        public StartUpWarning(INodeTypeData nodeTypeData, Action<IConnectorData, bool> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
-            : base(nodeTypeData, onActiveChanged, canBeDeactivated)
+        public StartUpWarning(INodeTypeData nodeTypeData, Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
+            : base(nodeTypeData, onActiveChanged, canBeDeactivated, Assembly.GetExecutingAssembly())
         {
             Ins.Add(new ConnectorData("Control input", 0, false, true, onActiveChanged, canBeDeactivated));
             Ins.Add(new ConnectorData("Locking", 1, false, true, onActiveChanged, canBeDeactivated));
@@ -26,7 +26,7 @@ namespace GraphEditor.Nodes.StartUpWarning
             Outs.Add(new ConnectorData("Warning", 5, true, true, onActiveChanged, canBeDeactivated));
         }
 
-        private static byte[] LoadConnIcon(string nodeType, int index, bool isOutBound)
+        private byte[] LoadConnIcon(string nodeType, int index, bool isOutBound)
         {
             return LoadGraphic(string.Concat($"/{nodeType}/{nodeType}_", isOutBound ? "out" : "in", $"{index}.png"));
         }

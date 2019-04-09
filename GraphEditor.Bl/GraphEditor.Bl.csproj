@@ -45,9 +45,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GraphEditor.Interfaces\GraphEditor.Interfaces.csproj">
+    <ProjectReference Include="..\GraphEditor.Interfaces\GraphEditor.Interface.csproj">
       <Project>{d5307d83-9681-4336-985f-749cc3fc1bb1}</Project>
-      <Name>GraphEditor.Interfaces</Name>
+      <Name>GraphEditor.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\GraphEditor.Nodes\GraphEditor.Nodes.csproj">
       <Project>{d2482399-696c-427b-bf7b-54d37ba19de1}</Project>
