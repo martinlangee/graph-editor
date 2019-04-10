@@ -15,12 +15,10 @@ using System;
 
 /* ----------------------------------------------------------------------------------
  * TODO:
- *  Deaktivierung der Toolbar wenn Dialog offen
- *  An/Abschalten der Connector-Beschreibungen
+ *  Bei Draggen eines Nodes die Linienpunkt mit verschieben, die auf gleicher Höhe wie die Connectors sind
  *  Erzeugung über Drag-n-Drop aus der Toolbar
  *  z-Order der Nodes editierbar machen
  *  wer-kann-an-wen beispielhaft implementieren
- *  Connectoren können "State" haben (z.B. durch Farbe visualisiert)
  *  Verhalten der Linien-Komponente verbessern (evtl. selektierbar?)
  * ------------------------------------------------------------------------------- */
 
@@ -127,7 +125,7 @@ namespace GraphEditor.Ui
             line.MouseLeftButtonUp += Line_MouseLeftButtonUp;
 
             CreateConnectionContextMenu(line);
-            CreateLinePointsBinding(line);
+            CreateLineBindings(line);
 
             var p1 = NodeOfModel(connectionVm.SourceNode).OutConnectorLocation(_canvas, connectionVm.SourceConnector);
             var p2 = NodeOfModel(connectionVm.TargetNode).InConnectorLocation(_canvas, connectionVm.TargetConnector);
@@ -217,17 +215,26 @@ namespace GraphEditor.Ui
             item.Click += LineDeleteClick;
         }
 
-        private void CreateLinePointsBinding(ArrowPolyline line)
+        private void CreateLineBindings(ArrowPolyline line)
         {
             Binding pointsBinding = new Binding
             {
                 Source = line.DataContext,
-                Path = new PropertyPath(nameof(line.Points)),
+                Path = new PropertyPath(nameof(ConnectionViewModel.Points)),
                 Mode = BindingMode.OneWay,
                 UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
                 Converter = new ListToPointCollectionConverter()
             };
             BindingOperations.SetBinding(line, ArrowPolyline.PointsProperty, pointsBinding);
+
+            Binding strokeBinding = new Binding
+            {
+                Source = line.DataContext,
+                Path = new PropertyPath(nameof(ConnectionViewModel.State)),
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.Default,
+            };
+            BindingOperations.SetBinding(line, ArrowPolyline.StrokeProperty, strokeBinding);
         }
 
         private MenuItem FindMenuItemByTag(object tag, ContextMenu contextMenu)

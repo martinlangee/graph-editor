@@ -30,6 +30,8 @@
             </ItemsControl>
             <CheckBox Content="Show grid" IsChecked="{Binding IsGridVisible}" VerticalAlignment="Center" Margin="5,0"/>
             <CheckBox Content="Show labels" IsChecked="{Binding ShowLabels}" VerticalAlignment="Center" Margin="5,0"/>
+            <Button Content="Switch states" Command="{Binding SwitchStatesCommand}" Margin="0,0,10,0"/>
+            <Button Content="Reset states" Command="{Binding ResetStatesCommand}" Margin="0,0,10,0"/>
         </StackPanel>
         <Grid Background="Black" Opacity="0.4">
             <Grid.Style>

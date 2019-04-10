@@ -4,6 +4,7 @@ using GraphEditor.Interface.Nodes;
 using GraphEditor.Interface.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Xml.Linq;
 
 namespace GraphEditor.Ui.ViewModel
@@ -35,13 +37,19 @@ namespace GraphEditor.Ui.ViewModel
 
         public RelayCommand AddNodeCommand { get; private set; }
 
+        public RelayCommand SwitchStatesCommand { get; private set; }
+
+        public RelayCommand ResetStatesCommand { get; private set; }
+
         public void OnBuiltUp()
         {
             LoadCommand = new RelayCommand(o => LoadExec());
             SaveCommand = new RelayCommand(o => SaveExec());
             AddNodeCommand = new RelayCommand(o => AddNodeExec((INodeTypeData) o));
+            SwitchStatesCommand = new RelayCommand(o => SwitchStatesExec());
+            ResetStatesCommand = new RelayCommand(o => ResetStatesExec());
 
-            ToolBar = new ToolBarViewModel(LoadCommand, SaveCommand);
+            ToolBar = new ToolBarViewModel(LoadCommand, SaveCommand, SwitchStatesCommand, ResetStatesCommand);
             AreaContextMenuItems = new ObservableCollection<INodeTypeData>();
             NodeVMs = new ObservableCollection<NodeViewModel>();
 
@@ -249,6 +257,23 @@ namespace GraphEditor.Ui.ViewModel
             {
                 nodeVm.IsSelected = false;
             }
+        }
+
+        private void SwitchStatesExec()
+        {
+            // example for the use of State as visualization color of the connections
+            NodeVMs.For((node, i) => node.OutConnections.For((conn, j) =>
+            {
+                if ((i + j) == 1)
+                    conn.State = Brushes.Red;
+                else
+                    conn.State = Brushes.Green;
+            }));
+        }
+
+        private void ResetStatesExec()
+        {
+            NodeVMs.ForEach(node => node.OutConnections.ForEach(conn => conn.State = Brushes.Gray));
         }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml.Linq;
 
 namespace GraphEditor.Ui.ViewModel
@@ -16,6 +17,7 @@ namespace GraphEditor.Ui.ViewModel
 
         bool _isSelected;
         readonly List<Point> _points;
+        private object _state = Brushes.Gray;  // example using the state for color visualization of connections
 
         public ConnectionViewModel(NodeViewModel sourceNode, NodeViewModel targetNode, int sourceConn, int targetConn)
         {
@@ -173,5 +175,7 @@ namespace GraphEditor.Ui.ViewModel
 
             parentXml.Add(connXml);
         }
+
+        public object State { get { return _state; } set { SetProperty<ConnectorStateViewModel, object>(ref _state, value, nameof(State)); } }
     }
 }

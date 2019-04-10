@@ -13,12 +13,14 @@ namespace GraphEditor.Ui.ViewModel
         bool _isEnabled = true;
         bool _showLabels = true;
 
-        public ToolBarViewModel(RelayCommand loadCommand, RelayCommand saveCommand)
+        public ToolBarViewModel(RelayCommand loadCommand, RelayCommand saveCommand, RelayCommand switchStatesCommand, RelayCommand resetStatesCommand)
         {
             NodeTypes = new ObservableCollection<INodeTypeData>(ServiceContainer.Get<INodeTypeRepository>().NodeTypes);
 
             LoadCommand = loadCommand;
             SaveCommand = saveCommand;
+            SwitchStatesCommand = switchStatesCommand;
+            ResetStatesCommand = resetStatesCommand;
         }
 
         public ObservableCollection<INodeTypeData> NodeTypes { get; }
@@ -32,5 +34,9 @@ namespace GraphEditor.Ui.ViewModel
         public RelayCommand LoadCommand { get; }
 
         public RelayCommand SaveCommand { get; }
+
+        public RelayCommand SwitchStatesCommand { get; }
+
+        public RelayCommand ResetStatesCommand { get; }
     }
 }
