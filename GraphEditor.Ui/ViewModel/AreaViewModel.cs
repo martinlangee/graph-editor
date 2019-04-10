@@ -61,7 +61,7 @@ namespace GraphEditor.Ui.ViewModel
 
         private void ClearConfig()
         {
-            NodeVMs.InverseFor((node, i) => node.RemoveExec());
+            NodeVMs.Reverse().ForEach(node => node.RemoveExec());
         }
 
         private void LoadExec()
@@ -84,7 +84,7 @@ namespace GraphEditor.Ui.ViewModel
             // this is a workaround to ensure that the nodes are loaded and all bound item collections initialized before the connections are loaded
             Task.Run(() =>
             {
-                Thread.Sleep(20);  // important!
+                Thread.Sleep(200);  // important!
 
                 var connectionsXml = configXml.Element("Connections");
                 connectionsXml.Elements().ForEach(conn =>
@@ -168,9 +168,11 @@ namespace GraphEditor.Ui.ViewModel
             {
                 NodeConfigUi = null;
                 UiMessageHub.LocationUpdateMuted = false;
+                ToolBar.IsEnabled = true;
             };
             NodeConfigUi = configUi as UserControl;
             UiMessageHub.LocationUpdateMuted = true;
+            ToolBar.IsEnabled = false;
         }
 
         public void OnRemoveNode(NodeViewModel nodeVm)

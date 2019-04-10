@@ -15,6 +15,7 @@ using System;
 
 /* ----------------------------------------------------------------------------------
  * TODO:
+ *  Deaktivierung der Toolbar wenn Dialog offen
  *  An/Abschalten der Connector-Beschreibungen
  *  Erzeugung über Drag-n-Drop aus der Toolbar
  *  z-Order der Nodes editierbar machen
@@ -66,7 +67,7 @@ namespace GraphEditor.Ui
 
             var location = Mouse.GetPosition(_canvas);
 
-            if (ViewModel.ToolBar.IsGridShown)
+            if (ViewModel.ToolBar.IsGridVisible)
             {
                 var gridWidth = ViewModel.GridRect.Width;
                 location.X = Math.Round(location.X / gridWidth) * gridWidth;
@@ -162,7 +163,7 @@ namespace GraphEditor.Ui
             {
                 var location = Mouse.GetPosition(_canvas);
 
-                if (ViewModel.ToolBar.IsGridShown)
+                if (ViewModel.ToolBar.IsGridVisible)
                 {
                     var gridWidth = ViewModel.GridRect.Width;
                     location.X = Math.Round(location.X / gridWidth) * gridWidth;
@@ -277,7 +278,7 @@ namespace GraphEditor.Ui
                 var locVector = e.GetPosition(_canvas) - points[idx];
                 var location = new Point(locVector.X, locVector.Y);
 
-                if (ViewModel.ToolBar.IsGridShown)
+                if (ViewModel.ToolBar.IsGridVisible)
                 {
                     var gridWidth = ViewModel.GridRect.Width;
                     location.X = Math.Round(location.X / gridWidth) * gridWidth;

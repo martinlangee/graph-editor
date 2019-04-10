@@ -2,13 +2,16 @@
 using GraphEditor.Interface.Container;
 using GraphEditor.Interface.Nodes;
 using GraphEditor.Ui.Commands;
+using GraphEditor.Ui.Tools;
 using System.Collections.ObjectModel;
 
 namespace GraphEditor.Ui.ViewModel
 {
     public class ToolBarViewModel: BaseNotification
     {
-        bool _isGridShown;
+        bool _isGridVisible = true;
+        bool _isEnabled = true;
+        bool _showLabels = true;
 
         public ToolBarViewModel(RelayCommand loadCommand, RelayCommand saveCommand)
         {
@@ -20,11 +23,11 @@ namespace GraphEditor.Ui.ViewModel
 
         public ObservableCollection<INodeTypeData> NodeTypes { get; }
 
-        public bool IsGridShown
-        {
-            get { return _isGridShown; }
-            set { SetProperty<NodeViewModel, bool>(ref _isGridShown, value, nameof(IsGridShown)); }
-        }
+        public bool IsGridVisible { get { return _isGridVisible; } set { SetProperty<ToolBarViewModel, bool>(ref _isGridVisible, value, nameof(IsGridVisible)); } }
+
+        public bool IsEnabled { get { return _isEnabled; } set { SetProperty<ToolBarViewModel, bool>(ref _isEnabled, value, nameof(IsEnabled)); } }
+
+        public bool ShowLabels { get { return _showLabels; } set { SetProperty<ToolBarViewModel, bool>(ref _showLabels, value, nameof(ShowLabels), (vm, val) => UiMessageHub.ShowLabelsChanged(val)); } }
 
         public RelayCommand LoadCommand { get; }
 

@@ -22,13 +22,19 @@
             </Style>
         </Grid.Style>
         <Canvas Visibility="{Binding Visibility, ElementName=_grid}">
-            <TextBlock x:Name="_tbName" Text="{Binding Name}" Canvas.Top="{Binding ActualHeight, ElementName=_tbName, Converter={StaticResource CalcConverter}, ConverterParameter=*-0.7}" FontSize="9" Foreground="Gray">
+            <TextBlock x:Name="_tbName" Text="{Binding Name}" 
+                       Canvas.Top="{Binding ActualHeight, ElementName=_tbName, Converter={StaticResource CalcConverter}, ConverterParameter=*-0.7}"
+                       FontSize="9" Foreground="Gray">
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Canvas.Left" Value="5"/>
+                        <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsOutBound}" Value="false">
                                 <Setter Property="Canvas.Left" Value="{Binding ActualWidth, ElementName=_tbName, Converter={StaticResource CalcConverter}, ConverterParameter=*-1|-10}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ShowLabels}" Value="false">
+                                <Setter Property="Visibility" Value="Hidden"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

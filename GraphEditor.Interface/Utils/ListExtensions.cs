@@ -28,15 +28,6 @@ namespace GraphEditor.Interface.Utils
             }
         }
 
-        public static void InverseFor<T>(this IEnumerable<T> collection, Action<T, int> action)
-        {
-            var list = collection.ToList();
-            for (var index = list.Count - 1; index >= 0; index--)
-            {
-                action?.Invoke(list[index], index);
-            }
-        }
-
         public static void ForEach<T>(this ObservableCollection<T> collection, Action<T> action)
         {
             foreach (var item in collection)
@@ -53,15 +44,6 @@ namespace GraphEditor.Interface.Utils
             var lastIdx = to < 0 ? list.Count - 1 : to;
 
             for (var index = firstIdx; index <= lastIdx; index++)
-            {
-                action?.Invoke(list[index], index);
-            }
-        }
-
-        public static void InverseFor<T>(this ObservableCollection<T> collection, Action<T, int> action)
-        {
-            var list = collection.ToList();
-            for (var index = list.Count - 1; index >= 0; index--)
             {
                 action?.Invoke(list[index], index);
             }

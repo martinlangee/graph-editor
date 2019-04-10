@@ -9,6 +9,7 @@ namespace GraphEditor.Ui.ViewModel
         private bool _isConnecting;
         private bool _isConnectRequested;
         private bool _isActive = true;
+        private bool _showLabels = true;
 
         public int Index { get; set; }
 
@@ -18,6 +19,13 @@ namespace GraphEditor.Ui.ViewModel
             Name = name;
             Index = index;
             IsOutBound = isOutBound;
+
+            UiMessageHub.OnShowLabelsChanged += OnShowLabelsChanged;
+        }
+
+        private void OnShowLabelsChanged(bool visible)
+        {
+            ShowLabels = visible;
         }
 
         public bool IsConnecting
@@ -61,5 +69,7 @@ namespace GraphEditor.Ui.ViewModel
         public string Name { get; }
 
         public byte[] Icon => IsOutBound ? _node.Data.Outs[Index].Icon : _node.Data.Ins[Index].Icon;
+
+        public bool ShowLabels { get { return _showLabels; } set { SetProperty<ConnectorStateViewModel, bool>(ref _showLabels, value, nameof(ShowLabels)); } }
     }
 }

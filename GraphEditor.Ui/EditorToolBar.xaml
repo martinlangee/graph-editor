@@ -28,7 +28,20 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <CheckBox Content="Show grid" IsChecked="{Binding IsGridShown}" VerticalAlignment="Center" Margin="5,0"/>
+            <CheckBox Content="Show grid" IsChecked="{Binding IsGridVisible}" VerticalAlignment="Center" Margin="5,0"/>
+            <CheckBox Content="Show labels" IsChecked="{Binding ShowLabels}" VerticalAlignment="Center" Margin="5,0"/>
         </StackPanel>
+        <Grid Background="Black" Opacity="0.4">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsEnabled}" Value="False">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+        </Grid>
     </Grid>
 </UserControl>
