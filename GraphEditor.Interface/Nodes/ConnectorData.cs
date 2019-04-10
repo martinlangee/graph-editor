@@ -5,18 +5,17 @@ namespace GraphEditor.Interface.Nodes
 {
     public class ConnectorData : BaseNotification, IConnectorData
     {
-        private bool _isActive;
+        private bool _isActive = true;
         private readonly Action<IConnectorData> _onIsActiveChanged;
         private readonly Func<IConnectorData, bool> _canBeDeactivated;
 
-        public ConnectorData(string name, int index, bool isOutBound, bool isActive, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, byte[] icon = null, object type = null)
+        public ConnectorData(string name, int index, bool isOutBound, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, byte[] icon = null, object type = null)
         {
             _canBeDeactivated = canBeDeactivated;
 
             Name = name;
             Index = index;
             IsOutBound = isOutBound;
-            IsActive = isActive;
             Type = type;
             Icon = icon;
 

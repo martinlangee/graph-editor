@@ -15,11 +15,12 @@ using System;
 
 /* ----------------------------------------------------------------------------------
  * TODO:
+ *  An/Abschalten der Connector-Beschreibungen
  *  Erzeugung über Drag-n-Drop aus der Toolbar
  *  z-Order der Nodes editierbar machen
  *  wer-kann-an-wen beispielhaft implementieren
  *  Connectoren können "State" haben (z.B. durch Farbe visualisiert)
- * 
+ *  Verhalten der Linien-Komponente verbessern (evtl. selektierbar?)
  * ------------------------------------------------------------------------------- */
 
 
@@ -101,7 +102,7 @@ namespace GraphEditor.Ui
                 }
                 if (nodeVm.Equals(connVm.TargetNode))
                 {
-                    connVm.MovePoint(connVm.Points.Count - 1, node.InConnectorLocation(_canvas, connVm.TargetConnector));
+                    connVm.MovePoint(connVm.LastPointIndex, node.InConnectorLocation(_canvas, connVm.TargetConnector));
                 }
             }
         }
@@ -267,7 +268,7 @@ namespace GraphEditor.Ui
 
         private void SetDragObjectPosition(DragEventArgs e)
         {
-            // Position von allen Nodes setzen, die beim Draggen selektiert sind
+            // set positions of all selected nodes while dragging
             var nodeVMs = (List<NodeViewModel>) e.Data.GetData(UiConst.DragDropObjects);
             var points = (List<Point>) e.Data.GetData(UiConst.DragDropPoints);
 
@@ -303,7 +304,6 @@ namespace GraphEditor.Ui
         {
             Application.Current.MainWindow.Cursor = Cursors.Arrow;
 
-            var selectedNodes = ViewModel.NodeVMs.Where(nv => nv.IsSelected).ToList();
             ViewModel.RevokeConnectRequestStatus();
             ViewModel.DeselectAll();
         }

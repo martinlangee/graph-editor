@@ -42,47 +42,44 @@ namespace GraphEditor.Ui.ViewModel
             var connectorStates = connectorData.IsOutBound ? OutConnectorStates : InConnectorStates;
             var connections = connectorData.IsOutBound ? OutConnections.ToList() : InConnections;
 
-            if (connectorData.IsActive)
+            connections.ForEach(conn =>
             {
-                connectorStates.Insert(connectorData.Index, new ConnectorStateViewModel(this, connectorData.Name, connectorData.Index, connectorData.IsOutBound));
-                // todo connections.
-            }
-            else
-            {
-                connectorStates.RemoveAt(connectorData.Index);
-            }
+                var connIdx = connectorData.IsOutBound ? conn.SourceConnector : conn.TargetConnector;
+                if (connIdx > connectorData.Index)
+                {
+                    // todo: IsOutBound=true-Fall berücksichtigen
+
+                    // if the connector has one or more bend points and it is on the same height as the connector => also shift it up or down
+                    if (conn.LastPointIndex > 1 && Math.Round(conn.Points[conn.LastPointIndex - 1].Y) == Math.Round(conn.Points[conn.LastPointIndex].Y))
+                        conn.MovePoint(conn.LastPointIndex - 1, down: connectorData.IsActive);
+                    conn.MovePoint(conn.LastPointIndex, down: connectorData.IsActive);
+                }
+            });
+
+            connectorStates[connectorData.Index].IsActive = connectorData.IsActive;
         }
 
         private bool ConnectorCanBeDeactivated(IConnectorData connData)
         {
-            var connectors = connData.IsOutBound ? OutConnectorStates : InConnectorStates;
+            var connectorStates = connData.IsOutBound ? OutConnectorStates : InConnectorStates;
 
-            if (connectors?.Count <= 1)
-                return false;
-
-            var connState = connectors?.FirstOrDefault(ic => ic.Index == connData.Index && ic.IsOutBound == connData.IsOutBound);
-            return connState?.IsConnected == false;
+            return connectorStates?.Count(cs => cs.IsActive) > 1 &&
+                   connectorStates?[connData.Index].IsConnected == false;
         }
 
-        private void ReloadConnectorStates(IList<IConnectorData> connectors, ObservableCollection<ConnectorStateViewModel> connStateVMs, bool isOutBound)
+        private void LoadConnectorStates(IList<IConnectorData> connectors, ObservableCollection<ConnectorStateViewModel> connStateVMs, bool isOutBound)
         {
-            connStateVMs.Clear();
-
-            connectors.For((ic, i) =>
-                {
-                    if (ic.IsActive)
-                        connStateVMs.Add(new ConnectorStateViewModel(this, ic.Name, i, isOutBound));
-                });
+            connectors.For((ic, i) => connStateVMs.Add(new ConnectorStateViewModel(this, ic.Name, i, isOutBound)));
         }
 
         private void LoadInConnectorStates()
         {
-            ReloadConnectorStates(Data.Ins, InConnectorStates, isOutBound: false);
+            LoadConnectorStates(Data.Ins, InConnectorStates, isOutBound: false);
         }
 
         private void LoadOutConnectorStates()
         {
-            ReloadConnectorStates(Data.Outs, OutConnectorStates, isOutBound: true);
+            LoadConnectorStates(Data.Outs, OutConnectorStates, isOutBound: true);
         }
 
         private void EditConfigExec()
@@ -190,8 +187,8 @@ namespace GraphEditor.Ui.ViewModel
                 var nodeVMs = _onGetAllNodeVMs();
                 var result = new List<ConnectionViewModel>();
 
-                nodeVMs.Where(nv => !nv.Equals(this)).ToList().
-                    ForEach(nv => nv.OutConnections.Where(conn => conn.TargetNode.Equals(this)).ToList().
+                nodeVMs.Where(nv => !nv.Equals(this)).
+                    ForEach(nv => nv.OutConnections.Where(conn => conn.TargetNode.Equals(this)).
                     ForEach(conn => result.Add(conn)));
 
                 return result;

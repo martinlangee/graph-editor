@@ -12,12 +12,16 @@ namespace GraphEditor.Interface.Nodes
 {
     public abstract class NodeDataBase : BaseNotification, INodeData
     {
+        private Action<IConnectorData> _onIsActiveChanged;
+        private Func<IConnectorData, bool> _canBeDeactivated;
         private readonly Assembly _executingAssembly;
         private string _name;
         
-        protected NodeDataBase(INodeTypeData nodeTypeData, Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated, Assembly executingAssembly)
+        protected NodeDataBase(INodeTypeData nodeTypeData, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, Assembly executingAssembly)
         {
             TypeData = nodeTypeData;
+            _onIsActiveChanged = onIsActiveChanged;
+            _canBeDeactivated = canBeDeactivated;
             _executingAssembly = executingAssembly;
 
             Id = Guid.NewGuid().ToString();
@@ -25,6 +29,12 @@ namespace GraphEditor.Interface.Nodes
 
             Ins = new ObservableCollection<IConnectorData>();
             Outs = new ObservableCollection<IConnectorData>();
+        }
+
+        protected void CreateConnector(string name, int index, bool isOutBound, byte[] icon = null, object type = null)
+        {
+            var connectorDataList = isOutBound ? Outs : Ins;
+            connectorDataList.Add(new ConnectorData(name, index, isOutBound, _onIsActiveChanged, _canBeDeactivated, icon, type));
         }
 
         protected byte[] LoadGraphic(string resourcePath)

@@ -10,12 +10,13 @@ namespace GraphEditor.MyNodes.LogicalOR
         public LogicalOR(INodeTypeData nodeTypeData, Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
             : base(nodeTypeData, onActiveChanged, canBeDeactivated, Assembly.GetExecutingAssembly())
         {
-            Ins.Add(new ConnectorData("IN 1", 0, false, true, onActiveChanged, canBeDeactivated));
-            Ins.Add(new ConnectorData("IN 2", 1, false, true, onActiveChanged, canBeDeactivated));
-            Ins.Add(new ConnectorData("IN 3", 2, false, true, onActiveChanged, canBeDeactivated));
-            Ins.Add(new ConnectorData("IN 4", 3, false, true, onActiveChanged, canBeDeactivated));
+            CreateConnector("IN 1", 0, false);
+            CreateConnector("IN 2", 1, false);
+            CreateConnector("IN 3", 2, false);
+            CreateConnector("IN 4", 3, false);
+            CreateConnector("IN 5", 4, false);
 
-            Outs.Add(new ConnectorData("OR", 0, true, true, onActiveChanged, canBeDeactivated));
+            CreateConnector("OR", 0, true);
         }
 
         protected override Type ConfigControlType => typeof(LogicalORControl);

@@ -1,5 +1,6 @@
 ﻿using GraphEditor.Interface.ConfigUi;
 using GraphEditor.Interface.Utils;
+using GraphEditor.Ui.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,10 +89,19 @@ namespace GraphEditor.Ui.ViewModel
             return _points.IndexOf(nearest.Item1);
         }
 
+        public int LastPointIndex => _points.Count - 1;
+
         public void MovePoint(int index, Point point)
         {
-            _points[index] = new Point(Math.Round(point.X), Math.Round(point.Y));
+            if (point.Round().IsEqual(_points[index].Round())) return;
+
+            _points[index] = point.Round();
             NotifyPointsChanged();
+        }
+
+        public void MovePoint(int index, bool down)
+        {
+            MovePoint(index, new Point(_points[index].X, _points[index].Y + (down ? 2 : -2) * UiConst.GridWidth));
         }
 
         public void AddPoint(Point point)
@@ -156,7 +166,7 @@ namespace GraphEditor.Ui.ViewModel
             _points.For((pt, i) =>
             {
                 pointsAttr += $"{pt}{PointsSeperator}";
-            }, 1, _points.Count - 1);  // Start and end point not needed
+            }, 1, _points.Count - 2);  // Start and end point not needed
 
             if (!string.IsNullOrEmpty(pointsAttr))
                 connXml.SetAttributeValue("Points", pointsAttr.Trim());

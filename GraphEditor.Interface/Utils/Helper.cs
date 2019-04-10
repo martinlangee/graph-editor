@@ -37,5 +37,15 @@ namespace GraphEditor.Interface.Utils
         {
             return Point.Parse(string.Join(",", point.Split(seperator)));
         }
+
+        public static Point Round(this Point point)
+        {
+            return new Point(Math.Round(point.X), Math.Round(point.Y));
+        }
+
+        public static bool IsEqual(this Point p1, Point p2)
+        {
+            return p1.X.Equals(p2.X) && p1.Y.Equals(p2.Y);
+        }
     }
 }

@@ -10,19 +10,19 @@ namespace GraphEditor.MyNodes.StartUpWarning
         public StartUpWarning(INodeTypeData nodeTypeData, Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
             : base(nodeTypeData, onActiveChanged, canBeDeactivated, Assembly.GetExecutingAssembly())
         {
-            Ins.Add(new ConnectorData("Control input", 0, false, true, onActiveChanged, canBeDeactivated));
-            Ins.Add(new ConnectorData("Locking", 1, false, true, onActiveChanged, canBeDeactivated));
-            Ins.Add(new ConnectorData("Stop", 2, false, true, onActiveChanged, canBeDeactivated));
-            Ins.Add(new ConnectorData("Tap forward", 3, false, true, onActiveChanged, canBeDeactivated, LoadConnIcon(nodeTypeData.Type, 3, false)));
-            Ins.Add(new ConnectorData("Tap backward", 4, false, true, onActiveChanged, canBeDeactivated));
-            Ins.Add(new ConnectorData("Reset", 4, false, true, onActiveChanged, canBeDeactivated));
+            CreateConnector("Control input", 0, false);
+            CreateConnector("Locking", 1, false);
+            CreateConnector("Stop", 2, false);
+            CreateConnector("Tap forward", 3, false, LoadConnIcon(nodeTypeData.Type, 3, false));
+            CreateConnector("Tap backward", 4, false);
+            CreateConnector("Reset", 5, false);
 
-            Outs.Add(new ConnectorData("Release", 0, true, true, onActiveChanged, canBeDeactivated));
-            Outs.Add(new ConnectorData("Forward active", 1, true, true, onActiveChanged, canBeDeactivated));
-            Outs.Add(new ConnectorData("Backward active", 2, true, true, onActiveChanged, canBeDeactivated, LoadConnIcon(nodeTypeData.Type, 2, true)));
-            Outs.Add(new ConnectorData("Startup active", 3, true, true, onActiveChanged, canBeDeactivated, LoadConnIcon(nodeTypeData.Type, 3, true)));
-            Outs.Add(new ConnectorData("Wait time active", 4, true, true, onActiveChanged, canBeDeactivated));
-            Outs.Add(new ConnectorData("Warning", 5, true, true, onActiveChanged, canBeDeactivated));
+            CreateConnector("Release", 0, true);
+            CreateConnector("Forward active", 1, true);
+            CreateConnector("Backward active", 2, true, LoadConnIcon(nodeTypeData.Type, 2, true));
+            CreateConnector("Startup active", 3, true, LoadConnIcon(nodeTypeData.Type, 3, true));
+            CreateConnector("Wait time active", 4, true);
+            CreateConnector("Warning", 5, true);
         }
 
         private byte[] LoadConnIcon(string nodeType, int index, bool isOutBound)

@@ -6,35 +6,65 @@
              xmlns:ba="clr-namespace:GraphEditor.MyNodes.Base"
              mc:Ignorable="d"
              MinWidth="300" MinHeight="200">
-    <Grid>
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ba:ConfigUiHeader x:Name="Header"/>
-        <StackPanel Grid.Row="1" Background="White">
-            <TextBlock Text="Name" Margin="15,5"/>
-            <TextBox Text="{Binding Name}" Margin="15,0,15,10"/>
-            <TextBlock Text="activated Inputs" Margin="15,0"/>
-            <ListBox Margin="15,0"
-                     BorderBrush="Transparent"
-                     x:Name="_lbInputs"
-                     VerticalAlignment="Stretch"
-                     ItemsSource="{Binding Ins}">
-                <ListBox.Resources>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="OverridesDefaultStyle" Value="true" />
-                        <Setter Property="SnapsToDevicePixels" Value="true" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <CheckBox Margin="5,2" IsChecked="{Binding IsActive}" Content="{Binding Name}"/>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.Resources>
-            </ListBox>
+        <StackPanel Grid.Row="1" Margin="20">
+            <TextBlock Text="Name" Margin="0,5"/>
+            <TextBox Text="{Binding Name}" Margin="0,0,0,10"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="Active inputs"/>
+                    <ListBox 
+                         BorderBrush="Transparent"
+                         x:Name="_lbInputs"
+                         VerticalAlignment="Stretch"
+                         ItemsSource="{Binding Ins}">
+                        <ListBox.Resources>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="OverridesDefaultStyle" Value="true" />
+                                <Setter Property="SnapsToDevicePixels" Value="true" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <CheckBox Margin="5,2" IsChecked="{Binding IsActive}" Content="{Binding Name}"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.Resources>
+                    </ListBox>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Margin="25,0,0,0">
+                    <TextBlock Text="Active outputs"/>
+                    <ListBox 
+                         BorderBrush="Transparent"
+                         x:Name="_lbOutputs"
+                         VerticalAlignment="Stretch"
+                         ItemsSource="{Binding Outs}">
+                        <ListBox.Resources>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="OverridesDefaultStyle" Value="true" />
+                                <Setter Property="SnapsToDevicePixels" Value="true" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <CheckBox Margin="5,2" IsChecked="{Binding IsActive}" Content="{Binding Name}"/>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.Resources>
+                    </ListBox>
+                </StackPanel>
+            </Grid>
         </StackPanel>
     </Grid>
 </UserControl>

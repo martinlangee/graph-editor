@@ -8,6 +8,7 @@ namespace GraphEditor.Ui.ViewModel
         private readonly NodeViewModel _node;
         private bool _isConnecting;
         private bool _isConnectRequested;
+        private bool _isActive = true;
 
         public int Index { get; set; }
 
@@ -50,6 +51,8 @@ namespace GraphEditor.Ui.ViewModel
                 }
             }
         }
+
+        public bool IsActive { get => _isActive; set => SetProperty<ConnectorStateViewModel, bool>(ref _isActive, value, nameof(IsActive)); }
 
         public bool IsConnected { get; set; }
 
