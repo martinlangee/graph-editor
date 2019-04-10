@@ -22,7 +22,7 @@
             </Style>
         </Grid.Style>
         <Canvas Visibility="{Binding Visibility, ElementName=_grid}">
-            <TextBlock x:Name="_tbName" Text="{Binding Name}" Canvas.Top="{Binding ActualHeight, ElementName=_tbName, Converter={StaticResource CalcConverter}, ConverterParameter=*-0.7}" FontSize="8" Foreground="Gray">
+            <TextBlock x:Name="_tbName" Text="{Binding Name}" Canvas.Top="{Binding ActualHeight, ElementName=_tbName, Converter={StaticResource CalcConverter}, ConverterParameter=*-0.7}" FontSize="9" Foreground="Gray">
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Canvas.Left" Value="5"/>

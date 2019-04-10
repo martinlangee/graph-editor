@@ -25,11 +25,6 @@ namespace GraphEditor.MyNodes.StartUpWarning
             CreateConnector("Warning", 5, true);
         }
 
-        private byte[] LoadConnIcon(string nodeType, int index, bool isOutBound)
-        {
-            return LoadGraphic(string.Concat($"/{nodeType}/{nodeType}_", isOutBound ? "out" : "in", $"{index}.png"));
-        }
-
         protected override Type ConfigControlType => typeof(StartUpWarningControl);
 
         protected override void LoadTypeSpecificData(XElement parentXml)

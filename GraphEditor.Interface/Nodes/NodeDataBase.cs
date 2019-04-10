@@ -1,5 +1,4 @@
 ﻿using GraphEditor.Interface.ConfigUi;
-using GraphEditor.Interface.Nodes;
 using GraphEditor.Interface.Utils;
 using System;
 using System.Collections.Generic;
@@ -33,13 +32,17 @@ namespace GraphEditor.Interface.Nodes
 
         protected void CreateConnector(string name, int index, bool isOutBound, byte[] icon = null, object type = null)
         {
-            var connectorDataList = isOutBound ? Outs : Ins;
-            connectorDataList.Add(new ConnectorData(name, index, isOutBound, _onIsActiveChanged, _canBeDeactivated, icon, type));
+            (isOutBound ? Outs : Ins).Add(new ConnectorData(name, index, isOutBound, _onIsActiveChanged, _canBeDeactivated, icon, type));
         }
 
         protected byte[] LoadGraphic(string resourcePath)
         {
             return Helper.LoadGraphicFromResource(resourcePath, _executingAssembly);
+        }
+
+        protected byte[] LoadConnIcon(string nodeType, int index, bool isOutBound)
+        {
+            return LoadGraphic(string.Concat($"/{nodeType}/{nodeType}_", isOutBound ? "out" : "in", $"{index}.png"));
         }
 
         public INodeTypeData TypeData { get; }

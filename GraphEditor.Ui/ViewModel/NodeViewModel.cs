@@ -47,12 +47,39 @@ namespace GraphEditor.Ui.ViewModel
                 var connIdx = connectorData.IsOutBound ? conn.SourceConnector : conn.TargetConnector;
                 if (connIdx > connectorData.Index)
                 {
-                    // todo: IsOutBound=true-Fall berücksichtigen
+                    var connectedPointIdx = connectorData.IsOutBound ? 0 : conn.LastPointIndex;
+                    var nextPointIdx = connectorData.IsOutBound ? 1 : conn.LastPointIndex - 1;
 
                     // if the connector has one or more bend points and it is on the same height as the connector => also shift it up or down
-                    if (conn.LastPointIndex > 1 && Math.Round(conn.Points[conn.LastPointIndex - 1].Y) == Math.Round(conn.Points[conn.LastPointIndex].Y))
-                        conn.MovePoint(conn.LastPointIndex - 1, down: connectorData.IsActive);
-                    conn.MovePoint(conn.LastPointIndex, down: connectorData.IsActive);
+                    if (conn.LastPointIndex > 1 &&
+                        Math.Round(conn.Points[nextPointIdx].Y) == Math.Round(conn.Points[connectedPointIdx].Y))
+                    {
+                        conn.MovePoint(nextPointIdx, down: connectorData.IsActive);
+                    }
+
+                    //if (connectorData.IsOutBound)
+                    //{
+                    //    connectedPointIdx = 0;
+                     
+                    //    // if the connector has one or more bend points and it is on the same height as the connector => also shift it up or down
+                    //    if (conn.LastPointIndex > 1 &&
+                    //        Math.Round(conn.Points[connectedPointIdx + 1].Y) == Math.Round(conn.Points[connectedPointIdx].Y))
+                    //    {
+                    //        conn.MovePoint(1, down: connectorData.IsActive);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    connectedPointIdx = conn.LastPointIndex;
+                     
+                    //    // dto
+                    //    if (conn.LastPointIndex > 1 &&
+                    //        Math.Round(conn.Points[connectedPointIdx - 1].Y) == Math.Round(conn.Points[connectedPointIdx].Y))
+                    //    {
+                    //        conn.MovePoint(connectedPointIdx - 1, down: connectorData.IsActive);
+                    //    }
+                    //}
+                    conn.MovePoint(connectedPointIdx, down: connectorData.IsActive);
                 }
             });
 

@@ -147,10 +147,10 @@ namespace GraphEditor.Ui.ViewModel
 
         public void LoadFromToXml(XElement connectionXml)
         {
-            var points = connectionXml.Attribute("Points").Value;
-            var pointList = points.Split(PointsSeperator).Select(pt => pt.ToPoint());
+            var points = connectionXml.Attribute("Points")?.Value;
+            var pointList = points?.Split(PointsSeperator).Select(pt => pt.ToPoint());
 
-            pointList.For((pt, i) => InsertPoint(i + 1, pt));
+            pointList?.For((pt, i) => InsertPoint(i + 1, pt));
         }
 
         public void SaveToXml(XElement parentXml)
