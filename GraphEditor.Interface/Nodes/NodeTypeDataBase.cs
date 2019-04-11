@@ -5,7 +5,7 @@ using GraphEditor.Interface.Utils;
 
 namespace GraphEditor.Interface.Nodes
 {
-    public abstract class NodeTypeDataBase : INodeTypeData
+    public abstract class NodeTypeDataBase : IBaseNodeTypeData
     {
         private readonly Assembly _executingAssembly;
         protected NodeTypeDataBase(Assembly executingAssembly)
@@ -44,13 +44,13 @@ namespace GraphEditor.Interface.Nodes
 
         public byte[] Image { get; protected set; }
 
-        public virtual bool CanConnectToIn(INodeTypeData otherNode, int otherOutIndex, int myInIndex) => myInIndex % 2 == 0;  // TODO: CanConnectToIn zum Testen
+        public virtual bool CanConnectToIn(IBaseNodeTypeData otherNode, int otherOutIndex, int myInIndex) => myInIndex % 2 == 0;  // TODO: CanConnectToIn zum Testen
 
-        public virtual bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex) => myOutIndex % 2 == 1;  // TODO: CanConnectToOut zum Testen
+        public virtual bool CanConnectToOut(IBaseNodeTypeData otherNode, int otherInIndex, int myOutIndex) => myOutIndex % 2 == 1;  // TODO: CanConnectToOut zum Testen
 
         protected abstract Type NodeType { get; }
 
-        public INodeData CreateNode(Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
+        public INodeData CreateNode(Action<IBaseConnectorData> onActiveChanged, Func<IBaseConnectorData, bool> canBeDeactivated)
         {
             return Activator.CreateInstance(NodeType, this, onActiveChanged, canBeDeactivated) as INodeData;
         }

@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GraphEditor.Interface.Nodes
 {
-    public interface INodeTypeData
+    public interface IBaseNodeTypeData
     {
         string Type { get; }
 
@@ -16,10 +17,15 @@ namespace GraphEditor.Interface.Nodes
 
         byte[] Image { get; }
 
-        bool CanConnectToIn(INodeTypeData otherNode, int otherOutIndex, int myInIndex);
+        bool CanConnectToIn(IBaseNodeTypeData otherNode, int otherOutIndex, int myInIndex);
 
-        bool CanConnectToOut(INodeTypeData otherNode, int otherInIndex, int myOutIndex);
+        bool CanConnectToOut(IBaseNodeTypeData otherNode, int otherInIndex, int myOutIndex);
 
-        INodeData CreateNode(Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated);
+        INodeData CreateNode(Action<IBaseConnectorData> onActiveChanged, Func<IBaseConnectorData, bool> canBeDeactivated);
+    }
+
+    public interface INodeTypeData<T> : IBaseNodeTypeData
+    {
+        IList<IConnectorData<T>> Connectors { get; }
     }
 }

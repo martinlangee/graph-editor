@@ -9,14 +9,14 @@ using System.Xml.Linq;
 
 namespace GraphEditor.Interface.Nodes
 {
-    public abstract class NodeDataBase : BaseNotification, INodeData
+    public abstract class NodeDataBase: BaseNotification, INodeData
     {
-        private Action<IConnectorData> _onIsActiveChanged;
-        private Func<IConnectorData, bool> _canBeDeactivated;
+        private readonly Action<IBaseConnectorData> _onIsActiveChanged;
+        private readonly Func<IBaseConnectorData, bool> _canBeDeactivated;
         private readonly Assembly _executingAssembly;
         private string _name;
         
-        protected NodeDataBase(INodeTypeData nodeTypeData, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, Assembly executingAssembly)
+        protected NodeDataBase(IBaseNodeTypeData nodeTypeData, Action<IBaseConnectorData> onIsActiveChanged, Func<IBaseConnectorData, bool> canBeDeactivated, Assembly executingAssembly)
         {
             TypeData = nodeTypeData;
             _onIsActiveChanged = onIsActiveChanged;
@@ -26,13 +26,13 @@ namespace GraphEditor.Interface.Nodes
             Id = Guid.NewGuid().ToString();
             Name = TypeData.NextNewName;
 
-            Ins = new ObservableCollection<IConnectorData>();
-            Outs = new ObservableCollection<IConnectorData>();
+            Ins = new ObservableCollection<IBaseConnectorData>();
+            Outs = new ObservableCollection<IBaseConnectorData>();
         }
 
-        protected void CreateConnector(string name, int index, bool isOutBound, byte[] icon = null, object type = null)
+        protected void CreateConnector<T>(string name, int index, bool isOutBound, T type, byte[] icon = null)
         {
-            (isOutBound ? Outs : Ins).Add(new ConnectorData(name, index, isOutBound, _onIsActiveChanged, _canBeDeactivated, icon, type));
+            (isOutBound ? Outs : Ins).Add(new ConnectorData<T>(name, index, isOutBound, _onIsActiveChanged, _canBeDeactivated, type, icon));
         }
 
         protected byte[] LoadGraphic(string resourcePath)
@@ -45,15 +45,15 @@ namespace GraphEditor.Interface.Nodes
             return LoadGraphic(string.Concat($"/{nodeType}/{nodeType}_", isOutBound ? "out" : "in", $"{index}.png"));
         }
 
-        public INodeTypeData TypeData { get; }
+        public IBaseNodeTypeData TypeData { get; }
 
         public string Id { get; private set; }
 
         public string Type => GetType().Name;
 
-        public IList<IConnectorData> Ins { get; private set; }
+        public IList<IBaseConnectorData> Ins { get; private set; }
 
-        public IList<IConnectorData> Outs { get; private set; }
+        public IList<IBaseConnectorData> Outs { get; private set; }
 
         public string Name { get => _name; set => SetProperty<NodeDataBase, string>(ref _name, value, nameof(Name)); }
 

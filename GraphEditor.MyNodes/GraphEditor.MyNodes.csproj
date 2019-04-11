@@ -56,12 +56,12 @@
       <DependentUpon>ConfigUiHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="LogicalXOR\LogicalXORType.cs" />
+    <Compile Include="SignalType.cs" />
     <Compile Include="StartUpWarning\StartUpWarningControl.xaml.cs">
       <DependentUpon>StartUpWarningControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="StartUpWarning\StartUpWarning.cs" />
     <Compile Include="StartUpWarning\StartUpWarningType.cs" />
-    <Compile Include="Types\NodeTypeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LogicalXOR\LogicalXORControl.xaml.cs">
       <DependentUpon>LogicalXORControl.xaml</DependentUpon>
@@ -72,6 +72,7 @@
     <Compile Include="LogicalAND\LogicalANDControl.xaml.cs">
       <DependentUpon>LogicalANDControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Types\NodeTypeRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraphEditor.Interface\GraphEditor.Interface.csproj">

@@ -19,7 +19,7 @@ namespace GraphEditor.Ui.ViewModel
         private bool _isSelected = false;
         private Point _location;
 
-        public NodeViewModel(INodeTypeData nodeTypeData, Func<List<NodeViewModel>> onGetAllNodeVMs, Action<INodeConfigUi> onOpenConfigUi)
+        public NodeViewModel(IBaseNodeTypeData nodeTypeData, Func<List<NodeViewModel>> onGetAllNodeVMs, Action<INodeConfigUi> onOpenConfigUi)
         {
             _onGetAllNodeVMs = onGetAllNodeVMs;
             _onOpenConfigUi = onOpenConfigUi;
@@ -37,7 +37,7 @@ namespace GraphEditor.Ui.ViewModel
             LoadOutConnectorStates();
         }
 
-        private void ConnectorOnActiveChanged(IConnectorData connectorData)
+        private void ConnectorOnActiveChanged(IBaseConnectorData connectorData)
         {
             var connectorStates = connectorData.IsOutBound ? OutConnectorStates : InConnectorStates;
             var connections = connectorData.IsOutBound ? OutConnections.ToList() : InConnections;
@@ -57,28 +57,6 @@ namespace GraphEditor.Ui.ViewModel
                         conn.MovePoint(nextPointIdx, down: connectorData.IsActive);
                     }
 
-                    //if (connectorData.IsOutBound)
-                    //{
-                    //    connectedPointIdx = 0;
-                     
-                    //    // if the connector has one or more bend points and it is on the same height as the connector => also shift it up or down
-                    //    if (conn.LastPointIndex > 1 &&
-                    //        Math.Round(conn.Points[connectedPointIdx + 1].Y) == Math.Round(conn.Points[connectedPointIdx].Y))
-                    //    {
-                    //        conn.MovePoint(1, down: connectorData.IsActive);
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    connectedPointIdx = conn.LastPointIndex;
-                     
-                    //    // dto
-                    //    if (conn.LastPointIndex > 1 &&
-                    //        Math.Round(conn.Points[connectedPointIdx - 1].Y) == Math.Round(conn.Points[connectedPointIdx].Y))
-                    //    {
-                    //        conn.MovePoint(connectedPointIdx - 1, down: connectorData.IsActive);
-                    //    }
-                    //}
                     conn.MovePoint(connectedPointIdx, down: connectorData.IsActive);
                 }
             });
@@ -86,7 +64,7 @@ namespace GraphEditor.Ui.ViewModel
             connectorStates[connectorData.Index].IsActive = connectorData.IsActive;
         }
 
-        private bool ConnectorCanBeDeactivated(IConnectorData connData)
+        private bool ConnectorCanBeDeactivated(IBaseConnectorData connData)
         {
             var connectorStates = connData.IsOutBound ? OutConnectorStates : InConnectorStates;
 
@@ -94,7 +72,7 @@ namespace GraphEditor.Ui.ViewModel
                    connectorStates?[connData.Index].IsConnected == false;
         }
 
-        private void LoadConnectorStates(IList<IConnectorData> connectors, ObservableCollection<ConnectorStateViewModel> connStateVMs, bool isOutBound)
+        private void LoadConnectorStates(IList<IBaseConnectorData> connectors, ObservableCollection<ConnectorStateViewModel> connStateVMs, bool isOutBound)
         {
             connectors.For((ic, i) => connStateVMs.Add(new ConnectorStateViewModel(this, ic.Name, i, isOutBound)));
         }
@@ -170,20 +148,12 @@ namespace GraphEditor.Ui.ViewModel
 
         public ObservableCollection<ConnectorStateViewModel> OutConnectorStates { get; }
 
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-            set { SetProperty<NodeViewModel, bool>(ref _isSelected, value, nameof(IsSelected)); }
-        }
+        public bool IsSelected { get => _isSelected;  set => SetProperty<NodeViewModel, bool>(ref _isSelected, value, nameof(IsSelected)); } 
 
         public Point Location
         {
             get => _location;
-            set
-            {
-                SetProperty<NodeViewModel, Point>(ref _location, value, nameof(Location),
-                    (node, pt) => UiMessageHub.NodeLocationChanged(this, pt));
-            }
+            set => SetProperty<NodeViewModel, Point>(ref _location, value, nameof(Location), (node, pt) => UiMessageHub.NodeLocationChanged(this, pt));
         }
 
 

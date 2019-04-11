@@ -3,13 +3,13 @@ using System;
 
 namespace GraphEditor.Interface.Nodes
 {
-    public class ConnectorData : BaseNotification, IConnectorData
+    public class ConnectorData<T> : BaseNotification, IConnectorData<T>
     {
         private bool _isActive = true;
-        private readonly Action<IConnectorData> _onIsActiveChanged;
-        private readonly Func<IConnectorData, bool> _canBeDeactivated;
+        private readonly Action<IBaseConnectorData> _onIsActiveChanged;
+        private readonly Func<IBaseConnectorData, bool> _canBeDeactivated;
 
-        public ConnectorData(string name, int index, bool isOutBound, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, byte[] icon = null, object type = null)
+        public ConnectorData(string name, int index, bool isOutBound, Action<IBaseConnectorData> onIsActiveChanged, Func<IBaseConnectorData, bool> canBeDeactivated, T type, byte[] icon = null)
         {
             _canBeDeactivated = canBeDeactivated;
 
@@ -35,13 +35,13 @@ namespace GraphEditor.Interface.Nodes
             {
                 if (_canBeDeactivated(this) || value)
                 {
-                    SetProperty<ConnectorData, bool>(ref _isActive, value, nameof(IsActive),
+                    SetProperty<ConnectorData<T>, bool>(ref _isActive, value, nameof(IsActive),
                         (connData, isActive) => _onIsActiveChanged?.Invoke(connData));
                 }
             }
         }
 
-        public object Type { get; }  // TDOD: später semantischen Typ einführen für Prüfung: wer kann mit wem verbunden werden?
+        public T Type { get; }  // TDOD: später semantischen Typ einführen für Prüfung: wer kann mit wem verbunden werden?
 
         public byte[] Icon { get; }
     }

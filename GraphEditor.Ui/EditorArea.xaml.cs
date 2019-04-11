@@ -92,6 +92,9 @@ namespace GraphEditor.Ui
             Canvas.SetTop(node, location.Y);
 
             // update concerned connection lines
+
+            // todo: also move the next point if it is on the same height as the connector
+
             foreach (var line in ConnectionLines)
             {
                 var connVm = (ConnectionViewModel) line.DataContext;

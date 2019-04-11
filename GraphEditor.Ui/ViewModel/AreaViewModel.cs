@@ -45,12 +45,12 @@ namespace GraphEditor.Ui.ViewModel
         {
             LoadCommand = new RelayCommand(o => LoadExec());
             SaveCommand = new RelayCommand(o => SaveExec());
-            AddNodeCommand = new RelayCommand(o => AddNodeExec((INodeTypeData) o));
+            AddNodeCommand = new RelayCommand(o => AddNodeExec((IBaseNodeTypeData) o));
             SwitchStatesCommand = new RelayCommand(o => SwitchStatesExec());
             ResetStatesCommand = new RelayCommand(o => ResetStatesExec());
 
             ToolBar = new ToolBarViewModel(LoadCommand, SaveCommand, SwitchStatesCommand, ResetStatesCommand);
-            AreaContextMenuItems = new ObservableCollection<INodeTypeData>();
+            AreaContextMenuItems = new ObservableCollection<IBaseNodeTypeData>();
             NodeVMs = new ObservableCollection<NodeViewModel>();
 
             ServiceContainer.Get<INodeTypeRepository>().NodeTypes.ForEach(
@@ -149,12 +149,12 @@ namespace GraphEditor.Ui.ViewModel
 
         public ToolBarViewModel ToolBar { get; private set; }
 
-        public ObservableCollection<INodeTypeData> AreaContextMenuItems { get; private set; }
+        public ObservableCollection<IBaseNodeTypeData> AreaContextMenuItems { get; private set; }
 
         // TODO: Raster-Breite in UI editierbar machen
         public Rect GridRect { get; } = new Rect { X = 0, Y = 0, Width = UiConst.GridWidth, Height = UiConst.GridWidth };
 
-        public NodeViewModel AddNodeExec(INodeTypeData nodeTypeData)
+        public NodeViewModel AddNodeExec(IBaseNodeTypeData nodeTypeData)
         {
             var newNodeVm = new NodeViewModel(nodeTypeData, () => NodeVMs.ToList(), OnOpenConfigUi);
             NodeVMs.Add(newNodeVm);

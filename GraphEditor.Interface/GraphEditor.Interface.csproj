@@ -55,6 +55,7 @@
     <Compile Include="Nodes\INodeTypeData.cs" />
     <Compile Include="Nodes\NodeDataBase.cs" />
     <Compile Include="Nodes\NodeTypeDataBase.cs" />
+    <Compile Include="Nodes\NodeTypeRepositoryBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Container\ServiceContainer.cs" />
     <Compile Include="Utils\Helper.cs" />
