@@ -241,15 +241,9 @@ namespace GraphEditor.Ui.ViewModel
             return connVm;
         }
 
-        public List<NodeViewModel> Selected
-        {
-            get { return NodeVMs.Where(nodeVm => nodeVm.IsSelected).ToList(); }
-        }
+        public List<NodeViewModel> Selected => NodeVMs.Where(nodeVm => nodeVm.IsSelected).ToList(); 
 
-        public int SelectedCount
-        {
-            get { return NodeVMs.Sum(gn => gn.IsSelected ? 1 : 0); }
-        }
+        public int SelectedCount => NodeVMs.Sum(gn => gn.IsSelected ? 1 : 0); 
 
         public void DeselectAll()
         {

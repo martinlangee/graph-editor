@@ -25,11 +25,11 @@ namespace GraphEditor.Ui.ViewModel
 
         public ObservableCollection<IBaseNodeTypeData> NodeTypes { get; }
 
-        public bool IsGridVisible { get { return _isGridVisible; } set { SetProperty<ToolBarViewModel, bool>(ref _isGridVisible, value, nameof(IsGridVisible)); } }
+        public bool IsGridVisible { get => _isGridVisible; set => SetProperty<ToolBarViewModel, bool>(ref _isGridVisible, value, nameof(IsGridVisible)); }
 
-        public bool IsEnabled { get { return _isEnabled; } set { SetProperty<ToolBarViewModel, bool>(ref _isEnabled, value, nameof(IsEnabled)); } }
+        public bool IsEnabled { get => _isEnabled; set => SetProperty<ToolBarViewModel, bool>(ref _isEnabled, value, nameof(IsEnabled)); }
 
-        public bool ShowLabels { get { return _showLabels; } set { SetProperty<ToolBarViewModel, bool>(ref _showLabels, value, nameof(ShowLabels), (vm, val) => UiMessageHub.ShowLabelsChanged(val)); } }
+        public bool ShowLabels { get => _showLabels; set => SetProperty<ToolBarViewModel, bool>(ref _showLabels, value, nameof(ShowLabels), (vm, val) => UiMessageHub.ShowLabelsChanged(val)); }
 
         public RelayCommand LoadCommand { get; }
 

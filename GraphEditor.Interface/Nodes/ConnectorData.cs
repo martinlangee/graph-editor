@@ -11,15 +11,14 @@ namespace GraphEditor.Interface.Nodes
 
         public ConnectorData(string name, int index, bool isOutBound, Action<IBaseConnectorData> onIsActiveChanged, Func<IBaseConnectorData, bool> canBeDeactivated, T type, byte[] icon = null)
         {
-            _canBeDeactivated = canBeDeactivated;
-
             Name = name;
             Index = index;
             IsOutBound = isOutBound;
             Type = type;
             Icon = icon;
 
-            _onIsActiveChanged = onIsActiveChanged;  // ! must be assigned only after IsActive is set
+            _canBeDeactivated = canBeDeactivated;
+            _onIsActiveChanged = onIsActiveChanged;
         }
 
         public string Name { get; }
@@ -30,7 +29,7 @@ namespace GraphEditor.Interface.Nodes
 
         public bool IsActive
         {
-            get { return _isActive; }
+            get => _isActive;
             set
             {
                 if (_canBeDeactivated(this) || value)
@@ -41,7 +40,7 @@ namespace GraphEditor.Interface.Nodes
             }
         }
 
-        public T Type { get; }  // TDOD: später semantischen Typ einführen für Prüfung: wer kann mit wem verbunden werden?
+        public T Type { get; }
 
         public byte[] Icon { get; }
     }

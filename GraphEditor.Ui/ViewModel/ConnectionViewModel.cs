@@ -29,11 +29,9 @@ namespace GraphEditor.Ui.ViewModel
             _points = new List<Point>();
         }
 
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-            set { SetProperty<ConnectionViewModel, bool>(ref _isSelected, value, nameof(IsSelected)); }
-        }
+        public bool IsSelected { get => _isSelected; set => SetProperty<ConnectionViewModel, bool>(ref _isSelected, value, nameof(IsSelected)); }
+
+        public object State { get { return _state; } set { SetProperty<ConnectorStateViewModel, object>(ref _state, value, nameof(State)); } }
 
         public IReadOnlyList<Point> Points => _points;
 
@@ -175,7 +173,5 @@ namespace GraphEditor.Ui.ViewModel
 
             parentXml.Add(connXml);
         }
-
-        public object State { get { return _state; } set { SetProperty<ConnectorStateViewModel, object>(ref _state, value, nameof(State)); } }
     }
 }

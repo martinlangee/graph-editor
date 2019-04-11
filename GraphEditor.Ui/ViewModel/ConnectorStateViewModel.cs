@@ -30,7 +30,7 @@ namespace GraphEditor.Ui.ViewModel
 
         public bool IsConnecting
         {
-            get { return _isConnecting; }
+            get => _isConnecting; 
             set
             {
                 if (value && IsConnectRequested)
@@ -50,7 +50,7 @@ namespace GraphEditor.Ui.ViewModel
 
         public bool IsConnectRequested
         {
-            get { return _isConnectRequested; }
+            get => _isConnectRequested;
             set
             {
                 if (!IsConnected || !value)
@@ -62,6 +62,8 @@ namespace GraphEditor.Ui.ViewModel
 
         public bool IsActive { get => _isActive; set => SetProperty<ConnectorStateViewModel, bool>(ref _isActive, value, nameof(IsActive)); }
 
+        public bool ShowLabels { get => _showLabels; set => SetProperty<ConnectorStateViewModel, bool>(ref _showLabels, value, nameof(ShowLabels)); }
+
         public bool IsConnected { get; set; }
 
         public bool IsOutBound { get; set; }
@@ -69,7 +71,5 @@ namespace GraphEditor.Ui.ViewModel
         public string Name { get; }
 
         public byte[] Icon => IsOutBound ? _node.Data.Outs[Index].Icon : _node.Data.Ins[Index].Icon;
-
-        public bool ShowLabels { get { return _showLabels; } set { SetProperty<ConnectorStateViewModel, bool>(ref _showLabels, value, nameof(ShowLabels)); } }
     }
 }
