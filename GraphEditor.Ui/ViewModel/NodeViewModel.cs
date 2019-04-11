@@ -28,6 +28,7 @@ namespace GraphEditor.Ui.ViewModel
             OutConnections = new ObservableCollection<ConnectionViewModel>();
 
             EditConfigCommand = new RelayCommand(o => EditConfigExec());
+            ShiftZOrderCommand = new RelayCommand(b => ShiftZOrderExec((bool) b));
             RemoveNodeCommand = new RelayCommand(o => RemoveExec());
 
             InConnectorStates = new ObservableCollection<ConnectorStateViewModel>();
@@ -92,6 +93,11 @@ namespace GraphEditor.Ui.ViewModel
             _onOpenConfigUi(Data.CreateConfigUi());
         }
 
+        private void ShiftZOrderExec(bool up)
+        {
+            UiMessageHub.ShiftZOrder(this, up);
+        }
+
         internal void RemoveConnection(ConnectionViewModel connVm)
         {
             OutConnections.Remove(connVm);
@@ -121,6 +127,9 @@ namespace GraphEditor.Ui.ViewModel
         }
 
         public RelayCommand EditConfigCommand { get; }
+
+        public RelayCommand ShiftZOrderCommand { get; }
+
         public RelayCommand RemoveNodeCommand { get; }
 
         public INodeData Data { get; }
@@ -148,14 +157,9 @@ namespace GraphEditor.Ui.ViewModel
 
         public ObservableCollection<ConnectorStateViewModel> OutConnectorStates { get; }
 
-        public bool IsSelected { get => _isSelected;  set => SetProperty<NodeViewModel, bool>(ref _isSelected, value, nameof(IsSelected)); } 
+        public bool IsSelected { get => _isSelected; set => SetProperty<NodeViewModel, bool>(ref _isSelected, value, nameof(IsSelected)); }
 
-        public Point Location
-        {
-            get => _location;
-            set => SetProperty<NodeViewModel, Point>(ref _location, value, nameof(Location), (node, pt) => UiMessageHub.NodeLocationChanged(this, pt));
-        }
-
+        public Point Location { get => _location; set => SetProperty<NodeViewModel, Point>(ref _location, value, nameof(Location), (node, pt) => UiMessageHub.NodeLocationChanged(this, pt)); }
 
         public void RemoveExec()
         {

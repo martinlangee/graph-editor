@@ -39,17 +39,17 @@ namespace GraphEditor.Interface.Container
 
         private static void OnFinishedRegisterTransaction()
         {
-            _registeredObjects.ForEach(ro =>
+            _registeredObjects.ForEach(obj =>
             {
-                ro.ConcreteType.GetMethod(OnBuiltUpMethod)?.Invoke(ro.Instance, null);
+                obj.ConcreteType.GetMethod(OnBuiltUpMethod)?.Invoke(obj.Instance, null);
             });
         }
 
         public static void FinalizeServices()
         {
-            _registeredObjects.ForEach(ro =>
+            _registeredObjects.ForEach(obj =>
             {
-                ro.ConcreteType.GetMethod(TearDownMethod)?.Invoke(ro.Instance, null);
+                obj.ConcreteType.GetMethod(TearDownMethod)?.Invoke(obj.Instance, null);
             });
         }
 

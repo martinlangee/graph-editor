@@ -11,13 +11,12 @@ using GraphEditor.Interface.Container;
 using GraphEditor.Ui.Tools;
 using GraphEditor.Ui.ViewModel;
 using System;
+using GraphEditor.Interface.Utils;
 
 
 /* ----------------------------------------------------------------------------------
  * TODO:
- *  Bei Draggen eines Nodes die Linienpunkt mit verschieben, die auf gleicher Höhe wie die Connectors sind
  *  Erzeugung über Drag-n-Drop aus der Toolbar
- *  z-Order der Nodes editierbar machen
  *  wer-kann-an-wen beispielhaft implementieren
  *  Verhalten der Linien-Komponente verbessern (evtl. selektierbar?)
  * ------------------------------------------------------------------------------- */
@@ -57,6 +56,27 @@ namespace GraphEditor.Ui
 
         private ArrowPolyline LineOfModel(ConnectionViewModel viewModel) => ConnectionLines.FirstOrDefault(cp => cp.DataContext.Equals(viewModel));
 
+        private void OnSetZIndex(NodeViewModel nodeVm, bool up)
+        {
+            var node = NodeOfModel(nodeVm);
+
+            var allNodes = _canvas.Children.OfType<GraphNode>().ToList();
+
+            var nodeIdx = allNodes.IndexOf(node);
+
+            var startIdx = up ? nodeIdx + 1 : 0;
+            var stopIdx = up ? allNodes.Count() - 1 : nodeIdx - 1;
+
+            for (var z = startIdx; z <= stopIdx; z++)
+            {
+                Canvas.SetZIndex(allNodes[z], Canvas.GetZIndex(allNodes[z]) + (up ? -1 : 1));
+            }
+
+            Canvas.SetZIndex(node, up ? allNodes.Count() - 1 : 0);
+
+            _canvas.Children.OfType<ArrowPolyline>().ForEach(line => Canvas.SetZIndex(line, allNodes.Count() + 10));
+        }
+
         private void OnAddNode(NodeViewModel nodeVm)
         {
             var graphNode = new GraphNode { DataContext = nodeVm };
@@ -92,8 +112,6 @@ namespace GraphEditor.Ui
             Canvas.SetTop(node, location.Y);
 
             // update concerned connection lines
-
-            // todo: also move the next point if it is on the same height as the connector
 
             foreach (var line in ConnectionLines)
             {
@@ -238,6 +256,7 @@ namespace GraphEditor.Ui
 
         private void CreateLineBindings(ArrowPolyline line)
         {
+            // binding between connection view model points and line point list
             Binding pointsBinding = new Binding
             {
                 Source = line.DataContext,
@@ -248,6 +267,7 @@ namespace GraphEditor.Ui
             };
             BindingOperations.SetBinding(line, ArrowPolyline.PointsProperty, pointsBinding);
 
+            // binding between connection view model state and the line stroke
             Binding strokeBinding = new Binding
             {
                 Source = line.DataContext,
@@ -344,6 +364,7 @@ namespace GraphEditor.Ui
             UiMessageHub.OnNodeLocationChanged += OnNodeLocationChanged;
             UiMessageHub.OnAddConnection += OnAddConnection;
             UiMessageHub.OnRemoveConnection += OnRemoveConnection;
+            UiMessageHub.OnSetZIndex += OnSetZIndex;
         }
 
         private void Editor_Unloaded(object sender, RoutedEventArgs e)

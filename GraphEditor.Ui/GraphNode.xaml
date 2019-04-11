@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="GraphEditor.Ui.GraphNode"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:s="clr-namespace:System;assembly=mscorlib"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:GraphEditor.Ui.ViewModel"
@@ -15,6 +16,17 @@
     <UserControl.ContextMenu>
         <ContextMenu>
             <MenuItem Header="Edit..." Command="{Binding EditConfigCommand}"/>
+            <Separator/>
+            <MenuItem Header="Send to front" Command="{Binding ShiftZOrderCommand}">
+                <MenuItem.CommandParameter>
+                    <s:Boolean>True</s:Boolean>
+                </MenuItem.CommandParameter>
+            </MenuItem>
+            <MenuItem Header="Send to back" Command="{Binding ShiftZOrderCommand}">
+                <MenuItem.CommandParameter>
+                    <s:Boolean>False</s:Boolean>
+                </MenuItem.CommandParameter>
+            </MenuItem>
             <Separator/>
             <MenuItem Header="Remove" Command="{Binding RemoveNodeCommand}"/>
         </ContextMenu>

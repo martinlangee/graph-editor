@@ -70,6 +70,11 @@ namespace GraphEditor.Ui.Tools
             OnConnectRequested?.Invoke(isConnecting, sourceNode, connIdx, isOutBound);
         }
 
+        public static void ShiftZOrder(NodeViewModel node, bool up)
+        {
+            OnSetZIndex?.Invoke(node, up);
+        }
+
         public static void CreateConnection(NodeViewModel targetNode, int connIdx)
         {
             OnCreateConnection?.Invoke(targetNode, connIdx);
@@ -77,6 +82,16 @@ namespace GraphEditor.Ui.Tools
 
         public static void Dispose()
         {
+            OnAddNode = null;
+            OnRemoveNode = null;
+            OnShowLabelsChanged = null;
+            OnNodeLocationChanged = null;
+            OnAddConnection = null;
+            OnRemoveConnection = null;
+            OnConnectRequested = null;
+            OnSetZIndex = null;
+            OnCreateConnection = null;
+
             _updateTimer.Dispose();
             Thread.Sleep(100);
             _actNodePos = null;
@@ -90,6 +105,8 @@ namespace GraphEditor.Ui.Tools
         public static event Action<ConnectionViewModel> OnAddConnection;
         public static event Action<ConnectionViewModel> OnRemoveConnection;
         public static event Action<bool, NodeViewModel, int, bool> OnConnectRequested;
+        public static event Action<NodeViewModel, bool> OnSetZIndex;
+
         public static Func<NodeViewModel, int, ConnectionViewModel> OnCreateConnection;
     }
 }
