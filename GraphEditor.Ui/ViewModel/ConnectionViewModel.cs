@@ -99,6 +99,13 @@ namespace GraphEditor.Ui.ViewModel
             NotifyPointsChanged();
         }
 
+        public void MovePoint(int index, double newY)
+        {
+            if (Math.Round(newY).Equals(Math.Round(_points[index].Y))) return;
+
+            MovePoint(index, new Point(_points[index].X, newY));
+        }
+
         public void MovePoint(int index, bool down)
         {
             MovePoint(index, new Point(_points[index].X, _points[index].Y + (down ? 2 : -2) * UiConst.GridWidth));

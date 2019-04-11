@@ -258,10 +258,21 @@ namespace GraphEditor.Ui.ViewModel
             // example for the use of State as visualization color of the connections
             NodeVMs.For((node, i) => node.OutConnections.For((conn, j) =>
             {
-                if ((i + j) == 1)
-                    conn.State = Brushes.Red;
-                else
-                    conn.State = Brushes.Green;
+                switch (j % 4)
+                {
+                    case 0:
+                        conn.State = Brushes.Red;
+                        break;
+                    case 1:
+                        conn.State = Brushes.Green;
+                        break;
+                    case 2:
+                        conn.State = Brushes.Orange;
+                        break;
+                    case 3:
+                        conn.State = Brushes.DarkCyan;
+                        break;
+                }
             }));
         }
 

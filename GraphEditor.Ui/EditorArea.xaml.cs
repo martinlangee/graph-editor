@@ -98,13 +98,31 @@ namespace GraphEditor.Ui
             foreach (var line in ConnectionLines)
             {
                 var connVm = (ConnectionViewModel) line.DataContext;
+
                 if (nodeVm.Equals(connVm.SourceNode))
                 {
-                    connVm.MovePoint(0, node.OutConnectorLocation(_canvas, connVm.SourceConnector));
+                    var newLocation = node.OutConnectorLocation(_canvas, connVm.SourceConnector);
+
+                    if (connVm.LastPointIndex > 1 &&
+                        Math.Round(connVm.Points[1].Y).Equals(Math.Round(connVm.Points[0].Y)))
+                    {
+                        connVm.MovePoint(1, newLocation.Y);
+                    }
+
+                    connVm.MovePoint(0, newLocation);
                 }
+
                 if (nodeVm.Equals(connVm.TargetNode))
                 {
-                    connVm.MovePoint(connVm.LastPointIndex, node.InConnectorLocation(_canvas, connVm.TargetConnector));
+                    var newLocation = node.InConnectorLocation(_canvas, connVm.TargetConnector);
+
+                    if (connVm.LastPointIndex > 1 && 
+                        Math.Round(connVm.Points[connVm.LastPointIndex - 1].Y).Equals(Math.Round(connVm.Points[connVm.LastPointIndex].Y)))
+                    {
+                        connVm.MovePoint(connVm.LastPointIndex - 1, newLocation.Y);
+                    }
+
+                    connVm.MovePoint(connVm.LastPointIndex, newLocation);
                 }
             }
         }

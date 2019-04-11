@@ -52,7 +52,7 @@ namespace GraphEditor.Ui.ViewModel
 
                     // if the connector has one or more bend points and it is on the same height as the connector => also shift it up or down
                     if (conn.LastPointIndex > 1 &&
-                        Math.Round(conn.Points[nextPointIdx].Y) == Math.Round(conn.Points[connectedPointIdx].Y))
+                        Math.Round(conn.Points[nextPointIdx].Y).Equals(Math.Round(conn.Points[connectedPointIdx].Y)))
                     {
                         conn.MovePoint(nextPointIdx, down: connectorData.IsActive);
                     }
