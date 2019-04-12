@@ -1,4 +1,6 @@
 ﻿using GraphEditor.Interface.ConfigUi;
+using GraphEditor.Interface.Container;
+using GraphEditor.Interface.Serialization;
 using GraphEditor.Interface.Utils;
 using GraphEditor.Ui.Tools;
 using System;
@@ -15,6 +17,7 @@ namespace GraphEditor.Ui.ViewModel
         const double MaxBendPointDragHitDist = 100;
         const char PointsSeperator = ' ';
 
+        private IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
         bool _isSelected;
         readonly List<Point> _points;
         private object _state = Brushes.Gray;  // example using the state for color visualization of connections
@@ -154,7 +157,7 @@ namespace GraphEditor.Ui.ViewModel
 
         public void LoadFromToXml(XElement connectionXml)
         {
-            var points = connectionXml.Attribute("Points")?.Value;
+            var points = connectionXml.Attribute(_xmlClasses.Points)?.Value;
             var pointList = points?.Split(PointsSeperator).Select(pt => pt.ToPoint());
 
             pointList?.For((pt, i) => InsertPoint(i + 1, pt));
@@ -162,12 +165,12 @@ namespace GraphEditor.Ui.ViewModel
 
         public void SaveToXml(XElement parentXml)
         {
-            var connXml = new XElement("Connection");
+            var connXml = new XElement(_xmlClasses.Connection);
 
-            connXml.SetAttributeValue("Source", SourceNode.Data.Id);
-            connXml.SetAttributeValue("SourceConn", SourceConnector);
-            connXml.SetAttributeValue("Target", TargetNode.Data.Id);
-            connXml.SetAttributeValue("TargetConn", TargetConnector);
+            connXml.SetAttributeValue(_xmlClasses.Source, SourceNode.Data.Id);
+            connXml.SetAttributeValue(_xmlClasses.SourceConn, SourceConnector);
+            connXml.SetAttributeValue(_xmlClasses.Target, TargetNode.Data.Id);
+            connXml.SetAttributeValue(_xmlClasses.TargetConn, TargetConnector);
 
             var pointsAttr = "";
             _points.For((pt, i) =>
@@ -176,7 +179,7 @@ namespace GraphEditor.Ui.ViewModel
             }, 1, _points.Count - 2);  // Start and end point not needed
 
             if (!string.IsNullOrEmpty(pointsAttr))
-                connXml.SetAttributeValue("Points", pointsAttr.Trim());
+                connXml.SetAttributeValue(_xmlClasses.Points, pointsAttr.Trim());
 
             parentXml.Add(connXml);
         }

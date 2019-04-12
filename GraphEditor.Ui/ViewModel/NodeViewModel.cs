@@ -1,5 +1,7 @@
 ﻿using GraphEditor.Interface.ConfigUi;
+using GraphEditor.Interface.Container;
 using GraphEditor.Interface.Nodes;
+using GraphEditor.Interface.Serialization;
 using GraphEditor.Interface.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
@@ -14,6 +16,7 @@ namespace GraphEditor.Ui.ViewModel
 {
     public class NodeViewModel : BaseNotification
     {
+        private IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
         private readonly Func<List<NodeViewModel>> _onGetAllNodeVMs;
         private readonly Action<INodeConfigUi> _onOpenConfigUi;
         private bool _isSelected = false;
@@ -136,14 +139,14 @@ namespace GraphEditor.Ui.ViewModel
 
         public void LoadFromXml(XElement nodeXml)
         {
-            Location = nodeXml.Attribute("Location").Value.ToPoint();
+            Location = nodeXml.Attribute(_xmlClasses.Location).Value.ToPoint();
             Data.LoadFromXml(nodeXml);
         }
 
         public void SaveToXml(XElement parentXml)
         {
-            var nodeVmXml = new XElement("Node");
-            nodeVmXml.SetAttributeValue("Location", Location);
+            var nodeVmXml = new XElement(_xmlClasses.Node);
+            nodeVmXml.SetAttributeValue(_xmlClasses.Location, Location);
             Data.SaveToXml(nodeVmXml);
             parentXml.Add(nodeVmXml);
         }

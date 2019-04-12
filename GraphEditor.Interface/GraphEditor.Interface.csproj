@@ -58,6 +58,8 @@
     <Compile Include="Nodes\NodeTypeRepositoryBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Container\ServiceContainer.cs" />
+    <Compile Include="Serialization\BaseXmlClasses.cs" />
+    <Compile Include="Serialization\IXmlClasses.cs" />
     <Compile Include="Utils\Helper.cs" />
     <Compile Include="Utils\ListExtensions.cs" />
   </ItemGroup>

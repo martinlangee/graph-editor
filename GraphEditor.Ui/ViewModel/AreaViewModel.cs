@@ -1,6 +1,7 @@
 ﻿using GraphEditor.Interface.ConfigUi;
 using GraphEditor.Interface.Container;
 using GraphEditor.Interface.Nodes;
+using GraphEditor.Interface.Serialization;
 using GraphEditor.Interface.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
@@ -28,6 +29,7 @@ namespace GraphEditor.Ui.ViewModel
 
         ConnectingNodeData _connNodeData;
         private UserControl _nodeConfigUi;
+        private IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
 
         public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
 
@@ -76,11 +78,11 @@ namespace GraphEditor.Ui.ViewModel
             ClearConfig();
 
             var docXml = XDocument.Load("c:\\gn.xml");
-            var configXml = docXml.Element("Configuration");
-            var nodesXml = configXml.Element("Nodes");
+            var configXml = docXml.Element(_xmlClasses.Root);
+            var nodesXml = configXml.Element(_xmlClasses.Nodes);
             nodesXml.Elements().ForEach(node =>
             {
-                var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(node.Attribute("Type").Value), new Point(-1, -1));
+                var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(node.Attribute(_xmlClasses.Type).Value), new Point(-1, -1));
                 nodeVm.LoadFromXml(node);
             });
 
@@ -90,13 +92,13 @@ namespace GraphEditor.Ui.ViewModel
             {
                 Thread.Sleep(200);  // important!
 
-                var connectionsXml = configXml.Element("Connections");
+                var connectionsXml = configXml.Element(_xmlClasses.Connections);
                 connectionsXml.Elements().ForEach(conn =>
                 {
-                    var sourceId = conn.Attribute("Source").Value;
-                    var sourceConn = int.Parse(conn.Attribute("SourceConn").Value);
-                    var targetId = conn.Attribute("Target").Value;
-                    var targetConn = int.Parse(conn.Attribute("TargetConn").Value);
+                    var sourceId = conn.Attribute(_xmlClasses.Source).Value;
+                    var sourceConn = int.Parse(conn.Attribute(_xmlClasses.SourceConn).Value);
+                    var targetId = conn.Attribute(_xmlClasses.Target).Value;
+                    var targetConn = int.Parse(conn.Attribute(_xmlClasses.TargetConn).Value);
 
                     _connNodeData.SourceNode = NodeVMs.First(node => node.Data.Id == sourceId);
                     _connNodeData.ConnIdx = sourceConn;
@@ -121,13 +123,13 @@ namespace GraphEditor.Ui.ViewModel
             //{
             var docXml = new XDocument();
 
-            var configXml = new XElement("Configuration");
+            var configXml = new XElement(_xmlClasses.Root);
 
-            var nodesXml = new XElement("Nodes");
+            var nodesXml = new XElement(_xmlClasses.Nodes);
             NodeVMs.ForEach(node => node.SaveToXml(nodesXml));
             configXml.Add(nodesXml);
 
-            var connXml = new XElement("Connections");
+            var connXml = new XElement(_xmlClasses.Connections);
             NodeVMs.ForEach(node => node.SaveConnectionsToXml(connXml));
             configXml.Add(connXml);
 

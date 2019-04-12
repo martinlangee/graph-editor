@@ -2,6 +2,7 @@
 using GraphEditor.Interface.Nodes;
 using GraphEditor.Ui.ViewModel;
 using GraphEditor.MyNodes.Types;
+using GraphEditor.Interface.Serialization;
 
 namespace GraphEditor.Bl
 {
@@ -11,6 +12,7 @@ namespace GraphEditor.Bl
         {
             using (ServiceContainer.RegisterTransaction())
             {
+                ServiceContainer.Register<BaseXmlClasses, IXmlClasses>();
                 ServiceContainer.Register<NodeTypeRepository, INodeTypeRepository>();
                 ServiceContainer.Register<AreaViewModel>();
             }

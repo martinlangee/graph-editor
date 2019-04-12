@@ -44,5 +44,4 @@ namespace GraphEditor.Interface.Nodes
 
         public byte[] Icon { get; }
     }
-
 }
