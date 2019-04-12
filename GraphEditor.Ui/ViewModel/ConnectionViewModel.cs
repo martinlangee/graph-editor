@@ -34,7 +34,7 @@ namespace GraphEditor.Ui.ViewModel
 
         public bool IsSelected { get => _isSelected; set => SetProperty<ConnectionViewModel, bool>(ref _isSelected, value, nameof(IsSelected)); }
 
-        public object State { get { return _state; } set { SetProperty<ConnectorStateViewModel, object>(ref _state, value, nameof(State)); } }
+        public object State { get { return _state; } set { SetProperty<ConnectorViewModel, object>(ref _state, value, nameof(State)); } }
 
         public IReadOnlyList<Point> Points => _points;
 

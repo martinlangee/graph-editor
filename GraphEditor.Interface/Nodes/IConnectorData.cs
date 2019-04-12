@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.Windows.Media;
 
 namespace GraphEditor.Interface.Nodes
 {
-    public interface IBaseConnectorData
+    public interface IConnectorData
     {
         string Name { get; }
 
@@ -13,10 +13,9 @@ namespace GraphEditor.Interface.Nodes
         bool IsActive { get; set; }
 
         byte[] Icon { get; }
-    }
 
-    public interface IConnectorData<T> : IBaseConnectorData
-    {
-        T Type { get; }  // TDOD: später semantischen Typ einführen für Prüfung, wer kann an wen
+        object Type { get; }
+
+        Color TypeAsColor { get; }
     }
 }

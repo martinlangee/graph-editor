@@ -1,15 +1,17 @@
 ﻿using GraphEditor.Interface.ConfigUi;
 using System;
+using System.Windows.Media;
 
 namespace GraphEditor.Interface.Nodes
 {
-    public class ConnectorData<T> : BaseNotification, IConnectorData<T>
+    public class ConnectorData<T> : BaseNotification, IConnectorData
     {
         private bool _isActive = true;
-        private readonly Action<IBaseConnectorData> _onIsActiveChanged;
-        private readonly Func<IBaseConnectorData, bool> _canBeDeactivated;
+        private readonly Action<IConnectorData> _onIsActiveChanged;
+        private readonly Func<IConnectorData, bool> _canBeDeactivated;
+        private Func<T, Color> _typeToColor;
 
-        public ConnectorData(string name, int index, bool isOutBound, Action<IBaseConnectorData> onIsActiveChanged, Func<IBaseConnectorData, bool> canBeDeactivated, T type, byte[] icon = null)
+        public ConnectorData(string name, int index, bool isOutBound, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, T type, byte[] icon = null, Func<T, Color> typeToColor = null)
         {
             Name = name;
             Index = index;
@@ -19,6 +21,7 @@ namespace GraphEditor.Interface.Nodes
 
             _canBeDeactivated = canBeDeactivated;
             _onIsActiveChanged = onIsActiveChanged;
+            _typeToColor = typeToColor == null ? T => Colors.CornflowerBlue : typeToColor;
         }
 
         public string Name { get; }
@@ -40,8 +43,10 @@ namespace GraphEditor.Interface.Nodes
             }
         }
 
-        public T Type { get; }
+        public object Type { get; }
 
         public byte[] Icon { get; }
+
+        public Color TypeAsColor => _typeToColor((T) Type);
     }
 }

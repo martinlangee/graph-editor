@@ -34,14 +34,14 @@ namespace GraphEditor.Ui.ViewModel
             ShiftZOrderCommand = new RelayCommand(b => ShiftZOrderExec((bool) b));
             RemoveNodeCommand = new RelayCommand(o => RemoveExec());
 
-            InConnectorStates = new ObservableCollection<ConnectorStateViewModel>();
-            OutConnectorStates = new ObservableCollection<ConnectorStateViewModel>();
+            InConnectorStates = new ObservableCollection<ConnectorViewModel>();
+            OutConnectorStates = new ObservableCollection<ConnectorViewModel>();
 
             LoadInConnectorStates();
             LoadOutConnectorStates();
         }
 
-        private void ConnectorOnActiveChanged(IBaseConnectorData connectorData)
+        private void ConnectorOnActiveChanged(IConnectorData connectorData)
         {
             var connectorStates = connectorData.IsOutBound ? OutConnectorStates : InConnectorStates;
             var connections = connectorData.IsOutBound ? OutConnections.ToList() : InConnections;
@@ -68,7 +68,7 @@ namespace GraphEditor.Ui.ViewModel
             connectorStates[connectorData.Index].IsActive = connectorData.IsActive;
         }
 
-        private bool ConnectorCanBeDeactivated(IBaseConnectorData connData)
+        private bool ConnectorCanBeDeactivated(IConnectorData connData)
         {
             var connectorStates = connData.IsOutBound ? OutConnectorStates : InConnectorStates;
 
@@ -76,9 +76,9 @@ namespace GraphEditor.Ui.ViewModel
                    connectorStates?[connData.Index].IsConnected == false;
         }
 
-        private void LoadConnectorStates(IList<IBaseConnectorData> connectors, ObservableCollection<ConnectorStateViewModel> connStateVMs, bool isOutBound)
+        private void LoadConnectorStates(IList<IConnectorData> connectors, ObservableCollection<ConnectorViewModel> connStateVMs, bool isOutBound)
         {
-            connectors.For((ic, i) => connStateVMs.Add(new ConnectorStateViewModel(this, ic.Name, i, isOutBound)));
+            connectors.For((ic, i) => connStateVMs.Add(new ConnectorViewModel(this, ic.Name, i, isOutBound) { ShowLabels = UiStates.ShowLabels }));
         }
 
         private void LoadInConnectorStates()
@@ -156,9 +156,9 @@ namespace GraphEditor.Ui.ViewModel
             OutConnections.ForEach(conn => conn.SaveToXml(parentXml));
         }
 
-        public ObservableCollection<ConnectorStateViewModel> InConnectorStates { get; }
+        public ObservableCollection<ConnectorViewModel> InConnectorStates { get; }
 
-        public ObservableCollection<ConnectorStateViewModel> OutConnectorStates { get; }
+        public ObservableCollection<ConnectorViewModel> OutConnectorStates { get; }
 
         public bool IsSelected { get => _isSelected; set => SetProperty<NodeViewModel, bool>(ref _isSelected, value, nameof(IsSelected)); }
 

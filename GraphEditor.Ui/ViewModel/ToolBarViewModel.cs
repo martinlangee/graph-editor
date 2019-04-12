@@ -29,7 +29,7 @@ namespace GraphEditor.Ui.ViewModel
 
         public bool IsEnabled { get => _isEnabled; set => SetProperty<ToolBarViewModel, bool>(ref _isEnabled, value, nameof(IsEnabled)); }
 
-        public bool ShowLabels { get => _showLabels; set => SetProperty<ToolBarViewModel, bool>(ref _showLabels, value, nameof(ShowLabels), (vm, val) => UiMessageHub.ShowLabelsChanged(val)); }
+        public bool ShowLabels { get => _showLabels; set => SetProperty<ToolBarViewModel, bool>(ref _showLabels, value, nameof(ShowLabels), (vm, val) => UiStates.ShowLabelsChanged(val)); }
 
         public RelayCommand LoadCommand { get; }
 

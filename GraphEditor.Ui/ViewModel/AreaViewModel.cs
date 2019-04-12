@@ -86,7 +86,6 @@ namespace GraphEditor.Ui.ViewModel
                 nodeVm.LoadFromXml(node);
             });
 
-
             // this is a workaround to ensure that the nodes are loaded and all bound item collections initialized before the connections are loaded
             Task.Run(() =>
             {
@@ -162,11 +161,7 @@ namespace GraphEditor.Ui.ViewModel
             return newNodeVm;
         }
 
-        public UserControl NodeConfigUi
-        {
-            get => _nodeConfigUi;
-            private set => SetProperty<AreaViewModel, UserControl>(ref _nodeConfigUi, value, nameof(NodeConfigUi));
-        }
+        public UserControl NodeConfigUi { get => _nodeConfigUi; private set => SetProperty<AreaViewModel, UserControl>(ref _nodeConfigUi, value, nameof(NodeConfigUi)); }
 
         private void OnOpenConfigUi(INodeConfigUi configUi)
         {
@@ -253,7 +248,7 @@ namespace GraphEditor.Ui.ViewModel
 
         private void SwitchStatesExec()
         {
-            // example for the use of State as visualization color of the connections
+            // example for the use of State as connections visualization color 
             NodeVMs.For((node, i) => node.OutConnections.For((conn, j) =>
             {
                 switch (j % 4)

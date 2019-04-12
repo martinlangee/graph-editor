@@ -62,13 +62,14 @@
     <Compile Include="Converters\BooleanConverter.cs" />
     <Compile Include="Tools\UiConst.cs" />
     <Compile Include="Tools\UiMessageHub.cs" />
+    <Compile Include="Tools\UiStates.cs" />
     <Compile Include="Tools\VisualTreeHelpers.cs" />
     <Compile Include="EditorToolBar.xaml.cs">
       <DependentUpon>EditorToolBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AreaViewModel.cs" />
     <Compile Include="ViewModel\ConnectionViewModel.cs" />
-    <Compile Include="ViewModel\ConnectorStateViewModel.cs" />
+    <Compile Include="ViewModel\ConnectorViewModel.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />
     <Compile Include="ViewModel\ToolBarViewModel.cs" />
     <Page Include="EditorArea.xaml">

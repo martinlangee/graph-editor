@@ -50,11 +50,6 @@ namespace GraphEditor.Ui.Tools
             }));
         }
 
-        public static void ShowLabelsChanged(bool visible)
-        {
-            OnShowLabelsChanged?.Invoke(visible);
-        }
-
         public static void AddConnection(ConnectionViewModel connection)
         {
             OnAddConnection?.Invoke(connection);
@@ -87,7 +82,6 @@ namespace GraphEditor.Ui.Tools
 
             OnAddNode = null;
             OnRemoveNode = null;
-            OnShowLabelsChanged = null;
             OnNodeLocationChanged = null;
             OnAddConnection = null;
             OnRemoveConnection = null;
@@ -101,7 +95,6 @@ namespace GraphEditor.Ui.Tools
 
         public static event Action<NodeViewModel, Point> OnAddNode;
         public static event Action<NodeViewModel> OnRemoveNode;
-        public static event Action<bool> OnShowLabelsChanged;
         public static event Action<NodeViewModel, Point> OnNodeLocationChanged;
         public static event Action<ConnectionViewModel> OnAddConnection;
         public static event Action<ConnectionViewModel> OnRemoveConnection;

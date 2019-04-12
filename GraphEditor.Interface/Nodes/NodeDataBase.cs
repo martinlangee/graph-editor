@@ -11,12 +11,12 @@ namespace GraphEditor.Interface.Nodes
 {
     public abstract class NodeDataBase: BaseNotification, INodeData
     {
-        private readonly Action<IBaseConnectorData> _onIsActiveChanged;
-        private readonly Func<IBaseConnectorData, bool> _canBeDeactivated;
+        private readonly Action<IConnectorData> _onIsActiveChanged;
+        private readonly Func<IConnectorData, bool> _canBeDeactivated;
         private readonly Assembly _executingAssembly;
         private string _name;
         
-        protected NodeDataBase(IBaseNodeTypeData nodeTypeData, Action<IBaseConnectorData> onIsActiveChanged, Func<IBaseConnectorData, bool> canBeDeactivated, Assembly executingAssembly)
+        protected NodeDataBase(IBaseNodeTypeData nodeTypeData, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, Assembly executingAssembly)
         {
             TypeData = nodeTypeData;
             _onIsActiveChanged = onIsActiveChanged;
@@ -26,8 +26,8 @@ namespace GraphEditor.Interface.Nodes
             Id = Guid.NewGuid().ToString();
             Name = TypeData.NextNewName;
 
-            Ins = new ObservableCollection<IBaseConnectorData>();
-            Outs = new ObservableCollection<IBaseConnectorData>();
+            Ins = new ObservableCollection<IConnectorData>();
+            Outs = new ObservableCollection<IConnectorData>();
         }
 
         protected void CreateConnector<T>(string name, int index, bool isOutBound, T type, byte[] icon = null)
@@ -51,9 +51,9 @@ namespace GraphEditor.Interface.Nodes
 
         public string Type => GetType().Name;
 
-        public IList<IBaseConnectorData> Ins { get; private set; }
+        public IList<IConnectorData> Ins { get; private set; }
 
-        public IList<IBaseConnectorData> Outs { get; private set; }
+        public IList<IConnectorData> Outs { get; private set; }
 
         public string Name { get => _name; set => SetProperty<NodeDataBase, string>(ref _name, value, nameof(Name)); }
 

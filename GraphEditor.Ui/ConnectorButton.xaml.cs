@@ -10,8 +10,8 @@ namespace GraphEditor.Ui
     /// </summary>
     public partial class ConnectorButton : UserControl
     {
-        ConnectorStateViewModel _viewModel;
-        private ConnectorStateViewModel ViewModel => _viewModel = _viewModel ?? (ConnectorStateViewModel)DataContext;
+        ConnectorViewModel _viewModel;
+        private ConnectorViewModel ViewModel => _viewModel = _viewModel ?? (ConnectorViewModel)DataContext;
 
         public ConnectorButton()
         {

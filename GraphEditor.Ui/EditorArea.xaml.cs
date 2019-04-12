@@ -252,7 +252,7 @@ namespace GraphEditor.Ui
             // binding between connection view model points and line point list
             Binding pointsBinding = new Binding
             {
-                Source = line.DataContext,
+                Source = line.DataContext,  // = ConnectionViewModel
                 Path = new PropertyPath(nameof(ConnectionViewModel.Points)),
                 Mode = BindingMode.OneWay,
                 UpdateSourceTrigger = UpdateSourceTrigger.Explicit,
@@ -263,7 +263,7 @@ namespace GraphEditor.Ui
             // binding between connection view model state and the line stroke
             Binding strokeBinding = new Binding
             {
-                Source = line.DataContext,
+                Source = line.DataContext,  // = ConnectionViewModel
                 Path = new PropertyPath(nameof(ConnectionViewModel.State)),
                 Mode = BindingMode.TwoWay,
                 UpdateSourceTrigger = UpdateSourceTrigger.Default,

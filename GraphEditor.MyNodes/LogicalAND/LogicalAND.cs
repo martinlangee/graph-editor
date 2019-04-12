@@ -7,7 +7,7 @@ namespace GraphEditor.MyNodes.LogicalAND
 {
     public class LogicalAND : NodeDataBase
     {
-        public LogicalAND(IBaseNodeTypeData nodeTypeData, Action<IBaseConnectorData> onActiveChanged, Func<IBaseConnectorData, bool> canBeDeactivated)
+        public LogicalAND(IBaseNodeTypeData nodeTypeData, Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
             : base(nodeTypeData, onActiveChanged, canBeDeactivated, Assembly.GetExecutingAssembly())
         {
             CreateConnector("IN 1", 0, false, SignalType.Red);

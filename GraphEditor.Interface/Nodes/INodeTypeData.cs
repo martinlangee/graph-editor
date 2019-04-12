@@ -21,11 +21,6 @@ namespace GraphEditor.Interface.Nodes
 
         bool CanConnectToOut(IBaseNodeTypeData otherNode, int otherInIndex, int myOutIndex);
 
-        INodeData CreateNode(Action<IBaseConnectorData> onActiveChanged, Func<IBaseConnectorData, bool> canBeDeactivated);
-    }
-
-    public interface INodeTypeData<T> : IBaseNodeTypeData
-    {
-        IList<IConnectorData<T>> Connectors { get; }
+        INodeData CreateNode(Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated);
     }
 }

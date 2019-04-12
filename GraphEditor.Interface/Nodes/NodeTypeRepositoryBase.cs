@@ -18,14 +18,12 @@ namespace GraphEditor.Interface.Nodes
         // called by IoC container
         public virtual void OnBuiltUp()
         {
-            Console.Write("NodeTypeRepository is built up");
             CreateNodeTypes();
         }
 
         // called by IoC container
         public virtual void TearDown()
         {
-            Console.Write("NodeTypeRepository is shut down");
         }
     }
 }

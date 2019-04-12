@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:GraphEditor.Ui.ViewModel"
              xmlns:cv="clr-namespace:GraphEditor.Ui.Converters"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ConnectorStateViewModel}">
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ConnectorViewModel}">
     <UserControl.Resources>
         <cv:CalculationConverter x:Key="CalcConverter"/>
         <cv:BytesToImageSourceConverter x:Key="BytesToImageConverter"/>
@@ -61,8 +61,8 @@
                     <Setter Property="Height" Value="9"/>
                     <Setter Property="Width" Value="9"/>
                     <Setter Property="Margin" Value="-7,0,0,11"/>
-                    <Setter Property="Background" Value="CornflowerBlue"/>
-                    <Setter Property="BorderBrush" Value="CornflowerBlue"/>
+                    <Setter Property="Background" Value="{Binding Type}"/>
+                    <Setter Property="BorderBrush" Value="{Binding Type}"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Height" Value="11"/>

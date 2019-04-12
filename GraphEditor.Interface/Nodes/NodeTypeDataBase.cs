@@ -50,7 +50,7 @@ namespace GraphEditor.Interface.Nodes
 
         protected abstract Type NodeType { get; }
 
-        public INodeData CreateNode(Action<IBaseConnectorData> onActiveChanged, Func<IBaseConnectorData, bool> canBeDeactivated)
+        public INodeData CreateNode(Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
         {
             return Activator.CreateInstance(NodeType, this, onActiveChanged, canBeDeactivated) as INodeData;
         }
