@@ -22,7 +22,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="LightGray" Margin="1" BorderBrush="Gray" BorderThickness="1" ToolTip="{Binding Name}">
+                        <Border Background="LightGray" Margin="1" BorderBrush="Gray" BorderThickness="1" ToolTip="{Binding Name}" MouseMove="Border_MouseMove">
                             <Image Source="{Binding Icon, Converter={StaticResource BytesToImageConverter}}" Margin="1"/>
                         </Border>
                     </DataTemplate>

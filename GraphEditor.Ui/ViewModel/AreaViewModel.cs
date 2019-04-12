@@ -32,20 +32,16 @@ namespace GraphEditor.Ui.ViewModel
         public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
 
         public RelayCommand LoadCommand { get; private set; }
-
         public RelayCommand SaveCommand { get; private set; }
-
         public RelayCommand AddNodeCommand { get; private set; }
-
         public RelayCommand SwitchStatesCommand { get; private set; }
-
         public RelayCommand ResetStatesCommand { get; private set; }
 
         public void OnBuiltUp()
         {
             LoadCommand = new RelayCommand(o => LoadExec());
             SaveCommand = new RelayCommand(o => SaveExec());
-            AddNodeCommand = new RelayCommand(o => AddNodeExec((IBaseNodeTypeData) o));
+            AddNodeCommand = new RelayCommand(o => AddNodeExec((IBaseNodeTypeData) o, new Point(-1, -1)));
             SwitchStatesCommand = new RelayCommand(o => SwitchStatesExec());
             ResetStatesCommand = new RelayCommand(o => ResetStatesExec());
 
@@ -84,7 +80,7 @@ namespace GraphEditor.Ui.ViewModel
             var nodesXml = configXml.Element("Nodes");
             nodesXml.Elements().ForEach(node =>
             {
-                var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(node.Attribute("Type").Value));
+                var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(node.Attribute("Type").Value), new Point(-1, -1));
                 nodeVm.LoadFromXml(node);
             });
 
@@ -154,12 +150,12 @@ namespace GraphEditor.Ui.ViewModel
         // TODO: Raster-Breite in UI editierbar machen
         public Rect GridRect { get; } = new Rect { X = 0, Y = 0, Width = UiConst.GridWidth, Height = UiConst.GridWidth };
 
-        public NodeViewModel AddNodeExec(IBaseNodeTypeData nodeTypeData)
+        public NodeViewModel AddNodeExec(IBaseNodeTypeData nodeTypeData, Point location)
         {
             var newNodeVm = new NodeViewModel(nodeTypeData, () => NodeVMs.ToList(), OnOpenConfigUi);
             NodeVMs.Add(newNodeVm);
 
-            UiMessageHub.AddNode(newNodeVm);
+            UiMessageHub.AddNode(newNodeVm, location);
 
             return newNodeVm;
         }

@@ -29,9 +29,9 @@ namespace GraphEditor.Ui.Tools
 
         public static Dispatcher Dispatcher { get; set; }
 
-        public static void AddNode(NodeViewModel node)
+        public static void AddNode(NodeViewModel node, Point location)
         {
-            OnAddNode?.Invoke(node);
+            OnAddNode?.Invoke(node, location);
         }
 
         public static void RemoveNode(NodeViewModel node)
@@ -82,6 +82,9 @@ namespace GraphEditor.Ui.Tools
 
         public static void Dispose()
         {
+            _updateTimer.Dispose();
+            Thread.Sleep(100);
+
             OnAddNode = null;
             OnRemoveNode = null;
             OnShowLabelsChanged = null;
@@ -92,13 +95,11 @@ namespace GraphEditor.Ui.Tools
             OnSetZIndex = null;
             OnCreateConnection = null;
 
-            _updateTimer.Dispose();
-            Thread.Sleep(100);
             _actNodePos = null;
             Dispatcher = null;
         }
 
-        public static event Action<NodeViewModel> OnAddNode;
+        public static event Action<NodeViewModel, Point> OnAddNode;
         public static event Action<NodeViewModel> OnRemoveNode;
         public static event Action<bool> OnShowLabelsChanged;
         public static event Action<NodeViewModel, Point> OnNodeLocationChanged;

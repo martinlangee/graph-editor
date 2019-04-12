@@ -12,11 +12,11 @@ using GraphEditor.Ui.Tools;
 using GraphEditor.Ui.ViewModel;
 using System;
 using GraphEditor.Interface.Utils;
+using GraphEditor.Interface.Nodes;
 
 
 /* ----------------------------------------------------------------------------------
  * TODO:
- *  Erzeugung über Drag-n-Drop aus der Toolbar
  *  wer-kann-an-wen beispielhaft implementieren
  *  Verhalten der Linien-Komponente verbessern (evtl. selektierbar?)
  * ------------------------------------------------------------------------------- */
@@ -56,6 +56,17 @@ namespace GraphEditor.Ui
 
         private ArrowPolyline LineOfModel(ConnectionViewModel viewModel) => ConnectionLines.FirstOrDefault(cp => cp.DataContext.Equals(viewModel));
 
+        private Point GetGridSnappedLocation(Point location)
+        {
+            if (ViewModel.ToolBar.IsGridVisible)
+            {
+                var gridWidth = ViewModel.GridRect.Width;
+                location.X = Math.Round(location.X / gridWidth) * gridWidth;
+                location.Y = Math.Round(location.Y / gridWidth) * gridWidth;
+            }
+            return location;
+        }
+
         private void OnSetZIndex(NodeViewModel nodeVm, bool up)
         {
             var node = NodeOfModel(nodeVm);
@@ -77,22 +88,13 @@ namespace GraphEditor.Ui
             _canvas.Children.OfType<ArrowPolyline>().ForEach(line => Canvas.SetZIndex(line, allNodes.Count() + 10));
         }
 
-        private void OnAddNode(NodeViewModel nodeVm)
+        private void OnAddNode(NodeViewModel nodeVm, Point location)
         {
             var graphNode = new GraphNode { DataContext = nodeVm };
 
             _canvas.Children.Add(graphNode);
 
-            var location = Mouse.GetPosition(_canvas);
-
-            if (ViewModel.ToolBar.IsGridVisible)
-            {
-                var gridWidth = ViewModel.GridRect.Width;
-                location.X = Math.Round(location.X / gridWidth) * gridWidth;
-                location.Y = Math.Round(location.Y / gridWidth) * gridWidth;
-            }
-
-            nodeVm.Location = location;
+            nodeVm.Location = GetGridSnappedLocation(location.X < 0 ? Mouse.GetPosition(_canvas) : location);
         }
 
         private void OnRemoveNode(NodeViewModel nodeVm)
@@ -198,16 +200,7 @@ namespace GraphEditor.Ui
         {
             if (_draggingBendPoint >= 0)
             {
-                var location = Mouse.GetPosition(_canvas);
-
-                if (ViewModel.ToolBar.IsGridVisible)
-                {
-                    var gridWidth = ViewModel.GridRect.Width;
-                    location.X = Math.Round(location.X / gridWidth) * gridWidth;
-                    location.Y = Math.Round(location.Y / gridWidth) * gridWidth;
-                }
-
-                ConnectionVmFromLine(sender).MovePoint(_draggingBendPoint, location);
+                ConnectionVmFromLine(sender).MovePoint(_draggingBendPoint, GetGridSnappedLocation(Mouse.GetPosition(_canvas)));
             }
         }
 
@@ -280,12 +273,7 @@ namespace GraphEditor.Ui
 
         private MenuItem FindMenuItemByTag(object tag, ContextMenu contextMenu)
         {
-            foreach (var item in contextMenu.Items.Cast<MenuItem>())
-            {
-                if (tag.Equals(item.Tag))
-                    return item;
-            }
-            return null;
+            return contextMenu.Items.Cast<MenuItem>().FirstOrDefault(item => tag.Equals(item.Tag));
         }
 
         private void LineMenu_ContextMenuOpening(object sender, RoutedEventArgs e)
@@ -318,34 +306,37 @@ namespace GraphEditor.Ui
         private void SetDragObjectPosition(DragEventArgs e)
         {
             // set positions of all selected nodes while dragging
-            var nodeVMs = (List<NodeViewModel>) e.Data.GetData(UiConst.DragDropObjects);
+            var nodeVMs = (List<NodeViewModel>) e.Data.GetData(UiConst.DragDropNodes);
             var points = (List<Point>) e.Data.GetData(UiConst.DragDropPoints);
 
             for (var idx = 0; idx < nodeVMs.Count; idx++)
             {
                 var locVector = e.GetPosition(_canvas) - points[idx];
-                var location = new Point(locVector.X, locVector.Y);
-
-                if (ViewModel.ToolBar.IsGridVisible)
-                {
-                    var gridWidth = ViewModel.GridRect.Width;
-                    location.X = Math.Round(location.X / gridWidth) * gridWidth;
-                    location.Y = Math.Round(location.Y / gridWidth) * gridWidth;
-                }
-                
-                nodeVMs[idx].Location = location;
+                nodeVMs[idx].Location = GetGridSnappedLocation(new Point(locVector.X, locVector.Y));
             }
         }
 
         protected override void OnDragOver(DragEventArgs e)
         {
             base.OnDragOver(e);
-            SetDragObjectPosition(e);
+
+            if (e.Data.GetData(UiConst.DragDropNodes) != null)
+                SetDragObjectPosition(e);
         }
 
         protected override void OnDrop(DragEventArgs e)
         {
-            SetDragObjectPosition(e);
+            base.OnDrop(e);
+
+            var typeData = (IBaseNodeTypeData) e.Data.GetData(UiConst.DragDropToolbarNode);
+
+            if (typeData != null)
+            {
+                ViewModel.AddNodeExec(typeData, e.GetPosition(_canvas));
+            }
+            else
+                SetDragObjectPosition(e);
+
             Mouse.Capture(null);
         }
 
