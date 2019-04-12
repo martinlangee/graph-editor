@@ -1,8 +1,8 @@
 ﻿using GraphEditor.Interface.Nodes;
 using GraphEditor.MyNodes.LogicalAND;
 using GraphEditor.MyNodes.LogicalXOR;
-using GraphEditor.MyNodes.StartUpWarning;
 using GraphEditor.MyNodes.LogicalOR;
+using GraphEditor.MyNodes.ComplexerSample;
 
 namespace GraphEditor.MyNodes.Types
 {
@@ -14,7 +14,7 @@ namespace GraphEditor.MyNodes.Types
             NodeTypes.Add(new LogicalANDType());
             NodeTypes.Add(new LogicalORType());
             NodeTypes.Add(new LogicalXORType());
-            NodeTypes.Add(new StartUpWarningType());
+            NodeTypes.Add(new ComplexerSampleType());
         }
     }
 }

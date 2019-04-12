@@ -3,14 +3,14 @@ using GraphEditor.Interface.Nodes;
 using System;
 using System.Windows.Controls;
 
-namespace GraphEditor.MyNodes.StartUpWarning
+namespace GraphEditor.MyNodes.ComplexerSample
 {
     /// <summary>
     /// Interaktionslogik für StartUpWarningControl.xaml
     /// </summary>
-    public partial class StartUpWarningControl : UserControl, INodeConfigUi
+    public partial class ComplexerSampleControl : UserControl, INodeConfigUi
     {
-        public StartUpWarningControl(INodeData nodeData)
+        public ComplexerSampleControl(INodeData nodeData)
         {
             InitializeComponent();
 

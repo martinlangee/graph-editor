@@ -57,11 +57,11 @@
     </Compile>
     <Compile Include="LogicalXOR\LogicalXORType.cs" />
     <Compile Include="SignalType.cs" />
-    <Compile Include="StartUpWarning\StartUpWarningControl.xaml.cs">
-      <DependentUpon>StartUpWarningControl.xaml</DependentUpon>
+    <Compile Include="ComplexerSample\ComplexerSample.cs" />
+    <Compile Include="ComplexerSample\ComplexerSampleType.cs" />
+    <Compile Include="ComplexerSample\ComplexerSampleControl.xaml.cs">
+      <DependentUpon>ComplexerSampleControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StartUpWarning\StartUpWarning.cs" />
-    <Compile Include="StartUpWarning\StartUpWarningType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LogicalXOR\LogicalXORControl.xaml.cs">
       <DependentUpon>LogicalXORControl.xaml</DependentUpon>
@@ -111,21 +111,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="StartUpWarning\StartUpWarningControl.xaml">
+    <Page Include="ComplexerSample\ComplexerSampleControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="StartUpWarning\StartUpWarning.png" />
+    <Resource Include="ComplexerSample\ComplexerSample.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="StartUpWarning\StartUpWarning_ico.png" />
+    <Resource Include="ComplexerSample\ComplexerSample_ico.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="StartUpWarning\StartUpWarning_in3.png" />
-    <Resource Include="StartUpWarning\StartUpWarning_out2.png" />
-    <Resource Include="StartUpWarning\StartUpWarning_out3.png" />
+    <Resource Include="ComplexerSample\ComplexerSample_in3.png" />
+    <Resource Include="ComplexerSample\ComplexerSample_out2.png" />
+    <Resource Include="ComplexerSample\ComplexerSample_out3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
