@@ -1,11 +1,12 @@
 ﻿using GraphEditor.Interface.ConfigUi;
+using GraphEditor.Interface.Container;
+using GraphEditor.Interface.Serialization;
 using GraphEditor.Interface.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Media;
 using System.Xml.Linq;
 
 namespace GraphEditor.Interface.Nodes
@@ -16,7 +17,8 @@ namespace GraphEditor.Interface.Nodes
         private readonly Func<IConnectorData, bool> _canBeDeactivated;
         private readonly Assembly _executingAssembly;
         private string _name;
-        
+        private IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
+
         protected NodeDataBase(IBaseNodeTypeData nodeTypeData, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, Assembly executingAssembly)
         {
             TypeData = nodeTypeData;
@@ -67,50 +69,50 @@ namespace GraphEditor.Interface.Nodes
 
         public void LoadFromXml(XElement nodeXml)
         {
-            Id = nodeXml.Attribute("Id").Value;
-            Name = nodeXml.Attribute("Name").Value;
+            Id = nodeXml.Attribute(_xmlClasses.Id).Value;
+            Name = nodeXml.Attribute(_xmlClasses.Name).Value;
 
-            var inpsXml = nodeXml.Element("Inputs").Elements().ToList();
-            Ins.For((inp, i) => inp.IsActive = bool.Parse(inpsXml[i].Attribute("Active").Value));
+            var inpsXml = nodeXml.Element(_xmlClasses.Inputs).Elements().ToList();
+            Ins.For((inp, i) => inp.IsActive = bool.Parse(inpsXml[i].Attribute(_xmlClasses.Active).Value));
 
-            var outpsXml = nodeXml.Element("Outputs").Elements().ToList();
-            Outs.For((outp, i) => outp.IsActive = bool.Parse(outpsXml[i].Attribute("Active").Value));
+            var outpsXml = nodeXml.Element(_xmlClasses.Outputs).Elements().ToList();
+            Outs.For((outp, i) => outp.IsActive = bool.Parse(outpsXml[i].Attribute(_xmlClasses.Active).Value));
 
-            LoadTypeSpecificData(nodeXml.Element("Specific"));
+            LoadTypeSpecificData(nodeXml.Element(_xmlClasses.Specific));
         }
         protected abstract void LoadTypeSpecificData(XElement parentXml);
 
         public void SaveToXml(XElement parentXml)
         {
-            parentXml.SetAttributeValue("Id", Id);
-            parentXml.SetAttributeValue("Name", Name);
-            parentXml.SetAttributeValue("Type", Type);
+            parentXml.SetAttributeValue(_xmlClasses.Id, Id);
+            parentXml.SetAttributeValue(_xmlClasses.Name, Name);
+            parentXml.SetAttributeValue(_xmlClasses.Type, Type);
 
-            var connXml = new XElement("Inputs");
+            var connXml = new XElement(_xmlClasses.Inputs);
 
             Ins.For((connData, i) =>
             {
-                var inpXml = new XElement("Slot");
-                inpXml.SetAttributeValue("Name", connData.Name);
-                inpXml.SetAttributeValue("Index", i);
-                inpXml.SetAttributeValue("Active", connData.IsActive);
+                var inpXml = new XElement(_xmlClasses.Slot);
+                inpXml.SetAttributeValue(_xmlClasses.Name, connData.Name);
+                inpXml.SetAttributeValue(_xmlClasses.Index, i);
+                inpXml.SetAttributeValue(_xmlClasses.Active, connData.IsActive);
                 connXml.Add(inpXml);
             });
             parentXml.Add(connXml);
 
-            connXml = new XElement("Outputs");
+            connXml = new XElement(_xmlClasses.Outputs);
 
             Outs.For((connData, i) =>
             {
-                var outpXml = new XElement("Slot");
-                outpXml.SetAttributeValue("Name", connData.Name);
-                outpXml.SetAttributeValue("Index", i);
-                outpXml.SetAttributeValue("Active", connData.IsActive);
+                var outpXml = new XElement(_xmlClasses.Slot);
+                outpXml.SetAttributeValue(_xmlClasses.Name, connData.Name);
+                outpXml.SetAttributeValue(_xmlClasses.Index, i);
+                outpXml.SetAttributeValue(_xmlClasses.Active, connData.IsActive);
                 connXml.Add(outpXml);
             });
             parentXml.Add(connXml);
 
-            var specXml = new XElement("Specific");
+            var specXml = new XElement(_xmlClasses.Specific);
             SaveTypeSpecificData(specXml);
 
             parentXml.Add(specXml);
