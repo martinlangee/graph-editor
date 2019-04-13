@@ -4,9 +4,9 @@ using System.Windows.Media;
 
 namespace GraphEditor.Ui.ViewModel
 {
-    public class ConnectorViewModel : BaseNotification
+    public abstract class ConnectorViewModel : BaseNotification
     {
-        private readonly NodeViewModel _node;
+        protected readonly NodeViewModel _nodeVm;
         private bool _isConnecting;
         private bool _isConnectRequested;
         private bool _isActive = true;
@@ -14,20 +14,28 @@ namespace GraphEditor.Ui.ViewModel
 
         public int Index { get; set; }
 
-        public ConnectorViewModel(NodeViewModel node, string name, int index, bool isOutBound)
+        protected ConnectorViewModel(NodeViewModel node, string name, int index)
         {
-            _node = node;
+            _nodeVm = node;
             Name = name;
             Index = index;
-            IsOutBound = isOutBound;
 
             UiStates.OnShowLabelsChanged += OnShowLabelsChanged;
+        }
+
+        public static ConnectorViewModel Create(NodeViewModel nodeVm, string name, int index, bool isOutBound)
+        {
+            var connVm = isOutBound ? OutConnectorViewModel.Create(nodeVm, name, index) : InConnectorViewModel.Create(nodeVm, name, index);
+            connVm.ShowLabels = UiStates.ShowLabels;
+            return connVm;
         }
 
         private void OnShowLabelsChanged(bool visible)
         {
             ShowLabels = visible;
         }
+
+        protected abstract void NotifyConnectRequested(bool isConnecting, NodeViewModel nodeVm, int index);
 
         public bool IsConnecting
         {
@@ -36,14 +44,14 @@ namespace GraphEditor.Ui.ViewModel
             {
                 if (value && IsConnectRequested)
                 {
-                    UiMessageHub.CreateConnection(_node, Index);
+                    UiMessageHub.CreateConnection(_nodeVm, Index);
                 }
                 else
                 {
                     if (!IsConnected || !value)
                     {
                         SetProperty<ConnectorViewModel, bool>(ref _isConnecting, value, nameof(IsConnecting),
-                            (n, isConnecting) => UiMessageHub.NotifyConnectRequested(isConnecting, _node, Index, IsOutBound));
+                            (n, isConnecting) => NotifyConnectRequested(isConnecting, _nodeVm, Index));
                     }
                 }
             }
@@ -67,14 +75,12 @@ namespace GraphEditor.Ui.ViewModel
         
         public bool IsConnected { get; set; }
 
-        public bool IsOutBound { get; set; }
+        public abstract bool IsOutBound { get; }
 
         public string Name { get; }
 
-        public byte[] Icon => IsOutBound ? _node.Data.Outs[Index].Icon : _node.Data.Ins[Index].Icon;
+        public abstract byte[] Icon { get; }
 
-        public object Type => IsOutBound 
-            ? new SolidColorBrush(_node.Data.Outs[Index].TypeAsColor) 
-            : new SolidColorBrush(_node.Data.Ins[Index].TypeAsColor);
+        public abstract Brush Brush { get; }
     }
 }

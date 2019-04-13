@@ -78,7 +78,7 @@ namespace GraphEditor.Ui.ViewModel
 
         private void LoadConnectorStates(IList<IConnectorData> connectors, ObservableCollection<ConnectorViewModel> connStateVMs, bool isOutBound)
         {
-            connectors.For((ic, i) => connStateVMs.Add(new ConnectorViewModel(this, ic.Name, i, isOutBound) { ShowLabels = UiStates.ShowLabels }));
+            connectors.For((ic, i) => connStateVMs.Add(ConnectorViewModel.Create(this, ic.Name, i, isOutBound)));
         }
 
         private void LoadInConnectorStates()

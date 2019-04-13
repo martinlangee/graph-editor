@@ -21,7 +21,7 @@ namespace GraphEditor.Ui.Tools
 
         public static void ShowLabelsChanged(bool visible)
         {
-            OnShowLabelsChanged?.Invoke(visible);
+            ShowLabels = visible;
         }
 
         public static event Action<bool> OnShowLabelsChanged;

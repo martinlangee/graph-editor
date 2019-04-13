@@ -16,6 +16,6 @@ namespace GraphEditor.Interface.Nodes
 
         object Type { get; }
 
-        Color TypeAsColor { get; }
+        uint Color { get; }
     }
 }

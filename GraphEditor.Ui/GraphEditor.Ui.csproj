@@ -71,6 +71,8 @@
     <Compile Include="ViewModel\ConnectionViewModel.cs" />
     <Compile Include="ViewModel\ConnectorViewModel.cs" />
     <Compile Include="ViewModel\NodeViewModel.cs" />
+    <Compile Include="ViewModel\InConnectorViewModel.cs" />
+    <Compile Include="ViewModel\OutConnectorViewModel.cs" />
     <Compile Include="ViewModel\ToolBarViewModel.cs" />
     <Page Include="EditorArea.xaml">
       <SubType>Designer</SubType>

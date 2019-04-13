@@ -21,6 +21,8 @@ namespace GraphEditor.Ui.ViewModel
             SaveCommand = saveCommand;
             SwitchStatesCommand = switchStatesCommand;
             ResetStatesCommand = resetStatesCommand;
+
+            ShowLabels = UiStates.ShowLabels;
         }
 
         public ObservableCollection<IBaseNodeTypeData> NodeTypes { get; }
@@ -29,7 +31,7 @@ namespace GraphEditor.Ui.ViewModel
 
         public bool IsEnabled { get => _isEnabled; set => SetProperty<ToolBarViewModel, bool>(ref _isEnabled, value, nameof(IsEnabled)); }
 
-        public bool ShowLabels { get => _showLabels; set => SetProperty<ToolBarViewModel, bool>(ref _showLabels, value, nameof(ShowLabels), (vm, val) => UiStates.ShowLabelsChanged(val)); }
+        public bool ShowLabels { get => _showLabels; set => SetProperty<ToolBarViewModel, bool>(ref _showLabels, value, nameof(ShowLabels), (vm, val) => UiStates.ShowLabels = val); }
 
         public RelayCommand LoadCommand { get; }
 

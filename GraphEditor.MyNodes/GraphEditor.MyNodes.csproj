@@ -79,6 +79,10 @@
       <Project>{d5307d83-9681-4336-985f-749cc3fc1bb1}</Project>
       <Name>GraphEditor.Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GraphEditor.Ui\GraphEditor.Ui.csproj">
+      <Project>{2C246BB5-5076-4011-99B3-9B22683A5995}</Project>
+      <Name>GraphEditor.Ui</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="LogicalAND\LogicalAND.png" />

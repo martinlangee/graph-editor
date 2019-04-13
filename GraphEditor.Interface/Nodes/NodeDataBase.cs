@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Media;
 using System.Xml.Linq;
 
 namespace GraphEditor.Interface.Nodes
@@ -30,9 +31,9 @@ namespace GraphEditor.Interface.Nodes
             Outs = new ObservableCollection<IConnectorData>();
         }
 
-        protected void CreateConnector<T>(string name, int index, bool isOutBound, T type, byte[] icon = null)
+        protected void CreateConnector<T>(string name, int index, bool isOutBound, T type, uint color = 0x6495FD, byte[] icon = null)
         {
-            (isOutBound ? Outs : Ins).Add(new ConnectorData<T>(name, index, isOutBound, _onIsActiveChanged, _canBeDeactivated, type, icon));
+            (isOutBound ? Outs : Ins).Add(new ConnectorData<T>(name, index, isOutBound, _onIsActiveChanged, _canBeDeactivated, type, color, icon));
         }
 
         protected byte[] LoadGraphic(string resourcePath)
