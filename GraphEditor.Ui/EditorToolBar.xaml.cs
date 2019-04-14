@@ -22,7 +22,7 @@ namespace GraphEditor.Ui
             {
                 var data = new DataObject();
 
-                var nodeType = ((IBaseNodeTypeData) ((FrameworkElement) sender).DataContext);
+                var nodeType = ((INodeTypeData) ((FrameworkElement) sender).DataContext);
 
                 data.SetData(UiConst.DragDropData_NodeType, nodeType);
 

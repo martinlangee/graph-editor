@@ -9,7 +9,7 @@ namespace GraphEditor.MyNodes.ComplexerSample
 {
     public class ComplexerSample : NodeDataBase
     {
-        public ComplexerSample(IBaseNodeTypeData nodeTypeData, Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
+        public ComplexerSample(INodeTypeData nodeTypeData, Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
             : base(nodeTypeData, onActiveChanged, canBeDeactivated, Assembly.GetExecutingAssembly())
         {
             CreateConnector("Water input", 0, false, SignalType.Red, Colors.Red.ToUint());

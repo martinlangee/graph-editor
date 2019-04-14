@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GraphEditor.Interface.Nodes
 {
-    public interface IBaseNodeTypeData
+    public interface INodeTypeData
     {
         string Type { get; }
 

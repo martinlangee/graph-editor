@@ -328,7 +328,7 @@ namespace GraphEditor.Ui
         {
             base.OnDrop(e);
 
-            var typeData = (IBaseNodeTypeData) e.Data.GetData(UiConst.DragDropData_NodeType);
+            var typeData = (INodeTypeData) e.Data.GetData(UiConst.DragDropData_NodeType);
 
             if (typeData != null)
             {

@@ -8,9 +8,9 @@ namespace GraphEditor.Interface.Nodes
     {
         protected abstract void CreateNodeTypes();
 
-        public IList<IBaseNodeTypeData> NodeTypes { get; } = new List<IBaseNodeTypeData>();
+        public IList<INodeTypeData> NodeTypes { get; } = new List<INodeTypeData>();
 
-        public IBaseNodeTypeData Find(string type)
+        public INodeTypeData Find(string type)
         {
             return NodeTypes.FirstOrDefault(nt => nt.Type.Equals(type));
         }

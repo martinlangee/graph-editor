@@ -15,7 +15,7 @@ namespace GraphEditor.Ui.ViewModel
 
         public ToolBarViewModel(RelayCommand loadCommand, RelayCommand saveCommand, RelayCommand switchStatesCommand, RelayCommand resetStatesCommand)
         {
-            NodeTypes = new ObservableCollection<IBaseNodeTypeData>(ServiceContainer.Get<INodeTypeRepository>().NodeTypes);
+            NodeTypes = new ObservableCollection<INodeTypeData>(ServiceContainer.Get<INodeTypeRepository>().NodeTypes);
 
             LoadCommand = loadCommand;
             SaveCommand = saveCommand;
@@ -25,7 +25,7 @@ namespace GraphEditor.Ui.ViewModel
             ShowLabels = UiStates.ShowLabels;
         }
 
-        public ObservableCollection<IBaseNodeTypeData> NodeTypes { get; }
+        public ObservableCollection<INodeTypeData> NodeTypes { get; }
 
         public bool IsGridVisible { get => _isGridVisible; set => SetProperty<ToolBarViewModel, bool>(ref _isGridVisible, value, nameof(IsGridVisible)); }
 

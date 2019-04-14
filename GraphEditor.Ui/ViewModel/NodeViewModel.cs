@@ -22,7 +22,7 @@ namespace GraphEditor.Ui.ViewModel
         private bool _isSelected = false;
         private Point _location;
 
-        public NodeViewModel(IBaseNodeTypeData nodeTypeData, Func<List<NodeViewModel>> onGetAllNodeVMs, Action<INodeConfigUi> onOpenConfigUi)
+        public NodeViewModel(INodeTypeData nodeTypeData, Func<List<NodeViewModel>> onGetAllNodeVMs, Action<INodeConfigUi> onOpenConfigUi)
         {
             _onGetAllNodeVMs = onGetAllNodeVMs;
             _onOpenConfigUi = onOpenConfigUi;

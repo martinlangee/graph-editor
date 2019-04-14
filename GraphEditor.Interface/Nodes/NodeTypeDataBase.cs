@@ -5,7 +5,7 @@ using GraphEditor.Interface.Utils;
 
 namespace GraphEditor.Interface.Nodes
 {
-    public abstract class NodeTypeDataBase : IBaseNodeTypeData
+    public abstract class NodeTypeDataBase : INodeTypeData
     {
         private readonly Assembly _executingAssembly;
         protected NodeTypeDataBase(Assembly executingAssembly)

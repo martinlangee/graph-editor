@@ -21,7 +21,7 @@ namespace GraphEditor.Interface.Nodes
         private string _name;
         private readonly IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
 
-        protected NodeDataBase(IBaseNodeTypeData nodeTypeData, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, Assembly executingAssembly)
+        protected NodeDataBase(INodeTypeData nodeTypeData, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, Assembly executingAssembly)
         {
             TypeData = nodeTypeData;
             _onIsActiveChanged = onIsActiveChanged;
@@ -55,7 +55,7 @@ namespace GraphEditor.Interface.Nodes
             return LoadGraphic(string.Concat($"/{nodeType}/{nodeType}_", isOutBound ? "out" : "in", $"{index}.png"));
         }
 
-        public IBaseNodeTypeData TypeData { get; }
+        public INodeTypeData TypeData { get; }
 
         public string Id { get; private set; }
 

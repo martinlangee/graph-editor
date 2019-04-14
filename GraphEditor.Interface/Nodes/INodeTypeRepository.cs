@@ -8,8 +8,8 @@ namespace GraphEditor.Interface.Nodes
 {
     public interface INodeTypeRepository
     {
-        IList<IBaseNodeTypeData> NodeTypes { get; }
+        IList<INodeTypeData> NodeTypes { get; }
 
-        IBaseNodeTypeData Find(string type);
+        INodeTypeData Find(string type);
     }
 }

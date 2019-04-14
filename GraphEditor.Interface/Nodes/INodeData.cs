@@ -6,7 +6,7 @@ namespace GraphEditor.Interface.Nodes
 {
     public interface INodeData
     {
-        IBaseNodeTypeData TypeData { get; }
+        INodeTypeData TypeData { get; }
 
         string Id { get; }
 

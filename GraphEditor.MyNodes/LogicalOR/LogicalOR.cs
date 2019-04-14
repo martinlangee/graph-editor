@@ -9,7 +9,7 @@ namespace GraphEditor.MyNodes.LogicalOR
 {
     public class LogicalOR : NodeDataBase
     {
-        public LogicalOR(IBaseNodeTypeData nodeTypeData, Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
+        public LogicalOR(INodeTypeData nodeTypeData, Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
             : base(nodeTypeData, onActiveChanged, canBeDeactivated, Assembly.GetExecutingAssembly())
         {
             CreateConnector("IN 1", 0, false, SignalType.Red, Colors.Red.ToUint());
