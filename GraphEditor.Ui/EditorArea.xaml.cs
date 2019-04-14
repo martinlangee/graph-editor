@@ -306,8 +306,8 @@ namespace GraphEditor.Ui
         private void SetDragObjectPosition(DragEventArgs e)
         {
             // set positions of all selected nodes while dragging
-            var nodeVMs = (List<NodeViewModel>) e.Data.GetData(UiConst.DragDropNodes);
-            var points = (List<Point>) e.Data.GetData(UiConst.DragDropPoints);
+            var nodeVMs = (List<NodeViewModel>) e.Data.GetData(UiConst.DragDropData_Nodes);
+            var points = (List<Point>) e.Data.GetData(UiConst.DragDropData_Points);
 
             for (var idx = 0; idx < nodeVMs.Count; idx++)
             {
@@ -320,7 +320,7 @@ namespace GraphEditor.Ui
         {
             base.OnDragOver(e);
 
-            if (e.Data.GetData(UiConst.DragDropNodes) != null)
+            if (e.Data.GetData(UiConst.DragDropData_Nodes) != null)
                 SetDragObjectPosition(e);
         }
 
@@ -328,7 +328,7 @@ namespace GraphEditor.Ui
         {
             base.OnDrop(e);
 
-            var typeData = (IBaseNodeTypeData) e.Data.GetData(UiConst.DragDropToolbarNode);
+            var typeData = (IBaseNodeTypeData) e.Data.GetData(UiConst.DragDropData_NodeType);
 
             if (typeData != null)
             {

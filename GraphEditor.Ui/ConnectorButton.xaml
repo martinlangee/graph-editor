@@ -72,12 +72,12 @@
                             <Setter Property="BorderBrush" Value="DeepSkyBlue"/>
                         </Trigger>
                         <DataTrigger Binding="{Binding IsConnecting}" Value="True">
-                            <Setter Property="Background" Value="Coral"/>
-                            <Setter Property="BorderBrush" Value="Red"/>
+                            <Setter Property="Background" Value="Yellow"/>
+                            <Setter Property="BorderBrush" Value="Orange"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsConnectRequested}" Value="True">
-                            <Setter Property="Background" Value="Coral"/>
-                            <Setter Property="BorderBrush" Value="Coral"/>
+                            <Setter Property="Background" Value="Yellow"/>
+                            <Setter Property="BorderBrush" Value="Orange"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ShowLabels}" Value="True">
                             <Setter Property="ToolTip" Value="{x:Null}"/>

@@ -13,10 +13,5 @@ namespace GraphEditor.MyNodes.LogicalAND
         }
 
         protected override Type NodeType => typeof(LogicalAND);
-
-        public override bool CanConnectToIn(IBaseNodeTypeData otherNode, int otherOutIndex, int myInIndex)
-        {
-            return base.CanConnectToIn(otherNode, otherOutIndex, myInIndex);
-        }
     }
 }

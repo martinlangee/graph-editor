@@ -1,4 +1,5 @@
 ﻿using GraphEditor.Interface.ConfigUi;
+using GraphEditor.Interface.Nodes;
 using GraphEditor.Ui.Tools;
 using System.Windows.Media;
 
@@ -35,7 +36,7 @@ namespace GraphEditor.Ui.ViewModel
             ShowLabels = visible;
         }
 
-        protected abstract void NotifyConnectRequested(bool isConnecting, NodeViewModel nodeVm, int index);
+        protected abstract void NotifyConnectRequested(bool isConnecting, NodeViewModel sourceNodeVm, int index);
 
         public bool IsConnecting
         {

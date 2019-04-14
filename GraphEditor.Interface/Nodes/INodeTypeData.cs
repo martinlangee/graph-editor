@@ -17,10 +17,6 @@ namespace GraphEditor.Interface.Nodes
 
         byte[] Image { get; }
 
-        bool CanConnectToIn(IBaseNodeTypeData otherNode, int otherOutIndex, int myInIndex);
-
-        bool CanConnectToOut(IBaseNodeTypeData otherNode, int otherInIndex, int myOutIndex);
-
         INodeData CreateNode(Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated);
     }
 }

@@ -16,7 +16,7 @@ namespace GraphEditor.Ui.ViewModel
 {
     public class NodeViewModel : BaseNotification
     {
-        private IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
+        private readonly IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
         private readonly Func<List<NodeViewModel>> _onGetAllNodeVMs;
         private readonly Action<INodeConfigUi> _onOpenConfigUi;
         private bool _isSelected = false;
@@ -111,22 +111,14 @@ namespace GraphEditor.Ui.ViewModel
             UiMessageHub.RemoveConnection(connVm);
         }
 
-        internal void ConnectRequested(bool isConnecting, NodeViewModel otherNode, int otherConnIdx, bool isOutBound)
+        internal void ConnectRequested(bool isConnecting, IConnectorData connData)
         {
-            if (isOutBound)
-            {
-                if (isConnecting)
-                    InConnectorStates.For((conn, idx) => conn.IsConnectRequested = otherNode.Data.TypeData.CanConnectToIn(Data.TypeData, otherConnIdx, idx));
-                else
-                    InConnectorStates.ForEach(conn => conn.IsConnectRequested = false);
-            }
+            var connectorStates = connData.IsOutBound ? InConnectorStates : OutConnectorStates;
+
+            if (isConnecting)
+                connectorStates.For((conn, idx) => conn.IsConnectRequested = Data.CanConnectTo(idx, connData));
             else
-            {
-                if (isConnecting)
-                    OutConnectorStates.For((conn, idx) => conn.IsConnectRequested = otherNode.Data.TypeData.CanConnectToOut(Data.TypeData, otherConnIdx, idx));
-                else
-                    OutConnectorStates.ForEach(conn => conn.IsConnectRequested = false);
-            }
+                connectorStates.ForEach(conn => conn.IsConnectRequested = false);
         }
 
         public RelayCommand EditConfigCommand { get; }

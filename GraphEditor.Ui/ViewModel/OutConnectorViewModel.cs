@@ -1,4 +1,5 @@
-﻿using GraphEditor.Interface.Utils;
+﻿using GraphEditor.Interface.Nodes;
+using GraphEditor.Interface.Utils;
 using GraphEditor.Ui.Tools;
 using System;
 using System.Windows.Media;
@@ -19,7 +20,7 @@ namespace GraphEditor.Ui.ViewModel
 
         protected override void NotifyConnectRequested(bool isConnecting, NodeViewModel nodeVm, int index)
         {
-            UiMessageHub.NotifyConnectRequested(isConnecting, nodeVm, index, isOutBound: true);
+            UiMessageHub.NotifyConnectRequested(isConnecting, nodeVm, _nodeVm.Data.Outs[index]);
         }
 
         public override byte[] Icon => _nodeVm.Data.Outs[Index].Icon;

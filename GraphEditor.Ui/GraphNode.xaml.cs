@@ -68,8 +68,8 @@ namespace GraphEditor.Ui
 
                 var pointsToScreen = AreaVm.Selected.Select(nodeVm => Mouse.GetPosition(Area.NodeOfModel(nodeVm))).ToList();
 
-                data.SetData(UiConst.DragDropNodes, AreaVm.Selected);
-                data.SetData(UiConst.DragDropPoints, pointsToScreen);
+                data.SetData(UiConst.DragDropData_Nodes, AreaVm.Selected);
+                data.SetData(UiConst.DragDropData_Points, pointsToScreen);
 
                 // Inititate the drag-and-drop operation.
                 DragDrop.DoDragDrop(this, data, DragDropEffects.Move);

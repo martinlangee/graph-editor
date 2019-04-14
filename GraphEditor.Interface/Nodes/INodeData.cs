@@ -18,6 +18,8 @@ namespace GraphEditor.Interface.Nodes
 
         IList<IConnectorData> Outs { get; }
 
+        bool CanConnectTo(int fromIdx, IConnectorData toConnector);
+
         INodeConfigUi CreateConfigUi();
 
         void SaveToXml(XElement parentXml);

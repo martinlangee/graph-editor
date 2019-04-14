@@ -17,7 +17,7 @@ namespace GraphEditor.MyNodes.ComplexerSample
             CreateConnector("Start", 2, false, SignalType.Orange, Colors.Orange.ToUint());
             CreateConnector("Reduce", 3, false, SignalType.Green, Colors.Green.ToUint(), LoadConnIcon(nodeTypeData.Type, 3, false));
             CreateConnector("Invert", 4, false, SignalType.Red);
-            CreateConnector("Reset", 5, false, SignalType.Green);
+            CreateConnector("Reset", 5, false, SignalType.Green, LoadConnIcon(nodeTypeData.Type, 3, false));
 
             CreateConnector("Water output", 0, true, SignalType.Blue, Colors.Blue.ToUint());
             CreateConnector("Forward active", 1, true, SignalType.Red, Colors.Red.ToUint());

@@ -24,7 +24,7 @@ namespace GraphEditor.Ui
 
                 var nodeType = ((IBaseNodeTypeData) ((FrameworkElement) sender).DataContext);
 
-                data.SetData(UiConst.DragDropToolbarNode, nodeType);
+                data.SetData(UiConst.DragDropData_NodeType, nodeType);
 
                 // Inititate the drag-and-drop operation.
                 DragDrop.DoDragDrop(this, data, DragDropEffects.Move);

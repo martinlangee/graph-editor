@@ -13,11 +13,13 @@ namespace GraphEditor.Interface.Nodes
 {
     public abstract class NodeDataBase: BaseNotification, INodeData
     {
+        private const uint DefaultConnectorColor = 0xFF6495FD;  // == Colors.CornflowerBlue
+
         private readonly Action<IConnectorData> _onIsActiveChanged;
         private readonly Func<IConnectorData, bool> _canBeDeactivated;
         private readonly Assembly _executingAssembly;
         private string _name;
-        private IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
+        private readonly IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
 
         protected NodeDataBase(IBaseNodeTypeData nodeTypeData, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, Assembly executingAssembly)
         {
@@ -33,9 +35,14 @@ namespace GraphEditor.Interface.Nodes
             Outs = new ObservableCollection<IConnectorData>();
         }
 
-        protected void CreateConnector<T>(string name, int index, bool isOutBound, T type, uint color = 0x6495FD, byte[] icon = null)
+        protected void CreateConnector<T>(string name, int index, bool isOutBound, T type, uint color = DefaultConnectorColor, byte[] icon = null)
         {
             (isOutBound ? Outs : Ins).Add(new ConnectorData<T>(name, index, isOutBound, _onIsActiveChanged, _canBeDeactivated, type, color, icon));
+        }
+
+        protected void CreateConnector<T>(string name, int index, bool isOutBound, T type, byte[] icon)
+        {
+            (isOutBound ? Outs : Ins).Add(new ConnectorData<T>(name, index, isOutBound, _onIsActiveChanged, _canBeDeactivated, type, DefaultConnectorColor, icon));
         }
 
         protected byte[] LoadGraphic(string resourcePath)
@@ -118,5 +125,13 @@ namespace GraphEditor.Interface.Nodes
             parentXml.Add(specXml);
         }
         protected abstract void SaveTypeSpecificData(XElement parentXml);
+
+        public virtual bool CanConnectTo(int formIdx, IConnectorData toConnector)
+        {
+            return toConnector == null ||
+                   toConnector.IsOutBound 
+                       ? Ins[formIdx].Type == null || Ins[formIdx].Type.Equals(toConnector.Type) 
+                       : Outs[formIdx].Type == null || Outs[formIdx].Type.Equals(toConnector.Type);
+        }
     }
 }

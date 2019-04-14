@@ -1,4 +1,5 @@
-﻿using GraphEditor.Ui.ViewModel;
+﻿using GraphEditor.Interface.Nodes;
+using GraphEditor.Ui.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -60,9 +61,9 @@ namespace GraphEditor.Ui.Tools
             OnRemoveConnection?.Invoke(connection);
         }
 
-        public static void NotifyConnectRequested(bool isConnecting, NodeViewModel sourceNode, int connIdx, bool isOutBound)
+        public static void NotifyConnectRequested(bool isConnecting, NodeViewModel sourceNode, IConnectorData connData)
         {
-            OnConnectRequested?.Invoke(isConnecting, sourceNode, connIdx, isOutBound);
+            OnConnectRequested?.Invoke(isConnecting, sourceNode, connData);
         }
 
         public static void ShiftZOrder(NodeViewModel node, bool up)
@@ -98,7 +99,7 @@ namespace GraphEditor.Ui.Tools
         public static event Action<NodeViewModel, Point> OnNodeLocationChanged;
         public static event Action<ConnectionViewModel> OnAddConnection;
         public static event Action<ConnectionViewModel> OnRemoveConnection;
-        public static event Action<bool, NodeViewModel, int, bool> OnConnectRequested;
+        public static event Action<bool, NodeViewModel, IConnectorData> OnConnectRequested;
         public static event Action<NodeViewModel, bool> OnSetZIndex;
 
         public static Func<NodeViewModel, int, ConnectionViewModel> OnCreateConnection;

@@ -44,10 +44,6 @@ namespace GraphEditor.Interface.Nodes
 
         public byte[] Image { get; protected set; }
 
-        public virtual bool CanConnectToIn(IBaseNodeTypeData otherNode, int otherOutIndex, int myInIndex) => myInIndex % 2 == 0;  // TODO: CanConnectToIn zum Testen
-
-        public virtual bool CanConnectToOut(IBaseNodeTypeData otherNode, int otherInIndex, int myOutIndex) => myOutIndex % 2 == 1;  // TODO: CanConnectToOut zum Testen
-
         protected abstract Type NodeType { get; }
 
         public INodeData CreateNode(Action<IConnectorData> onActiveChanged, Func<IConnectorData, bool> canBeDeactivated)
