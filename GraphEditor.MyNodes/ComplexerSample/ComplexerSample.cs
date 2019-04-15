@@ -36,10 +36,6 @@ namespace GraphEditor.MyNodes.ComplexerSample
 
         protected override Type ConfigControlType => typeof(ComplexerSampleControl);
 
-        public bool OutputsInverted { get => _outputsInverted; set => SetProperty<ComplexerSample, bool>(ref _outputsInverted, value, nameof(OutputsInverted)); }
-
-        public double FilterTime { get => _filterTime; set => SetProperty<ComplexerSample, double>(ref _filterTime, value, nameof(FilterTime)); }
-
         protected override void LoadTypeSpecificData(XElement specificXml)
         {
             var values = _xmlClasses.GetParamValues(specificXml, nameof(OutputsInverted), nameof(FilterTime));
@@ -62,5 +58,9 @@ namespace GraphEditor.MyNodes.ComplexerSample
             param.SetAttributeValue(_xmlClasses.Value, FilterTime);
             specificXml.Add(param);
         }
+
+        public bool OutputsInverted { get => _outputsInverted; set => SetProperty<ComplexerSample, bool>(ref _outputsInverted, value, nameof(OutputsInverted)); }
+
+        public double FilterTime { get => _filterTime; set => SetProperty<ComplexerSample, double>(ref _filterTime, value, nameof(FilterTime)); }
     }
 }

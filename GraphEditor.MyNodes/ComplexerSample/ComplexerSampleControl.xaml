@@ -7,7 +7,7 @@
              xmlns:vm="clr-namespace:GraphEditor.MyNodes.ComplexerSample"
              xmlns:cv="clr-namespace:GraphEditor.Ui.Converters;assembly=GraphEditor.Ui"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ComplexerSample}"
-             MinWidth="300" MinHeight="200">
+             MinWidth="300" MinHeight="300">
     <UserControl.Resources>
         <cv:DoubleToStringConverter x:Key="DoubleStringConverter"/>
     </UserControl.Resources>
