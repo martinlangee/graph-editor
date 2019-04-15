@@ -8,8 +8,8 @@ namespace GraphEditor.MyNodes.ComplexerSample
     {
         public ComplexerSampleType() : base(Assembly.GetExecutingAssembly())
         {
-            Name = "Complexer Sampler";
-            Description = "Node representing a start-up warning element";
+            Name = "Complex Sample Node";
+            Description = "Node representing a complex sample node";
         }
 
         protected override Type NodeType => typeof(ComplexerSample);

@@ -9,8 +9,9 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <TextBlock x:Name="_tbHeader" Text="Configuration" Margin="3,0"/>
-        <Button Grid.Column="1" Click="CloseButton_Click" Margin="1">
+        <TextBlock x:Name="_tbHeader" Text="Configuration" Margin="5,3,5,4"/>
+        <Border Grid.ColumnSpan="2" BorderBrush="LightGray" SnapsToDevicePixels="true" BorderThickness="0,0,0,1"/>
+        <Button Grid.Column="1" Click="CloseButton_Click">
             <Path Stroke="Black" Fill="Black" StrokeThickness="2" Data="M0,0 L7,7 M7,0 L0,7" Margin="2"/>
         </Button>
     </Grid>

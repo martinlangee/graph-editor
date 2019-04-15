@@ -4,67 +4,86 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ba="clr-namespace:GraphEditor.MyNodes.Base"
-             mc:Ignorable="d"
+             xmlns:vm="clr-namespace:GraphEditor.MyNodes.ComplexerSample"
+             xmlns:cv="clr-namespace:GraphEditor.Ui.Converters;assembly=GraphEditor.Ui"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:ComplexerSample}"
              MinWidth="300" MinHeight="200">
+    <UserControl.Resources>
+        <cv:DoubleToStringConverter x:Key="DoubleStringConverter"/>
+    </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ba:ConfigUiHeader x:Name="Header"/>
-        <StackPanel Grid.Row="1" Margin="20">
-            <TextBlock Text="Name" Margin="0,5"/>
-            <TextBox Text="{Binding Name}" Margin="0,0,0,10"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+        <TabControl Grid.Row="1" Margin="3" TabStripPlacement="Bottom" Background="White" BorderBrush="LightGray" >
+            <TabItem Header="Common">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Name" Margin="0,5"/>
+                    <TextBox Text="{Binding Name}" Margin="0,0,0,10"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Active inputs"/>
+                            <ListBox 
+                                 BorderBrush="Transparent"
+                                 x:Name="_lbInputs"
+                                 VerticalAlignment="Stretch"
+                                 ItemsSource="{Binding Ins}">
+                                <ListBox.Resources>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="OverridesDefaultStyle" Value="true" />
+                                        <Setter Property="SnapsToDevicePixels" Value="true" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <CheckBox Margin="5,2" IsChecked="{Binding IsActive}" Content="{Binding Name}"/>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.Resources>
+                            </ListBox>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="25,0,0,0">
+                            <TextBlock Text="Active outputs"/>
+                            <ListBox 
+                                 BorderBrush="Transparent"
+                                 x:Name="_lbOutputs"
+                                 VerticalAlignment="Stretch"
+                                 ItemsSource="{Binding Outs}">
+                                <ListBox.Resources>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="OverridesDefaultStyle" Value="true" />
+                                        <Setter Property="SnapsToDevicePixels" Value="true" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <CheckBox Margin="5,2" IsChecked="{Binding IsActive}" Content="{Binding Name}"/>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.Resources>
+                            </ListBox>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Configuration">
                 <StackPanel>
-                    <TextBlock Text="Active inputs"/>
-                    <ListBox 
-                         BorderBrush="Transparent"
-                         x:Name="_lbInputs"
-                         VerticalAlignment="Stretch"
-                         ItemsSource="{Binding Ins}">
-                        <ListBox.Resources>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="OverridesDefaultStyle" Value="true" />
-                                <Setter Property="SnapsToDevicePixels" Value="true" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListBoxItem">
-                                            <CheckBox Margin="5,2" IsChecked="{Binding IsActive}" Content="{Binding Name}"/>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.Resources>
-                    </ListBox>
+                    <CheckBox Content="Outputs inverted" IsChecked="{Binding OutputsInverted}" Margin="5"/>
+                    <TextBlock Text="Filter time" Margin="5"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Text="{Binding FilterTime, Converter={StaticResource DoubleStringConverter}}" Margin="5,0,10,0" Width="150"/>
+                        <TextBlock Text="ms" VerticalAlignment="Center"/>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Margin="25,0,0,0">
-                    <TextBlock Text="Active outputs"/>
-                    <ListBox 
-                         BorderBrush="Transparent"
-                         x:Name="_lbOutputs"
-                         VerticalAlignment="Stretch"
-                         ItemsSource="{Binding Outs}">
-                        <ListBox.Resources>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="OverridesDefaultStyle" Value="true" />
-                                <Setter Property="SnapsToDevicePixels" Value="true" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListBoxItem">
-                                            <CheckBox Margin="5,2" IsChecked="{Binding IsActive}" Content="{Binding Name}"/>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListBox.Resources>
-                    </ListBox>
-                </StackPanel>
-            </Grid>
-        </StackPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

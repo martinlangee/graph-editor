@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
 
@@ -181,6 +182,8 @@ namespace GraphEditor.Ui.ViewModel
 
         public void RevokeConnectRequestStatus()
         {
+            Application.Current.MainWindow.Cursor = Cursors.Arrow;
+
             if (_connNodeData.SourceNode != null)
             {
                 if (_connNodeData.ConnData.IsOutBound)

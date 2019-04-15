@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace GraphEditor.Interface.Serialization
 {
@@ -47,5 +48,23 @@ namespace GraphEditor.Interface.Serialization
         public virtual string TargetConn => nameof(TargetConn);
 
         public virtual string Points => nameof(Points);
+
+        public virtual string Param => nameof(Param);
+
+        public virtual string Value => nameof(Value);
+
+        public IDictionary<string,string> GetParamValues(XElement paramParentXml, params string[] paramNames)
+        {
+            var paramXmls = paramParentXml.Elements().Where(el => el.Name.LocalName == Param);
+
+            var result = new Dictionary<string, string>();
+
+            foreach (var paramName in paramNames)
+            {
+                result.Add(paramName, paramXmls.FirstOrDefault(el => el.Attribute(Id).Value == paramName).Attribute(Value).Value);
+            }
+
+            return result;
+        }
     }
 }

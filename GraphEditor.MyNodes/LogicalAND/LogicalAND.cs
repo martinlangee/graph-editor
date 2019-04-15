@@ -28,7 +28,7 @@ namespace GraphEditor.MyNodes.LogicalAND
 
         }
 
-        protected override void SaveTypeSpecificData(XElement parent)
+        protected override void SaveTypeSpecificData(XElement parentXml)
         {
 
         }

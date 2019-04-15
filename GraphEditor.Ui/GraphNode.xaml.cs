@@ -93,6 +93,8 @@ namespace GraphEditor.Ui
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            AreaVm.RevokeConnectRequestStatus();
+
             if (e.ClickCount > 1)
             {
                 ViewModel.EditConfigCommand.Execute(sender);

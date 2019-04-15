@@ -1,4 +1,7 @@
-﻿namespace GraphEditor.Interface.Serialization
+﻿using System.Collections.Generic;
+using System.Xml.Linq;
+
+namespace GraphEditor.Interface.Serialization
 {
     public interface IXmlClasses
     {
@@ -22,5 +25,9 @@
         string Target { get; }
         string TargetConn { get; }
         string Points { get; }
+        string Param { get; }
+        string Value { get; }
+
+        IDictionary<string, string> GetParamValues(XElement paramParentXml, params string[] paramNames);
     }
 }

@@ -17,7 +17,6 @@ using GraphEditor.Interface.Nodes;
 
 /* ----------------------------------------------------------------------------------
  * TODO:
- *  wer-kann-an-wen beispielhaft implementieren
  *  Verhalten der Linien-Komponente verbessern (evtl. selektierbar?)
  * ------------------------------------------------------------------------------- */
 
@@ -342,8 +341,6 @@ namespace GraphEditor.Ui
 
         private void Canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Application.Current.MainWindow.Cursor = Cursors.Arrow;
-
             ViewModel.RevokeConnectRequestStatus();
             ViewModel.DeselectAll();
         }
