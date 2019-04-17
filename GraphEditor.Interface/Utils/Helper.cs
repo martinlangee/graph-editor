@@ -9,19 +9,19 @@ namespace GraphEditor.Interface.Utils
 {
     public static class Helper
     {
-        public static byte[] LoadGraphicFromResource(string resourcePath, Assembly assembly)
+        public static byte[] LoadGraphicFromResource(string resourceName, Assembly assembly)
         {
             var src = new BitmapImage();
             try
             {
                 src.BeginInit();
-                src.UriSource = new Uri($"pack://application:,,,/{assembly.GetName()};component{resourcePath}");
+                src.UriSource = new Uri($"pack://application:,,,/{assembly.GetName()};component/{resourceName}");
                 src.CacheOption = BitmapCacheOption.OnLoad;
                 src.EndInit();
             }
             catch (IOException)
             {
-                Console.WriteLine($"Resource '{resourcePath}' not found");
+                Console.WriteLine($"Resource '{resourceName}' not found");
                 return null;
             }
 

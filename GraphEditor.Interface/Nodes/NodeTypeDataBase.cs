@@ -29,7 +29,7 @@ namespace GraphEditor.Interface.Nodes
         private byte[] LoadGraphic(Type nodeType, string suffix = "")
         {
             suffix = string.IsNullOrEmpty(suffix) ? "" : $"_{suffix}";
-            var resPath = $"/{nodeType.Name}/{nodeType.Name}{suffix}.png";
+            var resPath = $"{nodeType.Name}/{nodeType.Name}{suffix}.png";
 
             return Helper.LoadGraphicFromResource(resPath, _executingAssembly);
         }

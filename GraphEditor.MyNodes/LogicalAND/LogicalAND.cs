@@ -45,6 +45,17 @@ namespace GraphEditor.MyNodes.LogicalAND
             specificXml.Add(param);
         }
 
-        public bool OutputInverted { get => _outputInverted; set => SetProperty<LogicalAND, bool>(ref _outputInverted, value, nameof(OutputInverted)); }
+        public bool OutputInverted
+        {
+            get => _outputInverted;
+            set => SetProperty<LogicalAND, bool>(ref _outputInverted, value, nameof(OutputInverted),
+                (nodeData, val) =>
+                {
+                    if (val)
+                        Outs[0].Icon = LoadGraphic(nameof(LogicalAND), $"{nameof(LogicalAND)}_inverted.png");
+                    else
+                        Outs[0].Icon = null;
+                });
+        }
     }
 }

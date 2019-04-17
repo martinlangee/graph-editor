@@ -1,6 +1,5 @@
 ﻿using GraphEditor.Interface.ConfigUi;
 using System;
-using System.Windows.Media;
 
 namespace GraphEditor.Interface.Nodes
 {
@@ -9,6 +8,7 @@ namespace GraphEditor.Interface.Nodes
         private bool _isActive = true;
         private readonly Action<IConnectorData> _onIsActiveChanged;
         private readonly Func<IConnectorData, bool> _canBeDeactivated;
+        private byte[] _icon;
 
         public ConnectorData(string name, int index, bool isOutBound, Action<IConnectorData> onIsActiveChanged, Func<IConnectorData, bool> canBeDeactivated, T type, uint color, byte[] icon = null)
         {
@@ -44,7 +44,9 @@ namespace GraphEditor.Interface.Nodes
 
         public object Type { get; }
 
-        public byte[] Icon { get; }
+        public event Action IconChanged;
+
+        public byte[] Icon { get => _icon; set => SetProperty<ConnectorData<T>, byte[]>(ref _icon, value, nameof(Icon), (c, v) => IconChanged?.Invoke()); }
 
         public uint Color { get; }
     }

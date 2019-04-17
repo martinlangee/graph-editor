@@ -45,6 +45,17 @@ namespace GraphEditor.MyNodes.LogicalOR
             specificXml.Add(param);
         }
 
-        public bool OutputInverted { get => _outputInverted; set => SetProperty<LogicalOR, bool>(ref _outputInverted, value, nameof(OutputInverted)); }
+        public bool OutputInverted
+        {
+            get => _outputInverted;
+            set => SetProperty<LogicalOR, bool>(ref _outputInverted, value, nameof(OutputInverted),
+                (nodeData, val) =>
+                {
+                    if (val)
+                        Outs[0].Icon = LoadGraphic(nameof(LogicalOR), $"{nameof(LogicalOR)}_inverted.png");
+                    else
+                        Outs[0].Icon = null;
+                });
+        }
     }
 }

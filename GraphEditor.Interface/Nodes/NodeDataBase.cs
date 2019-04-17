@@ -45,14 +45,19 @@ namespace GraphEditor.Interface.Nodes
             (isOutBound ? Outs : Ins).Add(new ConnectorData<T>(name, index, isOutBound, _onIsActiveChanged, _canBeDeactivated, type, DefaultConnectorColor, icon));
         }
 
-        protected byte[] LoadGraphic(string resourcePath)
+        private byte[] LoadGraphic(string resourceName)
         {
-            return Helper.LoadGraphicFromResource(resourcePath, _executingAssembly);
+            return Helper.LoadGraphicFromResource(resourceName, _executingAssembly);
+        }
+
+        protected byte[] LoadGraphic(string nodeType, string resourceName)
+        {
+            return Helper.LoadGraphicFromResource($"{nodeType}/{resourceName}", _executingAssembly);
         }
 
         protected byte[] LoadConnIcon(string nodeType, int index, bool isOutBound)
         {
-            return LoadGraphic(string.Concat($"/{nodeType}/{nodeType}_", isOutBound ? "out" : "in", $"{index}.png"));
+            return LoadGraphic(string.Concat($"{nodeType}/{nodeType}_", isOutBound ? "out" : "in", $"{index}.png"));
         }
 
         public INodeTypeData TypeData { get; }

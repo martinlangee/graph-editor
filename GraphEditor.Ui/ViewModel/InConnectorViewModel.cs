@@ -10,6 +10,8 @@ namespace GraphEditor.Ui.ViewModel
         private InConnectorViewModel(NodeViewModel node, string name, int index) : base(node, name, index)
         {
             Brush = new SolidColorBrush(_nodeVm.Data.Ins[Index].Color.ToColor());
+
+            _nodeVm.Data.Ins[Index].IconChanged += () => FirePropertiesChanged(nameof(Icon));
         }
 
         public static ConnectorViewModel Create(NodeViewModel nodeVm, string name, int index)
