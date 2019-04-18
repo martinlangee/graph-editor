@@ -61,6 +61,9 @@
     <Compile Include="Converters\ListToPointCollectionConverter.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Converters\BooleanConverter.cs" />
+    <Compile Include="NodeConfigContainer.xaml.cs">
+      <DependentUpon>NodeConfigContainer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tools\UiConst.cs" />
     <Compile Include="Tools\UiMessageHub.cs" />
     <Compile Include="Tools\UiStates.cs" />
@@ -100,6 +103,10 @@
     <Compile Include="ConnectorButton.xaml.cs">
       <DependentUpon>ConnectorButton.xaml</DependentUpon>
     </Compile>
+    <Page Include="NodeConfigContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

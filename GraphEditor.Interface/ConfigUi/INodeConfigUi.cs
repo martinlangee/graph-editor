@@ -1,10 +1,10 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using GraphEditor.Interface.Nodes;
+using System;
 
 namespace GraphEditor.Interface.ConfigUi
 {
     public interface INodeConfigUi
     {
-        event Action<INodeConfigUi> OnClose;
+        string Title { get; }
     }
 }

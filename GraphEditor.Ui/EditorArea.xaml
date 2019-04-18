@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:GraphEditor.Ui.ViewModel"
              xmlns:cv="clr-namespace:GraphEditor.Ui.Converters"
+             xmlns:ui="clr-namespace:GraphEditor.Ui"
              mc:Ignorable="d" 
              AllowDrop="True"
              Loaded="Editor_Loaded"
@@ -74,7 +75,7 @@
                     </Style.Triggers>
                 </Style>
             </StackPanel.Style>
-            <ContentPresenter Content="{Binding NodeConfigUi}"/>
+            <ui:NodeConfigContainer/>
         </StackPanel>
     </Grid>
 </UserControl>

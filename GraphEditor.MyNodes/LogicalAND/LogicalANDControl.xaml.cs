@@ -1,6 +1,5 @@
 ﻿using GraphEditor.Interface.ConfigUi;
 using GraphEditor.Interface.Nodes;
-using System;
 using System.Windows.Controls;
 
 namespace GraphEditor.MyNodes.LogicalAND
@@ -14,11 +13,9 @@ namespace GraphEditor.MyNodes.LogicalAND
         {
             InitializeComponent();
 
-            Header.Init(() => OnClose?.Invoke(this), nodeData);
-
             DataContext = nodeData;
         }
 
-        public event Action<INodeConfigUi> OnClose;
+        public string Title => (DataContext as INodeData).TypeData.Name;
     }
 }

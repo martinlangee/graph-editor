@@ -18,11 +18,11 @@ namespace GraphEditor.Ui.ViewModel
     {
         private readonly IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
         private readonly Func<List<NodeViewModel>> _onGetAllNodeVMs;
-        private readonly Action<INodeConfigUi> _onOpenConfigUi;
+        private readonly Action<INodeData> _onOpenConfigUi;
         private bool _isSelected = false;
         private Point _location;
 
-        public NodeViewModel(INodeTypeData nodeTypeData, Func<List<NodeViewModel>> onGetAllNodeVMs, Action<INodeConfigUi> onOpenConfigUi)
+        public NodeViewModel(INodeTypeData nodeTypeData, Func<List<NodeViewModel>> onGetAllNodeVMs, Action<INodeData> onOpenConfigUi)
         {
             _onGetAllNodeVMs = onGetAllNodeVMs;
             _onOpenConfigUi = onOpenConfigUi;
@@ -93,7 +93,7 @@ namespace GraphEditor.Ui.ViewModel
 
         private void EditConfigExec()
         {
-            _onOpenConfigUi(Data.CreateConfigUi());
+            _onOpenConfigUi(Data);
         }
 
         private void ShiftZOrderExec(bool up)

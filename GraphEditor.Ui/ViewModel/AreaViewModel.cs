@@ -28,7 +28,7 @@ namespace GraphEditor.Ui.ViewModel
         }
 
         ConnectingNodeData _connNodeData;
-        private UserControl _nodeConfigUi;
+        private INodeConfigUi _nodeConfigUi;
         private readonly IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
 
         public ObservableCollection<NodeViewModel> NodeVMs { get; set; }
@@ -38,6 +38,7 @@ namespace GraphEditor.Ui.ViewModel
         public RelayCommand AddNodeCommand { get; private set; }
         public RelayCommand SwitchStatesCommand { get; private set; }
         public RelayCommand ResetStatesCommand { get; private set; }
+        public RelayCommand CloseNodeConfigUiCommand { get; private set; }
 
         public void OnBuiltUp()
         {
@@ -46,6 +47,7 @@ namespace GraphEditor.Ui.ViewModel
             AddNodeCommand = new RelayCommand(o => AddNodeExec((INodeTypeData) o, new Point(-1, -1)));
             SwitchStatesCommand = new RelayCommand(o => SwitchStatesExec());
             ResetStatesCommand = new RelayCommand(o => ResetStatesExec());
+            CloseNodeConfigUiCommand = new RelayCommand(o => CloseNodeConfigUiExec());
 
             ToolBar = new ToolBarViewModel(LoadCommand, SaveCommand, SwitchStatesCommand, ResetStatesCommand);
             AreaContextMenuItems = new ObservableCollection<INodeTypeData>();
@@ -152,7 +154,7 @@ namespace GraphEditor.Ui.ViewModel
 
         public NodeViewModel AddNodeExec(INodeTypeData nodeTypeData, Point location)
         {
-            var newNodeVm = new NodeViewModel(nodeTypeData, () => NodeVMs.ToList(), OnOpenConfigUi);
+            var newNodeVm = new NodeViewModel(nodeTypeData, () => NodeVMs.ToList(), OnOpenNodeConfigUi);
             NodeVMs.Add(newNodeVm);
 
             UiMessageHub.AddNode(newNodeVm, location);
@@ -160,19 +162,20 @@ namespace GraphEditor.Ui.ViewModel
             return newNodeVm;
         }
 
-        public UserControl NodeConfigUi { get => _nodeConfigUi; private set => SetProperty<AreaViewModel, UserControl>(ref _nodeConfigUi, value, nameof(NodeConfigUi)); }
+        public INodeConfigUi NodeConfigUi { get => _nodeConfigUi; private set => SetProperty<AreaViewModel, INodeConfigUi>(ref _nodeConfigUi, value, nameof(NodeConfigUi)); }
 
-        private void OnOpenConfigUi(INodeConfigUi configUi)
+        private void OnOpenNodeConfigUi(INodeData nodeData)
         {
-            configUi.OnClose += ui => 
-            {
-                NodeConfigUi = null;
-                UiMessageHub.LocationUpdateMuted = false;
-                ToolBar.IsEnabled = true;
-            };
-            NodeConfigUi = configUi as UserControl;
+            NodeConfigUi = nodeData.CreateConfigUi();
             UiMessageHub.LocationUpdateMuted = true;
             ToolBar.IsEnabled = false;
+        }
+
+        private void CloseNodeConfigUiExec()
+        {
+            NodeConfigUi = null;
+            UiMessageHub.LocationUpdateMuted = false;
+            ToolBar.IsEnabled = true;
         }
 
         public void OnRemoveNode(NodeViewModel nodeVm)
