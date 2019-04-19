@@ -1,7 +1,7 @@
-﻿using GraphEditor.Interface.ConfigUi;
-using GraphEditor.Interface.Container;
+﻿using GraphEditor.Interface.Container;
 using GraphEditor.Interface.Nodes;
 using GraphEditor.Interface.Serialization;
+using GraphEditor.Interface.Ui;
 using GraphEditor.Interface.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
@@ -12,14 +12,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
 
 namespace GraphEditor.Ui.ViewModel
 {
-    public class AreaViewModel : BaseNotification
+    public class AreaViewModel : BaseNotification, IAreaViewModel
     {
         private struct ConnectingNodeData
         {
@@ -145,7 +144,7 @@ namespace GraphEditor.Ui.ViewModel
             UiMessageHub.Dispose();
         }
 
-        public ToolBarViewModel ToolBar { get; private set; }
+        public IToolBarViewModel ToolBar { get; private set; }
 
         public ObservableCollection<INodeTypeData> AreaContextMenuItems { get; private set; }
 
@@ -237,7 +236,7 @@ namespace GraphEditor.Ui.ViewModel
             return connVm;
         }
 
-        public List<NodeViewModel> Selected => NodeVMs.Where(nodeVm => nodeVm.IsSelected).ToList(); 
+        public IList<INodeViewModel> Selected => NodeVMs.Where(nodeVm => nodeVm.IsSelected).Cast<INodeViewModel>().ToList(); 
 
         public int SelectedCount => NodeVMs.Sum(gn => gn.IsSelected ? 1 : 0); 
 

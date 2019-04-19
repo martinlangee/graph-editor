@@ -1,4 +1,4 @@
-﻿using GraphEditor.Interface.ConfigUi;
+﻿using GraphEditor.Interface.Ui;
 using System;
 
 namespace GraphEditor.Interface.Nodes

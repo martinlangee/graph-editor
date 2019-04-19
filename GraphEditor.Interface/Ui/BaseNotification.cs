@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace GraphEditor.Interface.ConfigUi
+namespace GraphEditor.Interface.Ui
 {
     /// <summary>
     /// Base PropertyChanged implementation

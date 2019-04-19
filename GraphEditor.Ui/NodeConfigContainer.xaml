@@ -16,7 +16,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Border Grid.ColumnSpan="2" Background="WhiteSmoke" BorderBrush="LightGray" SnapsToDevicePixels="true" BorderThickness="0,0,0,1"/>
-        <TextBlock x:Name="_tbHeader" Text="{Binding NodeConfigUi.Title}" Margin="5,3,5,4"/>
+        <TextBlock x:Name="TbHeader" Text="{Binding NodeConfigUi.Title}" Margin="5,3,5,4"
+                   MouseLeftButtonDown="TbHeader_MouseLeftButtonDown" MouseMove="TbHeader_MouseMove" MouseLeftButtonUp="TbHeader_MouseLeftButtonUp"/>
         <Button Grid.Column="1" Command="{Binding CloseNodeConfigUiCommand}">
             <Path Stroke="Black" Fill="Black" StrokeThickness="2" Data="M0,0 L7,7 M7,0 L0,7" Margin="2"/>
         </Button>

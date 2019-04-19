@@ -64,18 +64,19 @@
                 </Style>
             </Grid.Style>
         </Grid>
-        <StackPanel Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <StackPanel.Style>
-                <Style TargetType="{x:Type StackPanel}">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding NodeConfigUi}" Value="{x:Null}">
-                            <Setter Property="Visibility" Value="Hidden"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Style>
-            <ui:NodeConfigContainer/>
-        </StackPanel>
+        <Canvas>
+            <ui:NodeConfigContainer Canvas.Left="50" Canvas.Top="50">
+                <ui:NodeConfigContainer.Style>
+                    <Style TargetType="{x:Type ui:NodeConfigContainer}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding NodeConfigUi}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ui:NodeConfigContainer.Style>
+            </ui:NodeConfigContainer>
+        </Canvas>
     </Grid>
 </UserControl>

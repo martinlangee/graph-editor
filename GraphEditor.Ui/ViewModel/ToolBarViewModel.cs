@@ -1,13 +1,13 @@
-﻿using GraphEditor.Interface.ConfigUi;
-using GraphEditor.Interface.Container;
+﻿using GraphEditor.Interface.Container;
 using GraphEditor.Interface.Nodes;
+using GraphEditor.Interface.Ui;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
 using System.Collections.ObjectModel;
 
 namespace GraphEditor.Ui.ViewModel
 {
-    public class ToolBarViewModel: BaseNotification
+    public class ToolBarViewModel: BaseNotification, IToolBarViewModel
     {
         bool _isGridVisible = true;
         bool _isEnabled = true;

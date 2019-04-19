@@ -13,6 +13,7 @@ using GraphEditor.Ui.ViewModel;
 using System;
 using GraphEditor.Interface.Utils;
 using GraphEditor.Interface.Nodes;
+using GraphEditor.Interface.Ui;
 
 
 /* ----------------------------------------------------------------------------------
@@ -38,18 +39,18 @@ namespace GraphEditor.Ui
         {
             InitializeComponent();
 
-            DataContext = ServiceContainer.Get<AreaViewModel>();
+            DataContext = ServiceContainer.Get<IAreaViewModel>() as AreaViewModel;
 
             UiMessageHub.Dispatcher = Application.Current.Dispatcher;
         }
 
-        private AreaViewModel ViewModel => (AreaViewModel) DataContext;
+        private AreaViewModel AreaVm => (AreaViewModel) DataContext;
 
         private List<GraphNode> GraphNodes => _canvas.Children.OfType<GraphNode>().ToList();
 
-        internal List<GraphNode> SelectedNodes => GraphNodes.Where(gn => gn.ViewModel.IsSelected).ToList();
+        internal List<GraphNode> SelectedNodes => GraphNodes.Where(gn => gn.NodeVm.IsSelected).ToList();
 
-        internal GraphNode NodeOfModel(NodeViewModel viewModel) => GraphNodes.FirstOrDefault(gn => gn.ViewModel.Equals(viewModel));
+        internal GraphNode NodeOfModel(NodeViewModel viewModel) => GraphNodes.FirstOrDefault(gn => gn.NodeVm.Equals(viewModel));
 
         private List<ArrowPolyline> ConnectionLines => _canvas.Children.OfType<ArrowPolyline>().ToList();
 
@@ -57,9 +58,9 @@ namespace GraphEditor.Ui
 
         private Point GetGridSnappedLocation(Point location)
         {
-            if (ViewModel.ToolBar.IsGridVisible)
+            if (AreaVm.ToolBar.IsGridVisible)
             {
-                var gridWidth = ViewModel.GridRect.Width;
+                var gridWidth = AreaVm.GridRect.Width;
                 location.X = Math.Round(location.X / gridWidth) * gridWidth;
                 location.Y = Math.Round(location.Y / gridWidth) * gridWidth;
             }
@@ -84,12 +85,12 @@ namespace GraphEditor.Ui
 
             Canvas.SetZIndex(node, up ? allNodes.Count() - 1 : 0);
 
-            _canvas.Children.OfType<ArrowPolyline>().ForEach(line => Canvas.SetZIndex(line, allNodes.Count() + 10));
+            _canvas.Children.OfType<ArrowPolyline>().For((line, i) => Canvas.SetZIndex(line, allNodes.Count() + i));
         }
 
         private void OnAddNode(NodeViewModel nodeVm, Point location)
         {
-            var graphNode = new GraphNode { DataContext = nodeVm };
+            var graphNode = new GraphNode(nVm => NodeOfModel(nVm)) { DataContext = nodeVm };
 
             _canvas.Children.Add(graphNode);
 
@@ -305,8 +306,8 @@ namespace GraphEditor.Ui
         private void SetDragObjectPosition(DragEventArgs e)
         {
             // set positions of all selected nodes while dragging
-            var nodeVMs = (List<NodeViewModel>) e.Data.GetData(UiConst.DragDropData_Nodes);
-            var points = (List<Point>) e.Data.GetData(UiConst.DragDropData_Points);
+            var nodeVMs = (e.Data.GetData(UiConst.DragDropData_Nodes) as IList<INodeViewModel>).Cast<NodeViewModel>().ToList();
+            var points = e.Data.GetData(UiConst.DragDropData_Points) as List<Point>;
 
             for (var idx = 0; idx < nodeVMs.Count; idx++)
             {
@@ -331,7 +332,7 @@ namespace GraphEditor.Ui
 
             if (typeData != null)
             {
-                ViewModel.AddNodeExec(typeData, e.GetPosition(_canvas));
+                AreaVm.AddNodeExec(typeData, e.GetPosition(_canvas));
             }
             else
                 SetDragObjectPosition(e);
@@ -341,8 +342,8 @@ namespace GraphEditor.Ui
 
         private void Canvas_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            ViewModel.RevokeConnectRequestStatus();
-            ViewModel.DeselectAll();
+            AreaVm.RevokeConnectRequestStatus();
+            AreaVm.DeselectAll();
         }
 
         private void Editor_Loaded(object sender, RoutedEventArgs e)

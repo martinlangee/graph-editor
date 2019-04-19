@@ -1,5 +1,5 @@
 ﻿using GraphEditor.Interface.Container;
-using GraphEditor.Ui.ViewModel;
+using GraphEditor.Interface.Ui;
 using System.Windows;
 
 namespace DebugApp
@@ -13,7 +13,7 @@ namespace DebugApp
         {
             InitializeComponent();
 
-            toolBar.DataContext = ServiceContainer.Get<AreaViewModel>().ToolBar;
+            toolBar.DataContext = ServiceContainer.Get<IAreaViewModel>().ToolBar;
         }
     }
 }

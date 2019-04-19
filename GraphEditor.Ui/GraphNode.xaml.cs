@@ -1,10 +1,14 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using GraphEditor.Interface.Container;
+using GraphEditor.Interface.Ui;
 using GraphEditor.Ui.Tools;
 using GraphEditor.Ui.ViewModel;
+
 
 namespace GraphEditor.Ui
 {
@@ -13,17 +17,19 @@ namespace GraphEditor.Ui
     /// </summary>
     public partial class GraphNode : UserControl
     {
-        public GraphNode()
+        private bool _dragging;
+        private readonly Func<NodeViewModel, GraphNode> _onGetNodeOfModel;
+
+        public GraphNode(Func<NodeViewModel, GraphNode> onGetNodeOfModel)
         {
             InitializeComponent();
+
+            _onGetNodeOfModel = onGetNodeOfModel;
         }
 
-        internal NodeViewModel ViewModel => (NodeViewModel) DataContext;
-
-        private EditorArea _area;
-        internal EditorArea Area => _area = _area ?? this.FindAncestor<EditorArea>();
-
-        internal AreaViewModel AreaVm => (AreaViewModel) Area.DataContext;
+        internal NodeViewModel NodeVm => DataContext as NodeViewModel;
+         
+        internal IAreaViewModel AreaVm => ServiceContainer.Get<IAreaViewModel>();
 
         private Point GetConnectorLocation(ItemsControl itemsCtrl, Visual container, int index, bool isOutBound)
         {
@@ -53,21 +59,31 @@ namespace GraphEditor.Ui
             e.Handled = true;
         }
 
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _dragging = true;
+            AreaVm.RevokeConnectRequestStatus();
+
+            if (e.ClickCount > 1)
+            {
+                NodeVm.EditConfigCommand.Execute(sender);
+            }
+        }
+
         private void Border_OnMouseMove(object sender, MouseEventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            if (_dragging && Mouse.LeftButton == MouseButtonState.Pressed)
             {
-                var data = new DataObject();
-
-                if (!ViewModel.IsSelected)
+                if (!NodeVm.IsSelected)
                     AreaVm.DeselectAll();
 
-                ViewModel.IsSelected = true;
+                NodeVm.IsSelected = true;
 
                 AreaVm.RevokeConnectRequestStatus();
 
-                var pointsToScreen = AreaVm.Selected.Select(nodeVm => Mouse.GetPosition(Area.NodeOfModel(nodeVm))).ToList();
+                var pointsToScreen = AreaVm.Selected.Cast<NodeViewModel>().Select(nodeVm => Mouse.GetPosition(_onGetNodeOfModel(nodeVm))).ToList();
 
+                var data = new DataObject();
                 data.SetData(UiConst.DragDropData_Nodes, AreaVm.Selected);
                 data.SetData(UiConst.DragDropData_Points, pointsToScreen);
 
@@ -78,27 +94,19 @@ namespace GraphEditor.Ui
 
         private void Border_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            _dragging = false;
+
             if (Keyboard.Modifiers != ModifierKeys.Control)
                AreaVm.DeselectAll();
-            ViewModel.IsSelected = !ViewModel.IsSelected;
+            NodeVm.IsSelected = !NodeVm.IsSelected;
 
             e.Handled = true;
         }
 
         private void GraphNode_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            Area.SelectedNodes.ForEach(gn => gn.ViewModel.IsSelected = false);
-            ViewModel.IsSelected = true;
-        }
-
-        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            AreaVm.RevokeConnectRequestStatus();
-
-            if (e.ClickCount > 1)
-            {
-                ViewModel.EditConfigCommand.Execute(sender);
-            }
+            AreaVm.DeselectAll();
+            NodeVm.IsSelected = true;
         }
     }
 }

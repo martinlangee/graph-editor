@@ -1,7 +1,7 @@
-﻿using GraphEditor.Interface.ConfigUi;
-using GraphEditor.Interface.Container;
+﻿using GraphEditor.Interface.Container;
 using GraphEditor.Interface.Nodes;
 using GraphEditor.Interface.Serialization;
+using GraphEditor.Interface.Ui;
 using GraphEditor.Interface.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
@@ -14,13 +14,16 @@ using System.Xml.Linq;
 
 namespace GraphEditor.Ui.ViewModel
 {
-    public class NodeViewModel : BaseNotification
+    public class NodeViewModel : BaseNotification, INodeViewModel
     {
         private readonly IXmlClasses _xmlClasses = ServiceContainer.Get<IXmlClasses>();
         private readonly Func<List<NodeViewModel>> _onGetAllNodeVMs;
         private readonly Action<INodeData> _onOpenConfigUi;
         private bool _isSelected = false;
         private Point _location;
+
+        public NodeViewModel()
+        { }
 
         public NodeViewModel(INodeTypeData nodeTypeData, Func<List<NodeViewModel>> onGetAllNodeVMs, Action<INodeData> onOpenConfigUi)
         {

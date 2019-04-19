@@ -44,8 +44,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigUi\BaseNotification.cs" />
-    <Compile Include="ConfigUi\INodeConfigUi.cs" />
+    <Compile Include="Ui\BaseNotification.cs" />
+    <Compile Include="Ui\IAreaViewModel.cs" />
+    <Compile Include="Ui\INodeConfigUi.cs" />
     <Compile Include="Container\RegisteredObject.cs" />
     <Compile Include="Container\TypeNotRegisteredException.cs" />
     <Compile Include="Nodes\ConnectorData.cs" />
@@ -60,6 +61,8 @@
     <Compile Include="Container\ServiceContainer.cs" />
     <Compile Include="Serialization\BaseXmlClasses.cs" />
     <Compile Include="Serialization\IXmlClasses.cs" />
+    <Compile Include="Ui\INodeViewModel.cs" />
+    <Compile Include="Ui\IToolBarViewModel.cs" />
     <Compile Include="Utils\Helper.cs" />
     <Compile Include="Utils\ListExtensions.cs" />
   </ItemGroup>

@@ -1,5 +1,5 @@
-﻿using GraphEditor.Interface.ConfigUi;
-using GraphEditor.Interface.Nodes;
+﻿using GraphEditor.Interface.Nodes;
+using GraphEditor.Interface.Ui;
 using System.Windows.Controls;
 
 namespace GraphEditor.MyNodes.LogicalXOR

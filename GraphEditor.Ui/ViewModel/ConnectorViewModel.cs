@@ -1,5 +1,5 @@
-﻿using GraphEditor.Interface.ConfigUi;
-using GraphEditor.Interface.Nodes;
+﻿using GraphEditor.Interface.Nodes;
+using GraphEditor.Interface.Ui;
 using GraphEditor.Ui.Tools;
 using System.Windows.Media;
 

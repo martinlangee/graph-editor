@@ -1,4 +1,4 @@
-﻿using GraphEditor.Interface.ConfigUi;
+﻿using GraphEditor.Interface.Ui;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
