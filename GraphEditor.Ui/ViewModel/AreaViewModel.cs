@@ -15,6 +15,7 @@ using GraphEditor.Interface.Ui;
 using GraphEditor.Interface.Utils;
 using GraphEditor.Ui.Commands;
 using GraphEditor.Ui.Tools;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -83,69 +84,77 @@ namespace GraphEditor.Ui.ViewModel
 
         private void LoadExec()
         {
-            //var dlg = new OpenFileDialog();
-            //if (dlg.ShowDialog() == true)
-            //{
-            ClearConfig();
-
-            var docXml = XDocument.Load("c:\\gn.xml");
-            var configXml = docXml.Element(_xmlClasses.Root);
-            var nodesXml = configXml.Element(_xmlClasses.Nodes);
-            nodesXml.Elements().ForEach(node =>
+            var dlg = new OpenFileDialog
             {
-                var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(node.Attribute(_xmlClasses.Type).Value), new Point(-1, -1));
-                nodeVm.LoadFromXml(node);
-            });
+                Filter = "XML Files (*.xml)|*.xml|All Files (*.*)|*.*"
+            };
 
-            // this is a workaround to ensure that the nodes are loaded and all bound item collections initialized before the connections are loaded
-            Task.Run(() =>
+            if (dlg.ShowDialog() == true)
             {
-                Thread.Sleep(200);  // important!
+                ClearConfig();
 
-                var connectionsXml = configXml.Element(_xmlClasses.Connections);
-                connectionsXml.Elements().ForEach(conn =>
+                var docXml = XDocument.Load(dlg.FileName);
+                var configXml = docXml.Element(_xmlClasses.Root);
+                var nodesXml = configXml.Element(_xmlClasses.Nodes);
+                nodesXml.Elements().ForEach(node =>
                 {
-                    var sourceId = conn.Attribute(_xmlClasses.Source).Value;
-                    var sourceConn = int.Parse(conn.Attribute(_xmlClasses.SourceConn).Value);
-                    var targetId = conn.Attribute(_xmlClasses.Target).Value;
-                    var targetConn = int.Parse(conn.Attribute(_xmlClasses.TargetConn).Value);
-
-                    _connNodeData.SourceNode = NodeVMs.First(node => node.Data.Id == sourceId);
-                    _connNodeData.ConnData = _connNodeData.SourceNode.Data.Outs[sourceConn];
-
-                    var targetNode = NodeVMs.First(node => node.Data.Id == targetId);
-
-                    CurrentDispatcher.Invoke(() =>
-                    {
-                        OnCreateConnection(targetNode, targetConn).LoadFromToXml(conn);
-                    });
+                    var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(node.Attribute(_xmlClasses.Type).Value), new Point(-1, -1));
+                    nodeVm.LoadFromXml(node);
                 });
 
-                _connNodeData.SourceNode = null;
-            });
-            //}
+                // this is a workaround to ensure that the nodes are loaded and all bound item collections initialized before the connections are loaded
+                Task.Run(() =>
+                {
+                    Thread.Sleep(200);  // important!
+
+                var connectionsXml = configXml.Element(_xmlClasses.Connections);
+                    connectionsXml.Elements().ForEach(conn =>
+                    {
+                        var sourceId = conn.Attribute(_xmlClasses.Source).Value;
+                        var sourceConn = int.Parse(conn.Attribute(_xmlClasses.SourceConn).Value);
+                        var targetId = conn.Attribute(_xmlClasses.Target).Value;
+                        var targetConn = int.Parse(conn.Attribute(_xmlClasses.TargetConn).Value);
+
+                        _connNodeData.SourceNode = NodeVMs.First(node => node.Data.Id == sourceId);
+                        _connNodeData.ConnData = _connNodeData.SourceNode.Data.Outs[sourceConn];
+
+                        var targetNode = NodeVMs.First(node => node.Data.Id == targetId);
+
+                        CurrentDispatcher.Invoke(() =>
+                        {
+                            OnCreateConnection(targetNode, targetConn).LoadFromToXml(conn);
+                        });
+                    });
+
+                    _connNodeData.SourceNode = null;
+                });
+            }
         }
         private void SaveExec()
         {
-            //var dlg = new SaveFileDialog();
-            //if (dlg.ShowDialog() == true)
-            //{
-            var docXml = new XDocument();
+            var dlg = new SaveFileDialog
+            {
+                Filter = "XML Files (*.xml)|*.xml|All Files (*.*)|*.*"
+            };
 
-            var configXml = new XElement(_xmlClasses.Root);
+            if (dlg.ShowDialog() == true)
+            {
+                var docXml = new XDocument();
 
-            var nodesXml = new XElement(_xmlClasses.Nodes);
-            NodeVMs.ForEach(node => node.SaveToXml(nodesXml));
-            configXml.Add(nodesXml);
+                var configXml = new XElement(_xmlClasses.Root);
 
-            var connXml = new XElement(_xmlClasses.Connections);
-            NodeVMs.ForEach(node => node.SaveConnectionsToXml(connXml));
-            configXml.Add(connXml);
+                var nodesXml = new XElement(_xmlClasses.Nodes);
+                NodeVMs.ForEach(node => node.SaveToXml(nodesXml));
+                configXml.Add(nodesXml);
 
-            docXml.Add(configXml);
+                var connXml = new XElement(_xmlClasses.Connections);
+                NodeVMs.ForEach(node => node.SaveConnectionsToXml(connXml));
+                configXml.Add(connXml);
 
-            docXml.Save("c:\\gn.xml");
-            //}
+                docXml.Add(configXml);
+
+                docXml.Save(dlg.FileName);
+            }
         }
 
         // called by IoC container
