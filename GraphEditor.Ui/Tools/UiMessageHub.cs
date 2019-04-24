@@ -25,10 +25,10 @@ namespace GraphEditor.Ui.Tools
 
         private static void UpdateLocation(object state)
         {
-            if (LocationUpdateMuted || _actNodePos == null) return;
-
             Dispatcher?.Invoke(() =>
             {
+                if (LocationUpdateMuted || _actNodePos == null) return;
+
                 foreach (var item in _actNodePos)
                 {
                     OnNodeLocationChanged?.Invoke(item.Key, item.Value);
@@ -95,6 +95,7 @@ namespace GraphEditor.Ui.Tools
         public static void Dispose()
         {
             _actNodePos.Clear();
+            _actNodePos = null;
 
             _updateTimer.Dispose();
             Thread.Sleep(100);
@@ -108,7 +109,6 @@ namespace GraphEditor.Ui.Tools
             OnSetZIndex = null;
             OnCreateConnection = null;
 
-            _actNodePos = null;
             Dispatcher = null;
         }
 

@@ -24,6 +24,7 @@ using System;
 using GraphEditor.Interface.Utils;
 using GraphEditor.Interface.Nodes;
 using GraphEditor.Interface.Ui;
+using System.ComponentModel;
 
 
 /* ----------------------------------------------------------------------------------
@@ -360,6 +361,11 @@ namespace GraphEditor.Ui
 
         private void Editor_Loaded(object sender, RoutedEventArgs e)
         {
+            var mainWindow = this.FindAncestor<Window>();
+
+            if (mainWindow != null)
+                mainWindow.Closing += Editor_Closing;
+
             UiMessageHub.OnAddNode += OnAddNode;
             UiMessageHub.OnRemoveNode += OnRemoveNode;
             UiMessageHub.OnNodeLocationChanged += OnNodeLocationChanged;
@@ -368,7 +374,7 @@ namespace GraphEditor.Ui
             UiMessageHub.OnSetZIndex += OnSetZIndex;
         }
 
-        private void Editor_Unloaded(object sender, RoutedEventArgs e)
+        private void Editor_Closing(object sender, CancelEventArgs e)
         {
             UiMessageHub.Dispose();
         }
