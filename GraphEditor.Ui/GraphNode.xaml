@@ -8,8 +8,7 @@
              xmlns:ge="clr-namespace:GraphEditor.Ui"
              xmlns:cv="clr-namespace:GraphEditor.Ui.Converters"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:NodeViewModel}"
-             GotKeyboardFocus="GraphNode_GotKeyboardFocus"
-             PreviewKeyDown="GraphNode_KeyDown">
+             GotKeyboardFocus="GraphNode_GotKeyboardFocus">
     <UserControl.Resources>
         <cv:BooleanToVisibilityConverter x:Key="BooleanConverter" TrueValue="Visible" FalseValue="Collapsed"/>
         <cv:BytesToImageSourceConverter x:Key="BytesToImageConverter"/>
