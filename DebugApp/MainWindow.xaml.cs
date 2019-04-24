@@ -11,6 +11,7 @@
 using GraphEditor.Interface.Container;
 using GraphEditor.Interface.Ui;
 using System.Windows;
+using System.Windows.Input;
 
 namespace DebugApp
 {
@@ -24,6 +25,11 @@ namespace DebugApp
             InitializeComponent();
 
             toolBar.DataContext = ServiceContainer.Get<IAreaViewModel>().ToolBar;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            editorArea.HandleKeyDown(sender, e);
         }
     }
 }

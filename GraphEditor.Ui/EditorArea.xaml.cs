@@ -60,6 +60,8 @@ namespace GraphEditor.Ui
 
         internal List<GraphNode> SelectedNodes => GraphNodes.Where(gn => gn.NodeVm.IsSelected).ToList();
 
+        internal List<NodeViewModel> SelectedNodesVms => SelectedNodes.Select(gn => gn.NodeVm).ToList();
+
         internal GraphNode NodeOfModel(NodeViewModel viewModel) => GraphNodes.FirstOrDefault(gn => gn.NodeVm.Equals(viewModel));
 
         private List<ArrowPolyline> ConnectionLines => _canvas.Children.OfType<ArrowPolyline>().ToList();
@@ -369,6 +371,35 @@ namespace GraphEditor.Ui
         private void Editor_Unloaded(object sender, RoutedEventArgs e)
         {
             UiMessageHub.Dispose();
+        }
+
+        public void HandleKeyDown(object sender, KeyEventArgs e)
+        {
+            var selected = SelectedNodesVms;
+
+            selected.ForEach(nodeVm =>
+            {
+                if (e.Key == Key.F4 && selected.Count == 1)
+                {
+                    nodeVm.EditConfigExec();
+                }
+                else
+                if (e.Key == Key.Delete)
+                {
+                    nodeVm.RemoveExec();
+                }
+                else
+                {
+                    var offsetPoint = nodeVm.Location;
+
+                    if (e.Key == Key.Left) offsetPoint.Offset(-10, 0);
+                    if (e.Key == Key.Up) offsetPoint.Offset(0, -10);
+                    if (e.Key == Key.Right) offsetPoint.Offset(10, 0);
+                    if (e.Key == Key.Down) offsetPoint.Offset(0, 10);
+
+                    nodeVm.Location = offsetPoint;
+                }
+            });
         }
     }
 }

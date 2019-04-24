@@ -48,6 +48,12 @@ namespace GraphEditor.Ui.Tools
         public static void RemoveNode(NodeViewModel node)
         {
             OnRemoveNode?.Invoke(node);
+
+            Dispatcher?.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+            {
+                if (_actNodePos.ContainsKey(node))
+                    _actNodePos.Remove(node);
+            }));
         }
 
         public static void NodeLocationChanged(NodeViewModel node, Point location)
@@ -88,6 +94,8 @@ namespace GraphEditor.Ui.Tools
 
         public static void Dispose()
         {
+            _actNodePos.Clear();
+
             _updateTimer.Dispose();
             Thread.Sleep(100);
 

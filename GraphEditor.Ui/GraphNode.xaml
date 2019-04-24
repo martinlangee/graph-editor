@@ -8,15 +8,16 @@
              xmlns:ge="clr-namespace:GraphEditor.Ui"
              xmlns:cv="clr-namespace:GraphEditor.Ui.Converters"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance vm:NodeViewModel}"
-             GotKeyboardFocus="GraphNode_GotKeyboardFocus">
+             GotKeyboardFocus="GraphNode_GotKeyboardFocus"
+             PreviewKeyDown="GraphNode_KeyDown">
     <UserControl.Resources>
         <cv:BooleanToVisibilityConverter x:Key="BooleanConverter" TrueValue="Visible" FalseValue="Collapsed"/>
         <cv:BytesToImageSourceConverter x:Key="BytesToImageConverter"/>
     </UserControl.Resources>
     <UserControl.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Edit..." Command="{Binding EditConfigCommand}"/>
-            <Separator/>
+            <MenuItem Header="Edit..." Command="{Binding EditConfigCommand}" InputGestureText="F4"/>
+            <Separator Margin="0,-5"/>
             <MenuItem Header="Send to front" Command="{Binding ShiftZOrderCommand}">
                 <MenuItem.CommandParameter>
                     <s:Boolean>True</s:Boolean>
@@ -27,8 +28,8 @@
                     <s:Boolean>False</s:Boolean>
                 </MenuItem.CommandParameter>
             </MenuItem>
-            <Separator/>
-            <MenuItem Header="Remove" Command="{Binding RemoveNodeCommand}"/>
+            <Separator Margin="0,-5"/>
+            <MenuItem Header="Remove" Command="{Binding RemoveNodeCommand}" InputGestureText="Del"/>
         </ContextMenu>
     </UserControl.ContextMenu>
     <Grid Width="80">

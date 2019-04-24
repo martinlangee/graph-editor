@@ -104,7 +104,7 @@ namespace GraphEditor.Ui.ViewModel
             LoadConnectorStates(Data.Outs, OutConnectorStates, isOutBound: true);
         }
 
-        private void EditConfigExec()
+        public void EditConfigExec()
         {
             _onOpenConfigUi(Data);
         }
