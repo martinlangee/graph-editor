@@ -43,7 +43,10 @@ using System.ComponentModel;
 
 /* ----------------------------------------------------------------------------------
  * TODO:
+ *  Form des Nodes anpassbar machen (Kreis, Halbkreis etc.)
  *  Verhalten der Linien-Komponente verbessern (evtl. selektierbar?)
+ *  Zoom
+ *  Drucken
  * ------------------------------------------------------------------------------- */
 
 

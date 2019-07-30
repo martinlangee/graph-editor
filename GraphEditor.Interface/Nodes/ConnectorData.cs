@@ -58,13 +58,15 @@ namespace GraphEditor.Interface.Nodes
             get => _isActive;
             set
             {
-                if (_canBeDeactivated(this) || value)
+                if (CanBeDeactivated || value)
                 {
                     SetProperty<ConnectorData<T>, bool>(ref _isActive, value, nameof(IsActive),
                         (connData, isActive) => _onIsActiveChanged?.Invoke(connData));
                 }
             }
         }
+
+        public bool CanBeDeactivated => _canBeDeactivated(this);
 
         public object Type { get; }
 

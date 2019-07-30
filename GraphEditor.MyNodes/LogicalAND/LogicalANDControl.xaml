@@ -16,7 +16,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <StackPanel>
-                        <TextBlock Text="Active inputs"/>
+                        <TextBlock Text="Visible inputs"/>
                         <ListBox 
                                 BorderBrush="Transparent"
                                 x:Name="_lbInputs"
@@ -29,7 +29,7 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="ListBoxItem">
-                                                <CheckBox Margin="5,2" IsChecked="{Binding IsActive}" Content="{Binding Name}"/>
+                                                <CheckBox Margin="5,2" IsChecked="{Binding IsActive}" IsEnabled="{Binding CanBeDeactivated}" Content="{Binding Name}"/>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>

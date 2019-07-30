@@ -37,6 +37,8 @@ namespace GraphEditor.Interface.Nodes
 
         bool IsActive { get; set; }
 
+        bool CanBeDeactivated { get; }
+
         byte[] Icon { get; set;  }
 
         event Action IconChanged;
