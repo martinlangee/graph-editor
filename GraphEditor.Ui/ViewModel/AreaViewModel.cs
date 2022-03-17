@@ -106,42 +106,48 @@ namespace GraphEditor.Ui.ViewModel
             if (dlg.ShowDialog() == true)
             {
                 ClearConfig();
-
-                var docXml = XDocument.Load(dlg.FileName);
-                var configXml = docXml.Element(_xmlClasses.Root);
-                var nodesXml = configXml.Element(_xmlClasses.Nodes);
-                nodesXml.Elements().ForEach(node =>
+                try
                 {
-                    var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(node.Attribute(_xmlClasses.Type).Value), new Point(-1, -1));
-                    nodeVm.LoadFromXml(node);
-                });
-
-                // this is a workaround to ensure that the nodes are loaded and all bound item collections initialized before the connections are loaded
-                Task.Run(() =>
-                {
-                    Thread.Sleep(200);  // important!
-
-                var connectionsXml = configXml.Element(_xmlClasses.Connections);
-                    connectionsXml.Elements().ForEach(conn =>
+                    var docXml = XDocument.Load(dlg.FileName);
+                    var configXml = docXml.Element(_xmlClasses.Root);
+                    var nodesXml = configXml.Element(_xmlClasses.Nodes);
+                    nodesXml.Elements().ForEach(node =>
                     {
-                        var sourceId = conn.Attribute(_xmlClasses.Source).Value;
-                        var sourceConn = int.Parse(conn.Attribute(_xmlClasses.SourceConn).Value);
-                        var targetId = conn.Attribute(_xmlClasses.Target).Value;
-                        var targetConn = int.Parse(conn.Attribute(_xmlClasses.TargetConn).Value);
-
-                        _connNodeData.SourceNode = NodeVMs.First(node => node.Data.Id == sourceId);
-                        _connNodeData.ConnData = _connNodeData.SourceNode.Data.Outs[sourceConn];
-
-                        var targetNode = NodeVMs.First(node => node.Data.Id == targetId);
-
-                        CurrentDispatcher.Invoke(() =>
-                        {
-                            OnCreateConnection(targetNode, targetConn).LoadFromToXml(conn);
-                        });
+                        var nodeVm = AddNodeExec(ServiceContainer.Get<INodeTypeRepository>().Find(node.Attribute(_xmlClasses.Type).Value), new Point(-1, -1));
+                        nodeVm.LoadFromXml(node);
                     });
 
-                    _connNodeData.SourceNode = null;
-                });
+                    // this is a workaround to ensure that the nodes are loaded and all bound item collections initialized before the connections are loaded
+                    Task.Run(() =>
+                    {
+                        Thread.Sleep(200);  // important!
+
+                    var connectionsXml = configXml.Element(_xmlClasses.Connections);
+                        connectionsXml.Elements().ForEach(conn =>
+                        {
+                            var sourceId = conn.Attribute(_xmlClasses.Source).Value;
+                            var sourceConn = int.Parse(conn.Attribute(_xmlClasses.SourceConn).Value);
+                            var targetId = conn.Attribute(_xmlClasses.Target).Value;
+                            var targetConn = int.Parse(conn.Attribute(_xmlClasses.TargetConn).Value);
+
+                            _connNodeData.SourceNode = NodeVMs.First(node => node.Data.Id == sourceId);
+                            _connNodeData.ConnData = _connNodeData.SourceNode.Data.Outs[sourceConn];
+
+                            var targetNode = NodeVMs.First(node => node.Data.Id == targetId);
+
+                            CurrentDispatcher.Invoke(() =>
+                            {
+                                OnCreateConnection(targetNode, targetConn).LoadFromToXml(conn);
+                            });
+                        });
+
+                        _connNodeData.SourceNode = null;
+                    });
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error while loading file: \n" + e.Message);
+                }
             }
         }
         private void SaveExec()
