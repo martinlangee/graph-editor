@@ -1,6 +1,6 @@
 # Simple Graph Editor
 
-A simple but quite useful implementation of a simple graphical editor.
+A simple but quite useful implementation of a simple graphical editor. The sample node elements are inspired by logical elements. 
 
 See the sample images for a quick impression of the UI.
 
