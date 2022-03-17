@@ -1,10 +1,10 @@
 # Simple Graph Editor
 
-A simple but quite useful implementation of q simple graphical editor with the following features.
+A simple but quite useful implementation of a simple graphical editor with the following features.
 
 ## Features
 
-Pre-defined elements can be dragged and dropped on to a work panel and afterwards shifted and deleted.
+Pre-defined elements can be dragged and dropped from a tool bar on to a work panel and afterwards shifted and deleted.
 
 The elements own input (on the left side) and output connectors (on the right side). Using mouse click the connectors of two elements can be connected by a connection line. The connectors own labels that can be switched on an off.
 
