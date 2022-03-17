@@ -1,6 +1,8 @@
 # Simple Graph Editor
 
-A simple but quite useful implementation of a simple graphical editor with the following features.
+A simple but quite useful implementation of a simple graphical editor.
+
+See the sample images for a quick impression of the UI.
 
 ## Features
 
